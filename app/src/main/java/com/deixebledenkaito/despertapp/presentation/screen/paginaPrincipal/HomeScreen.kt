@@ -1,3 +1,4 @@
+
 package com.deixebledenkaito.despertapp.presentation.screen.paginaPrincipal
 
 
@@ -13,6 +14,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,6 +30,7 @@ import androidx.compose.foundation.layout.padding
 
 
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -47,6 +50,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -78,7 +82,7 @@ fun HomeScreen(
     viewModel: HomeScreenViewModel = hiltViewModel(),
     onLogout: () -> Unit,
 
-) {
+    ) {
 
     val uiState by viewModel.uiState
     var showMenu by remember { mutableStateOf(false) }
@@ -113,7 +117,14 @@ fun HomeScreen(
         }
     ) { paddingValues ->
         when {
-            uiState.isLoading -> CircularProgressIndicator()
+            uiState.isLoading -> Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
             else -> AlarmContent(
                 paddingValues = paddingValues,
                 alarms = uiState.alarms,
@@ -165,6 +176,7 @@ private fun AlarmContent(
             exit = fadeOut() + shrinkVertically()
         ) {
             AlarmCreationCard(
+                viewModel = hiltViewModel(), // o passat des del `HomeScreenViewModel`
                 userId = userId,
                 onCancel = onCancelCreateAlarm
             )
@@ -188,11 +200,17 @@ private fun AlarmContent(
 
 @Composable
 fun CreateAlarmButton(onClick: () -> Unit) {
-    Button(onClick = {
-        Log.d("CreateAlarmButton", "Botó premut per crear nova alarma")
-        onClick()
-    }) {
-        Text("Afegir Alarma")
+    Button(
+        onClick = {
+            Log.d("CreateAlarmButton", "Botó premut per crear nova alarma")
+            onClick()
+        },
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Text("Afegir Alarma", style = MaterialTheme.typography.labelLarge)
     }
 }
 
@@ -204,12 +222,20 @@ fun AlarmList(
 ) {
     Column {
         alarms.forEach { alarm ->
-            Spacer(modifier = Modifier.height(16.dp))
-            AlarmItem(alarm.id, alarm.getFormattedTime(),alarm.label,alarm.getDayNames(), alarm.enabled, onToggleAlarm)
+            key(alarm.id) {
+                Spacer(modifier = Modifier.height(16.dp))
+                AlarmItem(
+                    alarmId = alarm.id,
+                    time = alarm.getFormattedTime(),
+                    label = alarm.label,
+                    days = alarm.getDayNames(),
+                    enabled = alarm.enabled,
+                    onToggleAlarm = onToggleAlarm
+                )
+            }
         }
     }
 }
-
 
 
 

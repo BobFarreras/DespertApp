@@ -43,11 +43,12 @@ class HomeScreenViewModel @Inject constructor(
         }
     }
 
+    // A HomeScreenViewModel
     private fun loadAlarms() {
         viewModelScope.launch {
-            getAlarmsUseCase().collect { alarms -> // afegit ()
+            getAlarmsUseCase().collect { alarms ->
                 _uiState.value = _uiState.value.copy(
-                    alarms = alarms
+                    alarms = alarms.sortedBy { it.hour * 100 + it.minute }
                 )
             }
         }

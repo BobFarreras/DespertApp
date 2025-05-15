@@ -1,6 +1,8 @@
+
 package com.deixebledenkaito.despertapp.presentation.components.crearAlarma
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,7 +34,6 @@ import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -58,6 +59,11 @@ fun AlarmCreationCard(
     val days = listOf("Dl", "Dt", "Dc", "Dj", "Dv", "Ds", "Dg")
     val selectedDays = remember { mutableStateListOf<Int>() }
 
+    val timePickerState = rememberTimePickerState(
+        initialHour = 7,
+        initialMinute = 30,
+        is24Hour = true
+    )
 
     Card(
         modifier = Modifier
@@ -90,11 +96,7 @@ fun AlarmCreationCard(
                     tint = MaterialTheme.colorScheme.primary
                 )
 
-                val timePickerState = rememberTimePickerState(
-                    initialHour = 7,
-                    initialMinute = 30,
-                    is24Hour = true
-                )
+
 
                 TimePicker(
                     state = timePickerState,
@@ -104,6 +106,8 @@ fun AlarmCreationCard(
                         clockDialColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
                     )
                 )
+
+
             }
 
             // Nom de l'alarma
@@ -166,7 +170,30 @@ fun AlarmCreationCard(
                 Spacer(modifier = Modifier.width(16.dp))
 
                 Button(
-                    onClick = { viewModel.createAlarm(userId, alarmTime, alarmLabel, selectedDays)} ,
+
+                    onClick = {
+                        // Obtenir hora i minuts del timePickerState
+                        val hour = timePickerState.hour
+                        val minute = timePickerState.minute
+                        val time = LocalTime.of(hour, minute)
+
+                        if (alarmLabel.isBlank()) {
+                            Log.w("AlarmCreationCard", "Etiqueta buida")
+                            return@Button
+                        }
+                        if (selectedDays.isEmpty()) {
+                            Log.w("AlarmCreationCard", "Cap dia seleccionat")
+                            return@Button
+                        }
+                        Log.d("AlarmCreationCard", "Creant alarma: hora=$hour:$minute, label=$alarmLabel, dies=$selectedDays")
+
+                        // Crear l'alarma amb els valors actuals
+                        viewModel.createAlarm(
+                            userId = userId,
+                            time = LocalTime.of(hour, minute),
+                            label = alarmLabel,
+                            days =  selectedDays) },// Convertir a DayOfWeek (1-7))} ,
+
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = MaterialTheme.colorScheme.onPrimary

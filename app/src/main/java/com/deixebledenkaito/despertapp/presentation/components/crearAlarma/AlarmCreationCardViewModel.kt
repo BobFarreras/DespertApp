@@ -1,6 +1,8 @@
+
 package com.deixebledenkaito.despertapp.presentation.components.crearAlarma
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
@@ -20,11 +22,20 @@ class AlarmCreationCardViewModel @Inject constructor(
     private val createAlarmUseCase: CreateAlarmUseCase,
 ): ViewModel(){
 
-    private val _formState = MutableStateFlow(AlarmFromState())
+
 
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun createAlarm(userId: String, time: LocalTime, label: String, days: SnapshotStateList<Int>) {
+        if (label.isBlank()) {
+            Log.w("AlarmViewModel", "Etiqueta buida")
+            return
+        }
+        if (days.isEmpty()) {
+            Log.w("AlarmViewModel", "Cap dia seleccionat")
+            return
+        }
+
         viewModelScope.launch {
             createAlarmUseCase(
                 Alarm(
@@ -37,6 +48,8 @@ class AlarmCreationCardViewModel @Inject constructor(
 
                 )
             )
+            Log.d("AlarmViewModel", "Creant alarma per a $userId a les ${time.hour}:${time.minute} amb etiqueta '$label' i dies $days")
+
         }
     }
 }
