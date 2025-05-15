@@ -53,6 +53,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.animation.android)
+    implementation(libs.androidx.animation.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -64,10 +66,22 @@ dependencies {
 //    FIREBASE
     implementation (libs.firebase.auth.ktx)
     implementation (platform(libs.firebase.bom))
+    implementation (libs.firebase.firestore.ktx)  // Firestore
 
 
     // Hilt (DI)
     implementation (libs.hilt.android)
     kapt (libs.hilt.compiler)
     implementation (libs.androidx.hilt.navigation.compose)
+
+    // Per a selecció d'imatges  COIL
+    implementation ("io.coil-kt:coil-compose:2.4.0")
+
+    //MATERIAL 3 ICONS
+    implementation("androidx.compose.material3:material3:1.2.1")
+    implementation (libs.androidx.material.icons.core)
+    implementation (libs.androidx.material.icons.extended)
+
+//ANIMATION
+    implementation("androidx.compose.animation:animation:1.8.1")
 }
