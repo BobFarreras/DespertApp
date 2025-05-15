@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "924602224600",
+    "project_id": "despertapp-39c7b",
+    "storage_bucket": "despertapp-39c7b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:924602224600:android:b6129a2c8396a3e1b3acad",
+        "android_client_info": {
+          "package_name": "com.deixebledenkaito.despertapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7QmK8CegcrRcLOK7SeZrPWgqf5ElvoM4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
