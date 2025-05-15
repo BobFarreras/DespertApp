@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:name=".DespertApp"
         android:hardwareAccelerated="true"
@@ -24,6 +30,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Receivers -->
+        <receiver
+            android:name=".presentation.broadcast.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!-- Services -->
+        <service
+            android:name=".presentation.broadcast.AlarmSoundService"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>

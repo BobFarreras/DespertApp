@@ -8,16 +8,17 @@ import androidx.annotation.RequiresApi
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.PropertyName
 import java.time.LocalTime
+import java.util.Calendar
 
 data class Alarm(
-    val id: String = "",  // ID del document a Firestore
+    val id: String = "",
     val hour: Int = 0,
     val minute: Int = 0,
     val label: String = "",
 
     @get:PropertyName("active_days")
     @set:PropertyName("active_days")
-    var activeDays: List<Int> = emptyList(), // Valors entre 1-7 (DayOfWeek)
+    var activeDays: List<Int> = emptyList(), // 1-7 (DayOfWeek)
 
     val enabled: Boolean = true,
 
@@ -27,32 +28,31 @@ data class Alarm(
     @get:PropertyName("user_id")
     val userId: String = ""
 ) {
+    companion object {
+        val DAY_ABBREVIATIONS = listOf("Dl", "Dt", "Dc", "Dj", "Dv", "Ds", "Dg")
+    }
 
-    // Convertir hora i minut a LocalTime per mostrar o comparar
-
-    fun toLocalTime(): LocalTime = LocalTime.of(hour, minute)
-
-    // Format simple (es pot mostrar com "07:30")
     @SuppressLint("DefaultLocale")
     fun getFormattedTime(): String {
         return String.format("%02d:%02d", hour, minute)
     }
 
-    // Dies actius en format curt ("Dl", "Dt", ...)
-
     fun getDayNames(): List<String> {
-        return activeDays.map { dayValue ->
+        return activeDays.mapNotNull { dayValue ->
             when (dayValue) {
-                0 -> "Dl"
-                1 -> "Dt"
-                2 -> "Dc"
-                3 -> "Dj"
-                4 -> "Dv"
-                5 -> "Ds"
-                6 -> "Dg"
-                else -> ""
+                in 1..7 -> DAY_ABBREVIATIONS[dayValue - 1]
+                else -> null
             }
         }
     }
 
+    fun shouldRingToday(): Boolean {
+        val today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) // 1-7
+        return activeDays.contains(today)
+    }
+
+    override fun toString(): String {
+        return "Alarma(id='$id', hora=$hour:$minute, etiqueta='$label', " +
+                "días=${activeDays.joinToString()}, activa=$enabled)"
+    }
 }

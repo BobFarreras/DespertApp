@@ -3,6 +3,7 @@
 package com.deixebledenkaito.despertapp.presentation.components.items
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -49,6 +50,7 @@ fun AlarmItem(
     enabled: Boolean,
     onToggleAlarm: (String, Boolean) -> Unit
 ) {
+    Log.d("AlarmItem", "Renderizando alarma $alarmId")
     // Estat local per a controlar el switch, inicialitzat amb enabled
     val isSwitched = enabled
     val today = currentDayShortName()
@@ -58,7 +60,7 @@ fun AlarmItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .clickable { /* TODO: Navegar o obrir diàleg edició */ },
+            .clickable {       Log.d("AlarmItem", "Alarma $alarmId clickeada") },
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
@@ -120,7 +122,9 @@ fun AlarmItem(
             // Switch per activar o desactivar l'alarma
             Switch(
                 checked = isSwitched,
-                onCheckedChange = {onToggleAlarm(alarmId, it) }, // Notifica el canvi al ViewModel o similar
+                onCheckedChange = {
+                    Log.d("AlarmItem", "Switch cambiado para alarma $alarmId: $it")
+                    onToggleAlarm(alarmId, it) }, // Notifica el canvi al ViewModel o similar
                 modifier = Modifier.semantics {
                     contentDescription = if (isSwitched) "Alarma activada" else "Alarma desactivada"
                 },
