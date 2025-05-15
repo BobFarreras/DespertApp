@@ -20,6 +20,16 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+//EM AFEGIT AIXO PER EL ROOM
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += mapOf(
+                    "room.schemaLocation" to "$projectDir/schemas",
+                    "room.incremental" to "true"
+                )
+            }
+        }
     }
 
     buildTypes {
@@ -41,6 +51,14 @@ android {
     buildFeatures {
         compose = true
     }
+
+    //EM AFEGIT AIXO PER EL ROOM
+    kapt {
+        arguments {
+            arg("room.schemaLocation", "$projectDir/schemas")
+            arg("room.incremental", "true")
+        }
+    }
 }
 
 dependencies {
@@ -55,6 +73,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.animation.android)
     implementation(libs.androidx.animation.android)
+    implementation(libs.androidx.databinding.adapters)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -84,4 +103,20 @@ dependencies {
 
 //ANIMATION
     implementation("androidx.compose.animation:animation:1.8.1")
+
+    // Room
+    implementation ("androidx.room:room-runtime:2.6.1")
+    kapt ("androidx.room:room-compiler:2.6.1")
+    implementation ("androidx.room:room-ktx:2.6.1")
+
+// Lifecycle & ViewModel
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+
+    // Logging
+    implementation ("androidx.compose.runtime:runtime-livedata:1.6.5")
+
+    // Coroutines
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 }

@@ -1,37 +1,41 @@
 package com.deixebledenkaito.despertapp
 
-import android.os.Build
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.RequiresApi
+
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.deixebledenkaito.despertapp.presentation.navigation.NavGraph
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.deixebledenkaito.despertapp.navigation.NavGraph
 import com.deixebledenkaito.despertapp.ui.theme.DespertAppTheme
+import com.deixebledenkaito.despertapp.viewmodel.AlarmViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint  // Necessari per a Hilt
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             DespertAppTheme {
-
-                // Aplicar el tema i afegir el NavGraph
                 Surface(modifier = Modifier.fillMaxSize()) {
+                    val viewModel: AlarmViewModel = hiltViewModel()
+                    val alarms by viewModel.alarms.collectAsState()
 
-                    NavGraph()
-
-                    //:)
+                    NavGraph(
+                        alarms = alarms,
+                        onDelete = { viewModel.deleteAlarm(it) },
+                        onAdd = { viewModel.addAlarm(it) }
+                    )
                 }
-
             }
         }
     }
 }
-
