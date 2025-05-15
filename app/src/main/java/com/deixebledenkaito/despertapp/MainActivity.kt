@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             DespertAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "bOBYYY",
+                        name = "bOBYYfasdfasdfaY",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
