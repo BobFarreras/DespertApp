@@ -70,13 +70,10 @@ import com.deixebledenkaito.despertapp.presentation.components.crearAlarma.Alarm
 import com.deixebledenkaito.despertapp.presentation.components.items.AlarmItem
 import com.deixebledenkaito.despertapp.presentation.components.topBar.TolBarDesplegable
 
-import java.time.DayOfWeek
-import java.time.LocalTime
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @OptIn(ExperimentalMaterial3Api::class)
-
 @Composable
 fun HomeScreen(
     viewModel: HomeScreenViewModel = hiltViewModel(),
@@ -141,7 +138,7 @@ fun HomeScreen(
 }
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 private fun AlarmContent(
     paddingValues: PaddingValues,
@@ -214,7 +211,7 @@ fun CreateAlarmButton(onClick: () -> Unit) {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun AlarmList(
     alarms: List<Alarm>,

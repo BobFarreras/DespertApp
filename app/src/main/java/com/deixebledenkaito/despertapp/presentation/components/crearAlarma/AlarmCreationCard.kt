@@ -47,7 +47,6 @@ import java.time.DayOfWeek
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AlarmCreationCard(
     viewModel: AlarmCreationCardViewModel = hiltViewModel(),

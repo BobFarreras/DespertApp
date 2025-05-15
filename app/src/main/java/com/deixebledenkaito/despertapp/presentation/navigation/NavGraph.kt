@@ -18,7 +18,7 @@ import com.deixebledenkaito.despertapp.presentation.screen.auth.signup.SignupScr
 import com.deixebledenkaito.despertapp.presentation.screen.paginaPrincipal.HomeScreen
 import com.deixebledenkaito.despertapp.presentation.splash.SplashScreen
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun NavGraph() {
     val navController = rememberNavController()

@@ -29,7 +29,7 @@ data class Alarm(
 ) {
 
     // Convertir hora i minut a LocalTime per mostrar o comparar
-    @RequiresApi(Build.VERSION_CODES.O)
+
     fun toLocalTime(): LocalTime = LocalTime.of(hour, minute)
 
     // Format simple (es pot mostrar com "07:30")
@@ -39,7 +39,7 @@ data class Alarm(
     }
 
     // Dies actius en format curt ("Dl", "Dt", ...)
-    @RequiresApi(Build.VERSION_CODES.O)
+
     fun getDayNames(): List<String> {
         return activeDays.map { dayValue ->
             when (dayValue) {

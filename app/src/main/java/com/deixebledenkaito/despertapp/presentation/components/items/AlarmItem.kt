@@ -39,7 +39,7 @@ import java.time.DayOfWeek
 import java.time.LocalDate
 
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun AlarmItem(
     alarmId :String,
@@ -133,7 +133,7 @@ fun AlarmItem(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 fun currentDayShortName(): String {
     return when (LocalDate.now().dayOfWeek) {
         DayOfWeek.MONDAY -> "Dl"
