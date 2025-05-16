@@ -1,6 +1,8 @@
 package com.deixebledenkaito.despertapp.utils
 
 import android.content.Context
+import android.content.Context.AUDIO_SERVICE
+import android.content.Context.VIBRATOR_SERVICE
 import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaPlayer
@@ -31,24 +33,19 @@ object AlarmUtils {
      * Retorna el MediaPlayer actiu.
      */
     fun playAlarmSound(context: Context): MediaPlayer {
-        return MediaPlayer().apply {
-            try {
-                setAudioStreamType(AudioManager.STREAM_ALARM)
-                setDataSource(context, Uri.parse("android.resource://${context.packageName}/${R.raw.alarm}"))
-                isLooping = true
-                prepare()
-                start()
+        val audioManager = context.getSystemService(AUDIO_SERVICE) as AudioManager
+        audioManager.setStreamVolume(
+            AudioManager.STREAM_ALARM,
+            audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM),
+            AudioManager.FLAG_SHOW_UI
+        )
 
-                // Configurar el volum al màxim
-                val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-                audioManager.setStreamVolume(
-                    AudioManager.STREAM_ALARM,
-                    audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM),
-                    AudioManager.FLAG_SHOW_UI
-                )
-            } catch (e: Exception) {
-                Log.e("AlarmUtils", "Error reproduint so", e)
-            }
+        return MediaPlayer().apply {
+            setAudioStreamType(AudioManager.STREAM_ALARM)
+            setDataSource(context, Uri.parse("android.resource://${context.packageName}/${R.raw.alarm}"))
+            isLooping = true
+            prepare()
+            start()
         }
     }
 
@@ -56,18 +53,18 @@ object AlarmUtils {
      * Fa vibrar el dispositiu durant 1 segon.
      */
     fun vibratePhone(context: Context) {
-        val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vibrator.vibrate(
-                    VibrationEffect.createOneShot(VIBRATION_TIME_MS, VibrationEffect.DEFAULT_AMPLITUDE)
+        val vibrator = context.getSystemService(VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(
+                VibrationEffect.createWaveform(
+                    longArrayOf(1000, 1000),
+                    intArrayOf(255, 0),
+                    0
                 )
-            } else {
-                @Suppress("DEPRECATION")
-                vibrator.vibrate(VIBRATION_TIME_MS)
-            }
-        } catch (e: Exception) {
-            Log.e("AlarmUtils", "Error durant la vibració: ${e.message}")
+            )
+        } else {
+            @Suppress("DEPRECATION")
+            vibrator.vibrate(longArrayOf(1000, 1000), 0)
         }
     }
 

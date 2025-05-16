@@ -1,14 +1,18 @@
 package com.deixebledenkaito.despertapp.ui.screens
 
+import android.app.admin.DevicePolicyManager
 import android.content.Context
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.PowerManager
 import android.os.Vibrator
 import android.util.Log
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.remember
+import com.deixebledenkaito.despertapp.receiver.AlarmService
 import com.deixebledenkaito.despertapp.ui.theme.DespertAppTheme
 import com.deixebledenkaito.despertapp.utils.AlarmUtils
 import com.deixebledenkaito.despertapp.utils.MathChallengeGenerator
@@ -16,46 +20,61 @@ import com.deixebledenkaito.despertapp.utils.MathChallengeGenerator
 class AlarmChallengeActivity : ComponentActivity() {
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var wakeLock: PowerManager.WakeLock
-    private lateinit var vibrator: Vibrator
+    private var fromLockScreen = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Inicialitzar els recursos
-        wakeLock = AlarmUtils.acquireWakeLock(this)
+        // Configuració per mostrar sobre el bloqueig
+        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+        fromLockScreen = intent.getBooleanExtra("FROM_LOCK_SCREEN", false)
+
+        // Inicialitzar recursos
+        wakeLock = (getSystemService(POWER_SERVICE) as PowerManager).run {
+            newWakeLock(
+                PowerManager.FULL_WAKE_LOCK or
+                        PowerManager.ACQUIRE_CAUSES_WAKEUP,
+                "DespertApp::AlarmWakeLock"
+            ).apply { acquire(10 * 60 * 1000L /*10 minuts*/) }
+        }
+
         mediaPlayer = AlarmUtils.playAlarmSound(this)
-        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         AlarmUtils.vibratePhone(this)
 
         setContent {
             DespertAppTheme {
-                val question = remember { MathChallengeGenerator.generate() }
-
                 AlarmChallengeScreen(
-                    question = question,
-                    onCorrect = {
-                        // Aturem tot immediatament
-                        stopAlarmResources()
-                        finish()
-                    }
+                    question = remember { MathChallengeGenerator.generate() },
+                    onCorrect = ::handleCorrectAnswer
                 )
             }
         }
     }
 
-    private fun stopAlarmResources() {
-        try {
-            mediaPlayer.stop()
-            mediaPlayer.release()
-            vibrator.cancel()
-            wakeLock.release()
-        } catch (e: Exception) {
-            Log.e("AlarmChallenge", "Error alliberant recursos", e)
+    private fun handleCorrectAnswer() {
+        // Aturar recursos
+        mediaPlayer.stop()
+        mediaPlayer.release()
+        wakeLock.release()
+
+        // Si venim de pantalla bloquejada, tornar al bloqueig
+        if (fromLockScreen) {
+            val devicePolicyManager = getSystemService(DEVICE_POLICY_SERVICE) as DevicePolicyManager
+            devicePolicyManager.lockNow()
         }
+
+        // Aturar el servei
+        stopService(Intent(this, AlarmService::class.java))
+        finish()
     }
 
     override fun onDestroy() {
-        stopAlarmResources()
+        mediaPlayer.release()
+        wakeLock.release()
+        stopService(Intent(this, AlarmService::class.java))
         super.onDestroy()
     }
 }
