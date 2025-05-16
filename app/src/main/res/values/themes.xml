@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.DespertApp" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.DespertApp" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Configuració per a barres transparents -->
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
 </resources>
