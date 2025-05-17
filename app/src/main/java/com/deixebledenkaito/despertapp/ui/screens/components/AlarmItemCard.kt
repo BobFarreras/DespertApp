@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -72,13 +73,25 @@ fun AlarmItemCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = "%02d:%02d".format(alarm.hour, alarm.minute),
-                    style = MaterialTheme.typography.headlineLarge.copy(
-                        fontWeight = FontWeight.W600,
-                        color = Color.White
+                Row {
+                    Text(
+                        text = "%02d:%02d".format(alarm.hour, alarm.minute),
+                        style = MaterialTheme.typography.headlineLarge.copy(
+                            fontWeight = FontWeight.W600,
+                            color = Color.White
+                        )
                     )
-                )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = alarm.name,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            color = Color.White.copy(alpha = 0.8f)
+                        ),
+                        modifier = Modifier.padding(top=10.dp)
+
+                    )
+
+                }
 
                 Switch(
                     checked = alarm.isActive,

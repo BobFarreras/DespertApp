@@ -13,4 +13,6 @@ class AlarmRepository @Inject constructor (private val dao: AlarmDao) {
 
     suspend fun insert(alarm: AlarmEntity) = dao.insert(alarm) // Inserta alarma
     suspend fun delete(alarm: AlarmEntity) = dao.delete(alarm) // Elimina alarma
+    suspend fun getAlarmById(alarmId: Int): AlarmEntity? = dao.getAlarmById(alarmId)
+
 }

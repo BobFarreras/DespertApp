@@ -24,7 +24,8 @@ import com.deixebledenkaito.despertapp.viewmodel.AlarmViewModel
 fun AlarmListContent(
     alarms: List<AlarmEntity>,
     viewModel: AlarmViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigateToAlarmForm: () -> Unit
 ) {
     // Estat local per a la llista d'alarmes
     LaunchedEffect(alarms) {
@@ -33,7 +34,7 @@ fun AlarmListContent(
 
     if (alarms.isEmpty()) {
         Log.d("AlarmListContent", "Mostrant estat buit")
-        EmptyAlarmsState(modifier)
+        EmptyAlarmsState(modifier, onNavigateToAlarmForm)
     } else {
 
         LazyColumn(

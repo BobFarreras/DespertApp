@@ -14,7 +14,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 
 import com.deixebledenkaito.despertapp.R
-import com.deixebledenkaito.despertapp.ui.screens.AlarmChallengeActivity
+import com.deixebledenkaito.despertapp.ui.screens.challenge.AlarmChallengeActivity
 
 
 
@@ -32,11 +32,21 @@ object AlarmUtils {
      * Reprodueix l'àudio de l'alarma al màxim volum.
      * Retorna el MediaPlayer actiu.
      */
-    fun playAlarmSound(context: Context): MediaPlayer {
+
+
+
+
+    fun playAlarmSound(context: Context, volume: Int): MediaPlayer {
         val audioManager = context.getSystemService(AUDIO_SERVICE) as AudioManager
+
+        // Assegura que el volum estigui dins dels límits vàlids (0..màxim)
+        val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM)
+        val adjustedVolume = volume.coerceIn(0, maxVolume)
+
+        // Estableix el volum (sense mostrar la UI)
         audioManager.setStreamVolume(
             AudioManager.STREAM_ALARM,
-            audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM),
+            adjustedVolume,
             AudioManager.FLAG_SHOW_UI
         )
 

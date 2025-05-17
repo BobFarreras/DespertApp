@@ -22,7 +22,7 @@
         android:theme="@style/Theme.DespertApp"
         tools:targetApi="31">
         <activity
-            android:name=".ui.screens.AlarmChallengeActivity"
+            android:name=".ui.screens.challenge.AlarmChallengeActivity"
             android:showWhenLocked="true"
             android:turnScreenOn="true"
             android:exported="true">

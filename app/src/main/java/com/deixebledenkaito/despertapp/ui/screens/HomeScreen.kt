@@ -17,7 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,18 +25,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
+
 import androidx.compose.ui.unit.dp
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 
 import com.deixebledenkaito.despertapp.ui.screens.components.AddAlarmFAB
 import com.deixebledenkaito.despertapp.ui.screens.components.AlarmListContent
-import com.deixebledenkaito.despertapp.ui.screens.components.AlarmTopBar
-
 
 
 import com.deixebledenkaito.despertapp.viewmodel.AlarmViewModel
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+
 
 
 @Composable
@@ -65,7 +63,7 @@ fun HomeScreen(
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
 
-        AlarmListContent(alarms = alarms, viewModel = viewModel)
+        AlarmListContent(alarms = alarms, viewModel = viewModel, onNavigateToAlarmForm = onNavigateToAlarmForm)
         AddAlarmFAB(onClick = onNavigateToAlarmForm)
     }
 

@@ -23,7 +23,7 @@ import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 
 
 @Composable
-fun EmptyAlarmsState(modifier: Modifier = Modifier) {
+fun EmptyAlarmsState(modifier: Modifier = Modifier, onNavigateToAlarmForm: () -> Unit) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -54,5 +54,6 @@ fun EmptyAlarmsState(modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.bodyLarge,
             color = Color.White
         )
+        AddAlarmFAB(onClick = onNavigateToAlarmForm)
     }
 }

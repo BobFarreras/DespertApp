@@ -26,6 +26,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.OutlinedTextField
 
 
@@ -52,6 +53,7 @@ import androidx.compose.ui.unit.dp
 
 
 import com.deixebledenkaito.despertapp.data.AlarmEntity
+import com.deixebledenkaito.despertapp.ui.screens.HomeScreen
 
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components.AnimacioDiaChip
@@ -236,9 +238,12 @@ fun CrearAlarmaScreen(
                     minute = minute,
                     daysOfWeek = selectedDays,
                     isActive = true,
-                    testModel = selectedModel
+                    testModel = selectedModel,
+                    name = alarmName // Afegeix el nom aquí
                 )
                 onAdd(newAlarm)
+
+
             },
             modifier = Modifier
                 .fillMaxWidth()

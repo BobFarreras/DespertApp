@@ -1,13 +1,11 @@
-package com.deixebledenkaito.despertapp.ui.screens
+package com.deixebledenkaito.despertapp.ui.screens.challenge
 
+import android.annotation.SuppressLint
 import android.app.admin.DevicePolicyManager
-import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.PowerManager
-import android.os.Vibrator
-import android.util.Log
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -41,11 +39,12 @@ class AlarmChallengeActivity : ComponentActivity() {
             ).apply { acquire(10 * 60 * 1000L /*10 minuts*/) }
         }
 
-        mediaPlayer = AlarmUtils.playAlarmSound(this)
+        mediaPlayer = AlarmUtils.playAlarmSound(this, 1)
         AlarmUtils.vibratePhone(this)
 
         setContent {
             DespertAppTheme {
+
                 AlarmChallengeScreen(
                     question = remember { MathChallengeGenerator.generate() },
                     onCorrect = ::handleCorrectAnswer
@@ -70,6 +69,7 @@ class AlarmChallengeActivity : ComponentActivity() {
         stopService(Intent(this, AlarmService::class.java))
         finish()
     }
+
 
     override fun onDestroy() {
         mediaPlayer.release()

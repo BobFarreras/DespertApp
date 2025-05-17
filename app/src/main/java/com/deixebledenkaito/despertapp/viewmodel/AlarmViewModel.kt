@@ -79,7 +79,6 @@ class AlarmViewModel @Inject constructor(
     // Funció unificada per canviar estat
     fun toggleAlarmActive(alarm: AlarmEntity, isActive: Boolean) {
         viewModelScope.launch {
-            Log.d("AlarmViewModel", "Canviant estat alarma ID: ${alarm.id} a ${if (isActive) "activa" else "inactiva"}")
             upsertAlarm(alarm.copy(isActive = isActive))
         }
     }
@@ -102,11 +101,25 @@ class AlarmViewModel @Inject constructor(
     @SuppressLint("ScheduleExactAlarm")
     private fun scheduleAlarm(alarm: AlarmEntity) {
 
+        if (!alarm.isActive) {
+            Log.d("AlarmViewModel", "Alarma ${alarm.id} desactivada, no es programa.")
+            return
+        }
+
+        val today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) // 1=Sunday, ..., 7=Saturday
+        val adjustedDay = if (today == Calendar.SUNDAY) 7 else today - 1 // converteix a 1=Dilluns...7=Diumenge
+
+        if (!alarm.daysOfWeek.contains(adjustedDay)) {
+            Log.d("AlarmViewModel", "Avui (${adjustedDay}) no toca l'alarma ${alarm.id}")
+            return
+        }
+
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val intent = Intent(context, AlarmReceiver::class.java).apply {
             putExtra("ALARM_ID", alarm.id)
             putExtra("TEST_MODEL", alarm.testModel)
+
         }
 
         val pendingIntent = PendingIntent.getBroadcast(
@@ -122,12 +135,12 @@ class AlarmViewModel @Inject constructor(
             set(Calendar.MINUTE, alarm.minute)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
-            if (before(Calendar.getInstance())) add(Calendar.DAY_OF_YEAR, 1)
+            if (before(Calendar.getInstance())) add(Calendar.DAY_OF_YEAR, 1)// demà si ja ha passat
         }
 
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
+            calendar.timeInMillis, // <-- aquí li dius l'hora exacta
             pendingIntent
         )
 

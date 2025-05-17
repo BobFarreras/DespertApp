@@ -3,8 +3,7 @@ package com.deixebledenkaito.despertapp.data
 
 import android.content.Context
 import androidx.room.Room
-import com.deixebledenkaito.despertapp.data.AlarmDao
-import com.deixebledenkaito.despertapp.data.AlarmDatabase
+
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
