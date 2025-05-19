@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
@@ -20,21 +19,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.ChallengeQuestion
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 
-import com.deixebledenkaito.despertapp.utils.MathQuestion
+import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.MathQuestion
 
 
 @Composable
 fun AlarmChallengeScreen(
-    question: MathQuestion,
+    question: ChallengeQuestion,
     onCorrect: () -> Unit
 ) {
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -50,26 +50,29 @@ fun AlarmChallengeScreen(
     ) {
         Text(
             text = question.question,
-            style = TextStyle(fontSize = 40.sp),
+            style = TextStyle(fontSize = 32.sp, fontWeight = FontWeight.Bold),
             color = Color.White,
-            modifier = Modifier.padding(bottom = 32.dp)
+            modifier = Modifier
+                .padding(bottom = 36.dp , start = 10.dp , end = 10.dp)
+                .align(Alignment.CenterHorizontally),
+            textAlign = TextAlign.Center
         )
 
         question.options.forEach { option ->
             Button(
                 onClick = {
                     if (option == question.correctAnswer) {
-                        onCorrect() // Això aturarà el so immediatament
+                        onCorrect()
                     }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp),
+                    .padding(vertical = 8.dp, horizontal = 16.dp),
                 colors = ButtonDefaults.buttonColors(Color.White.copy(alpha = 0.1f))
             ) {
                 Text(
-                    text = option.toString(),
-                    style = TextStyle(fontSize = 26.sp),
+                    text = option,
+                    style = TextStyle(fontSize = 24.sp),
                     color = Color.White,
                     modifier = Modifier.padding(6.dp)
                 )

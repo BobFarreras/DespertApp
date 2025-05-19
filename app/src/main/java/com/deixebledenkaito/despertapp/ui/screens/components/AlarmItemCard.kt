@@ -15,8 +15,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Leaderboard
+import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -35,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 
 import androidx.compose.ui.text.font.FontWeight
 
@@ -65,7 +70,7 @@ fun AlarmItemCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 4.dp)
+                .padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
             // Primera fila: Hora y switch
             Row(
@@ -117,12 +122,31 @@ fun AlarmItemCard(
             ) {
                 // Modelo de prueba
                 Text(
-                    text = "Model: ${alarm.testModel}",
+                    text = "Model: ",
                     style = MaterialTheme.typography.bodyMedium.copy(
-                        color = Color.White.copy(alpha = 0.7f)
+                        color = Color.White.copy(alpha = 0.5f)
                     )
                 )
-
+                Text(
+                    text = alarm.testModel,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = Color.White.copy(alpha = 0.85f)
+                    )
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                // So de l'alarma
+                Text(
+                    text = "Song: ",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = Color.White.copy(alpha = 0.5f)
+                    )
+                )
+                Text(
+                    text = alarm.alarmSoundName,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = Color.White.copy(alpha = 0.85f)
+                    )
+                )
                 Spacer(modifier = Modifier.weight(1f))
 
                 // Menú de opciones (tres puntos)
@@ -132,7 +156,7 @@ fun AlarmItemCard(
                         modifier = Modifier.size(20.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.Default.MoreVert,
+                            imageVector = Icons.Default.MoreHoriz,
                             contentDescription = "Opciones",
                             tint = Color.White.copy(alpha = 0.8f)
                         )
@@ -141,8 +165,68 @@ fun AlarmItemCard(
                     DropdownMenu(
                         expanded = showMenu,
                         onDismissRequest = { showMenu = false },
-                        modifier = Modifier.background(Color.White.copy(alpha = 0.1f))
+                        modifier = Modifier.background(Color.Black.copy(alpha = 0.75f)),
+
+
                     ) {
+                        DropdownMenuItem(
+                            text = {
+                                // So de l'alarma
+                                Text(
+                                    text = alarm.challengeType,
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        color = Color.White.copy(alpha = 0.85f)
+                                    )
+                                )
+                            },
+                            onClick = {},
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Default.Apps,
+                                    contentDescription = null,
+                                    tint = Color.White.copy(alpha = 0.85f)
+                                )
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                // Modelo de prueba
+                                Text(
+
+                                    text = alarm.testModel,
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        color = Color.White.copy(alpha = 0.85f)
+                                    )
+                                )
+                            },
+                            onClick = {},
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Default.Leaderboard,
+                                    contentDescription = null,
+                                    tint = Color.White.copy(alpha = 0.85f)
+                                )
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                // So de l'alarma
+                                Text(
+                                    text = alarm.alarmSoundName,
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        color = Color.White.copy(alpha = 0.85f)
+                                    )
+                                )
+                            },
+                            onClick = {},
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Default.MusicNote,
+                                    contentDescription = null,
+                                    tint = Color.White.copy(alpha = 0.85f)
+                                )
+                            }
+                        )
                         DropdownMenuItem(
                             text = {
                                 Text(

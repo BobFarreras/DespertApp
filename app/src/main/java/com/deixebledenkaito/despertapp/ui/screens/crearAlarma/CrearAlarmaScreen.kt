@@ -1,5 +1,6 @@
 package com.deixebledenkaito.despertapp.ui.screens.crearAlarma
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.width
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Close
 
 import androidx.compose.material3.Button
@@ -26,7 +28,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
+
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 
 
@@ -35,7 +38,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.internal.enableLiveLiterals
+
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,12 +56,13 @@ import androidx.compose.ui.unit.dp
 
 
 import com.deixebledenkaito.despertapp.data.AlarmEntity
-import com.deixebledenkaito.despertapp.ui.screens.HomeScreen
+
 
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components.AnimacioDiaChip
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components.RodaTempsPicker
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components.SegmentedControl
+import com.deixebledenkaito.despertapp.ui.screens.selectsounds.SelectSoundScreen
 
 
 @Composable
@@ -73,10 +77,32 @@ fun CrearAlarmaScreen(
     var selectedModel by remember { mutableStateOf("Bàsic") }
     var alarmName by remember { mutableStateOf("") }
 
+//    SO ALARMA
+    var alarmSound by remember { mutableStateOf("default") }
+    var alarmSoundName by remember { mutableStateOf("So per defecte") }
+    var showSoundSelector by remember { mutableStateOf(false) }
+
+
     val days = listOf("Dl", "Dt", "Dc", "Dj", "Dv", "Ds", "Dg")
     val testModels = listOf("Bàsic", "Avançat", "Expert")
+
+    var selectedChallenge by remember { mutableStateOf("Matemàtiques") }
+    val challengeTypes = listOf("Matemàtiques", "Cultura Catalana")
+
     var colorTextButtom = Color(0xF7676161)
 
+    if (showSoundSelector) {
+        SelectSoundScreen(
+            onSoundSelected = { soundId, soundName ->
+                alarmSound = soundId
+                alarmSoundName = soundName
+                showSoundSelector = false
+            },
+            onCancel = { showSoundSelector = false },
+            modifier = Modifier.fillMaxSize()
+        )
+        return
+    }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -87,8 +113,8 @@ fun CrearAlarmaScreen(
                     endY = Float.POSITIVE_INFINITY
                 )
             )
-            .padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+            .padding(horizontal = 24.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         // Capçalera amb títol i botó de tancar
         Row(
@@ -96,13 +122,7 @@ fun CrearAlarmaScreen(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "Nova Alarma",
-                style = MaterialTheme.typography.headlineMedium.copy(
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                )
-            )
+
 
             IconButton(
                 onClick = onCancel,
@@ -209,6 +229,19 @@ fun CrearAlarmaScreen(
                 }
             }
         }
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(
+                text = "Tipus de repte",
+                style = MaterialTheme.typography.titleMedium.copy(color = Color.White)
+            )
+
+            SegmentedControl(
+                items = challengeTypes,
+                selectedItem = selectedChallenge,
+                onItemSelect = { selectedChallenge = it },
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
 
         // Model de prova amb selector modern
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -225,10 +258,45 @@ fun CrearAlarmaScreen(
             )
         }
 
-        Spacer(modifier = Modifier.weight(1f))
+
         if (selectedDays.isNotEmpty()){
             colorTextButtom = Color.Black
 
+        }
+        // Nova secció per seleccionar el so
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(
+                text = "So de l'alarma",
+                style = MaterialTheme.typography.titleMedium.copy(color = Color.White)
+            )
+
+            OutlinedButton(
+                onClick = { showSoundSelector = true },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = Color.White
+                ),
+                border = BorderStroke(1.dp, Color.White.copy(alpha = 0.5f)),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = alarmSoundName,
+                        style = MaterialTheme.typography.bodyMedium.copy(color = Color.White)
+                    )
+                    Icon(
+                        imageVector = Icons.Default.ArrowForwardIos,
+                        contentDescription = "Seleccionar so",
+                        tint = Color.White,
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+            }
         }
         // Botó de guardar amb efecte
         Button(
@@ -239,7 +307,10 @@ fun CrearAlarmaScreen(
                     daysOfWeek = selectedDays,
                     isActive = true,
                     testModel = selectedModel,
-                    name = alarmName // Afegeix el nom aquí
+                    name = alarmName, // Afegeix el nom aquí
+                    alarmSound = alarmSound,
+                    alarmSoundName = alarmSoundName,
+                    challengeType = selectedChallenge
                 )
                 onAdd(newAlarm)
 

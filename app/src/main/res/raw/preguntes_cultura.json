@@ -1,0 +1,308 @@
+{
+  "basic": [
+    {
+      "question": "Quina és la capital de Catalunya?",
+      "options": ["Barcelona", "Girona", "Tarragona", "Lleida"],
+      "correctAnswer": "Barcelona"
+    },
+    {
+      "question": "Quina llengua es parla principalment a Catalunya?",
+      "options": ["Català", "Castellà", "Euskera", "Francès"],
+      "correctAnswer": "Català"
+    },
+    {
+      "question": "Quin plat és típic català?",
+      "options": ["Escudella", "Paella", "Fabada", "Gazpacho"],
+      "correctAnswer": "Escudella"
+    },
+    {
+      "question": "Com es diu el gegant popular de les festes majors?",
+      "options": ["Gegant", "Capgròs", "Tió", "Caganer"],
+      "correctAnswer": "Gegant"
+    },
+    {
+      "question": "Quina flor es regala per Sant Jordi?",
+      "options": ["Rosa", "Liri", "Tulipa", "Margarida"],
+      "correctAnswer": "Rosa"
+    },
+    {
+      "question": "Quina és la muntanya més alta de Catalunya?",
+      "options": ["Pica d'Estats", "Montseny", "Montserrat", "Canigó"],
+      "correctAnswer": "Pica d'Estats"
+    },
+    {
+      "question": "Com es diu la festa de Nadal on es fa cagar el Tió?",
+      "options": ["Nadal", "Cap d’Any", "Reis", "Carnaval"],
+      "correctAnswer": "Nadal"
+    },
+    {
+      "question": "Quina ciutat és famosa pels calçots?",
+      "options": ["Valls", "Lleida", "Girona", "Sitges"],
+      "correctAnswer": "Valls"
+    },
+    {
+      "question": "Com es diu el dia nacional de Catalunya?",
+      "options": ["La Diada", "Sant Joan", "Sant Jordi", "La Castanyada"],
+      "correctAnswer": "La Diada"
+    },
+    {
+      "question": "Com es diu la ballada tradicional catalana?",
+      "options": ["Sardana", "Jota", "Fandango", "Flamenc"],
+      "correctAnswer": "Sardana"
+    },
+    {
+      "question": "Com es diu el famós arquitecte de la Sagrada Família?",
+      "options": ["Gaudí", "Miró", "Dalí", "Tàpies"],
+      "correctAnswer": "Gaudí"
+    },
+    {
+      "question": "Quin mar banya la costa catalana?",
+      "options": ["Mediterrani", "Cantàbric", "Bàltic", "Adriàtic"],
+      "correctAnswer": "Mediterrani"
+    },
+    {
+      "question": "Quina festa es fa la nit del 23 de juny?",
+      "options": ["Sant Joan", "Sant Jordi", "Nadal", "Reis"],
+      "correctAnswer": "Sant Joan"
+    },
+    {
+      "question": "Quin animal es trenca en una olla durant festes?",
+      "options": ["El Tió", "El gall", "El caganer", "L’ànec"],
+      "correctAnswer": "El Tió"
+    },
+    {
+      "question": "Quin instrument acompanya sovint la sardana?",
+      "options": ["Tenora", "Guitarra", "Piano", "Flauta dolça"],
+      "correctAnswer": "Tenora"
+    },
+    {
+      "question": "Com es diu el pa amb tomàquet en català?",
+      "options": ["Pa amb tomàquet", "Pan tumaca", "Pa de tomàquet", "Pa amb salsa"],
+      "correctAnswer": "Pa amb tomàquet"
+    },
+    {
+      "question": "Com es diu el famós artista de Figueres?",
+      "options": ["Salvador Dalí", "Joan Miró", "Pau Casals", "Antoni Tàpies"],
+      "correctAnswer": "Salvador Dalí"
+    },
+    {
+      "question": "Quina ciutat té la catedral amb les escales famoses?",
+      "options": ["Girona", "Tarragona", "Barcelona", "Manresa"],
+      "correctAnswer": "Girona"
+    },
+    {
+      "question": "On es troba el Parc Güell?",
+      "options": ["Barcelona", "Reus", "Tarragona", "Terrassa"],
+      "correctAnswer": "Barcelona"
+    },
+    {
+      "question": "Quin dolç és típic de Tots Sants?",
+      "options": ["Panellets", "Torrons", "Mones", "Neules"],
+      "correctAnswer": "Panellets"
+    }
+  ],
+  "advanced": [
+    {
+      "question": "Quan se celebra la Diada Nacional de Catalunya?",
+      "options": ["11 de setembre", "1 d’octubre", "23 d’abril", "25 de desembre"],
+      "correctAnswer": "11 de setembre"
+    },
+    {
+      "question": "Com es diu la muntanya emblemàtica de Catalunya?",
+      "options": ["Montserrat", "Canigó", "Tibidabo", "Puigmal"],
+      "correctAnswer": "Montserrat"
+    },
+    {
+      "question": "Quin any es va aprovar l’Estatut d’Autonomia de 1979?",
+      "options": ["1979", "1982", "1992", "1978"],
+      "correctAnswer": "1979"
+    },
+    {
+      "question": "Quina ciutat va acollir els Jocs Olímpics del 1992?",
+      "options": ["Barcelona", "Madrid", "Sevilla", "València"],
+      "correctAnswer": "Barcelona"
+    },
+    {
+      "question": "Qui va ser Pau Casals?",
+      "options": ["Un músic", "Un escriptor", "Un arquitecte", "Un cuiner"],
+      "correctAnswer": "Un músic"
+    },
+    {
+      "question": "Quin riu passa per Tortosa?",
+      "options": ["Ebre", "Ter", "Llobregat", "Segre"],
+      "correctAnswer": "Ebre"
+    },
+    {
+      "question": "Quin estil arquitectònic és típic del modernisme català?",
+      "options": ["Modernisme", "Gòtic", "Barroc", "Neoclàssic"],
+      "correctAnswer": "Modernisme"
+    },
+    {
+      "question": "Qui és l'autor de 'Camí de Sirga'?",
+      "options": ["Jesús Moncada", "Mercè Rodoreda", "Josep Pla", "Joan Maragall"],
+      "correctAnswer": "Jesús Moncada"
+    },
+    {
+      "question": "Quin és el símbol tradicional de la festa de Sant Jordi?",
+      "options": ["Llibre i rosa", "Espasa i drac", "Creu i llibre", "Copa i rosa"],
+      "correctAnswer": "Llibre i rosa"
+    },
+    {
+      "question": "Quina entitat representa el govern autonòmic de Catalunya?",
+      "options": ["Generalitat", "Congrés", "Parlament Europeu", "Corts"],
+      "correctAnswer": "Generalitat"
+    },
+    {
+      "question": "Com es diu l'himne nacional de Catalunya?",
+      "options": ["Els Segadors", "La Marxa Reial", "Virolai", "Cant de la Senyera"],
+      "correctAnswer": "Els Segadors"
+    },
+    {
+      "question": "Quina dansa tradicional es balla en rotllana?",
+      "options": ["Sardana", "Jota", "Ball pla", "Zapateado"],
+      "correctAnswer": "Sardana"
+    },
+    {
+      "question": "Qui és considerat el pare de la Renaixença catalana?",
+      "options": ["Jacint Verdaguer", "Joan Maragall", "Pere Calders", "Josep Carner"],
+      "correctAnswer": "Jacint Verdaguer"
+    },
+    {
+      "question": "En quin segle va viure Ramon Llull?",
+      "options": ["XIII", "XIV", "XV", "XVI"],
+      "correctAnswer": "XIII"
+    },
+    {
+      "question": "Com es diu la festa major de Barcelona?",
+      "options": ["La Mercè", "Santa Tecla", "Sant Joan", "La Diada"],
+      "correctAnswer": "La Mercè"
+    },
+    {
+      "question": "Quin famós pintor surrealista és de Figueres?",
+      "options": ["Dalí", "Miró", "Tàpies", "Picasso"],
+      "correctAnswer": "Dalí"
+    },
+    {
+      "question": "On es troba el Monestir de Montserrat?",
+      "options": ["Bages", "Alt Urgell", "Empordà", "Priorat"],
+      "correctAnswer": "Bages"
+    },
+    {
+      "question": "Quina ciutat és seu del Parlament de Catalunya?",
+      "options": ["Barcelona", "Lleida", "Tarragona", "Girona"],
+      "correctAnswer": "Barcelona"
+    },
+    {
+      "question": "Com es diu el famós carrer central de Barcelona?",
+      "options": ["Les Rambles", "Passeig de Gràcia", "Diagonal", "Gran Via"],
+      "correctAnswer": "Les Rambles"
+    },
+    {
+      "question": "Quina figura es posa al pessebre per fer broma?",
+      "options": ["El caganer", "L’àngel", "El pastor", "El rei negre"],
+      "correctAnswer": "El caganer"
+    }
+  ],
+  "expert": [
+    {
+      "question": "Qui va escriure 'L’Atlàntida'?",
+      "options": ["Jacint Verdaguer", "Maragall", "Calders", "Rodoreda"],
+      "correctAnswer": "Jacint Verdaguer"
+    },
+    {
+      "question": "Quina figura mitològica protegeix els boscos catalans?",
+      "options": ["El follet", "El gegant", "La sirena", "El drac"],
+      "correctAnswer": "El follet"
+    },
+    {
+      "question": "Quin any va caure Barcelona durant la Guerra de Successió?",
+      "options": ["1714", "1640", "1808", "1939"],
+      "correctAnswer": "1714"
+    },
+    {
+      "question": "Quina novel·la va escriure Mercè Rodoreda?",
+      "options": ["La plaça del Diamant", "Solitud", "L’auca del senyor Esteve", "Camí de sirga"],
+      "correctAnswer": "La plaça del Diamant"
+    },
+    {
+      "question": "Qui va ser Francesc Macià?",
+      "options": ["President de la Generalitat", "Escriptor", "Arquitecte", "Compositor"],
+      "correctAnswer": "President de la Generalitat"
+    },
+    {
+      "question": "On va néixer Pau Casals?",
+      "options": ["El Vendrell", "Barcelona", "Tarragona", "Vic"],
+      "correctAnswer": "El Vendrell"
+    },
+    {
+      "question": "Quina obra va escriure Joanot Martorell?",
+      "options": ["Tirant lo Blanc", "La plaça del Diamant", "La punyalada", "Solitud"],
+      "correctAnswer": "Tirant lo Blanc"
+    },
+    {
+      "question": "Quin autor va escriure 'La pell freda'?",
+      "options": ["Albert Sánchez Piñol", "Jaume Cabré", "Empar Moliner", "Sergi Pàmies"],
+      "correctAnswer": "Albert Sánchez Piñol"
+    },
+    {
+      "question": "Quina comarca és coneguda pel Priorat vinícola?",
+      "options": ["Priorat", "Penedès", "Empordà", "Segarra"],
+      "correctAnswer": "Priorat"
+    },
+    {
+      "question": "Quina ciutat va fundar Jaume I?",
+      "options": ["València", "Barcelona", "Lleida", "Girona"],
+      "correctAnswer": "València"
+    },
+    {
+      "question": "Quin nom rebia l’antiga Corona catalanoaragonesa?",
+      "options": ["Corona d’Aragó", "Regne de Catalunya", "Imperi Català", "Confederació Catalana"],
+      "correctAnswer": "Corona d’Aragó"
+    },
+    {
+      "question": "Quin poeta modernista va escriure 'Oda a Espanya'?",
+      "options": ["Joan Maragall", "Josep Carner", "Verdaguer", "Espriu"],
+      "correctAnswer": "Joan Maragall"
+    },
+    {
+      "question": "Quin autor és conegut per 'El quadern gris'?",
+      "options": ["Josep Pla", "Sagarra", "Barbal", "Rodoreda"],
+      "correctAnswer": "Josep Pla"
+    },
+    {
+      "question": "Quina batalla clau es va lliurar el 1714?",
+      "options": ["Setge de Barcelona", "Batalla de l’Ebre", "Almansa", "Setge de Tarragona"],
+      "correctAnswer": "Setge de Barcelona"
+    },
+    {
+      "question": "Quin arxiu és considerat el més antic de Catalunya?",
+      "options": ["Arxiu de la Corona d’Aragó", "Arxiu Nacional", "Arxiu de Montserrat", "Arxiu Episcopal"],
+      "correctAnswer": "Arxiu de la Corona d’Aragó"
+    },
+    {
+      "question": "Quin autor contemporani va escriure 'Jo confesso'?",
+      "options": ["Jaume Cabré", "Sánchez Piñol", "Xavier Bosch", "Toni Sala"],
+      "correctAnswer": "Jaume Cabré"
+    },
+    {
+      "question": "Quin dia es va proclamar la República Catalana el 1931?",
+      "options": ["14 d’abril", "11 de setembre", "1 d’octubre", "15 de juny"],
+      "correctAnswer": "14 d’abril"
+    },
+    {
+      "question": "Quina església gòtica de Barcelona és coneguda per la seva arquitectura?",
+      "options": ["Santa Maria del Mar", "Sagrada Família", "La Catedral", "Sant Pau del Camp"],
+      "correctAnswer": "Santa Maria del Mar"
+    },
+    {
+      "question": "Quin any es va restablir la Generalitat després del franquisme?",
+      "options": ["1977", "1979", "1981", "1985"],
+      "correctAnswer": "1977"
+    },
+    {
+      "question": "Quin grup folklòric canta 'La presó del Rei de França'?",
+      "options": ["Els Esquirols", "Txarango", "Lax’n’Busto", "Sopa de Cabra"],
+      "correctAnswer": "Els Esquirols"
+    }
+  ]
+}

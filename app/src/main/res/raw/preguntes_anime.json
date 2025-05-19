@@ -1,0 +1,208 @@
+{
+  "basic": [
+    {
+      "question": "Quin és el nom del protagonista de 'Bola de Drac'?",
+      "options": ["Goku", "Vegeta", "Piccolo", "Krilin"],
+      "correctAnswer": "Goku"
+    },
+    {
+      "question": "Quin és l'objectiu de Sakuragi a 'Slam Dunk'?",
+      "options": ["Ser el millor jugador de bàsquet", "Impressionar Haruko", "Guanyar diners", "Venjar-se dels seus rivals"],
+      "correctAnswer": "Impressionar Haruko"
+    },
+    {
+      "question": "Quin és l'objecte màgic que busca Inuyasha?",
+      "options": ["L'Esfera del Drac", "La Perla Shikon", "El Cristall Màgic", "La Gemma de l'Infinit"],
+      "correctAnswer": "La Perla Shikon"
+    },
+    {
+      "question": "Quin és el nom complet del Detectiu Conan?",
+      "options": ["Shinichi Kudo", "Conan Edogawa", "Kogoro Mouri", "Heiji Hattori"],
+      "correctAnswer": "Shinichi Kudo"
+    },
+    {
+      "question": "D'on surt Doraemon?",
+      "options": ["Del passat", "Del futur", "D'un planeta llunyà", "D'un laboratori secret"],
+      "correctAnswer": "Del futur"
+    },
+    {
+      "question": "Quin és el protagonista de 'Dragon Ball'?",
+      "options": ["Goku", "Vegeta", "Piccolo", "Gohan"],
+      "correctAnswer": "Goku"
+    },
+    {
+      "question": "Quin és l'objectiu principal dels pirates en 'One Piece'?",
+      "options": ["Trobar el One Piece", "Ser els més forts", "Conquerir el món", "Vendre fruita del diable"],
+      "correctAnswer": "Trobar el One Piece"
+    },
+    {
+      "question": "Com es diu l'heroi de 'My Hero Academia'?",
+      "options": ["Izuku Midoriya", "Katsuki Bakugo", "Shoto Todoroki", "All Might"],
+      "correctAnswer": "Izuku Midoriya"
+    },
+    {
+      "question": "Quina és l'arma principal de Naruto?",
+      "options": ["Shuriken", "Kunai", "Bastó", "Katana"],
+      "correctAnswer": "Kunai"
+    },
+    {
+      "question": "Quin és el nom del robot gegant a 'Neon Genesis Evangelion'?",
+      "options": ["Evangelion", "Gundam", "Mazinger Z", "Voltron"],
+      "correctAnswer": "Evangelion"
+    }
+  ],
+  "advanced": [
+    {
+      "question": "Quants anys dura el torneig de les Arts Marcials a 'Bola de Drac'?",
+      "options": ["3 anys", "5 anys", "No té interval fix", "1 any"],
+      "correctAnswer": "3 anys"
+    },
+    {
+      "question": "Quin és el nom de l'institut on estudia l'equip de bàsquet a 'Slam Dunk'?",
+      "options": ["Shohoku", "Ryonan", "Kainan", "Shoyo"],
+      "correctAnswer": "Shohoku"
+    },
+    {
+      "question": "Quin és el nom del pare d'Inuyasha?",
+      "options": ["Toga", "Sesshomaru", "Myoga", "Nun es revela"],
+      "correctAnswer": "Toga"
+    },
+    {
+      "question": "Quina organització enverina Shinichi Kudo a 'Detectiu Conan'?",
+      "options": ["L'Organització Negra", "Els Homes de Negre", "La Syndicate", "L'Organització dels Ulls Vermells"],
+      "correctAnswer": "L'Organització Negra"
+    },
+    {
+      "question": "Quin és el nom del germà petit de Nobita a 'Doraemon'?",
+      "options": ["Nobisuke", "Takeshi", "Suneo", "No té germà petit"],
+      "correctAnswer": "Nobisuke"
+    },
+    {
+      "question": "Quin és el veritable nom de Light Yagami a 'Death Note'?",
+      "options": ["Kira", "L", "Ryuk", "Yagami Light"],
+      "correctAnswer": "Kira"
+    },
+    {
+      "question": "Quants anells de poder existeixen a 'Fullmetal Alchemist'?",
+      "options": ["3", "5", "7", "No hi ha anells a Fullmetal Alchemist"],
+      "correctAnswer": "No hi ha anells a Fullmetal Alchemist"
+    },
+    {
+      "question": "Quin és el nom complet de l'organització Akatsuki a 'Naruto'?",
+      "options": ["Akatsuki no Shō", "Akatsuki no Ketsumei", "Akatsuki no Toguro", "Akatsuki no Kage"],
+      "correctAnswer": "Akatsuki no Shō"
+    },
+    {
+      "question": "Quin és el nom del vaixell dels Pirates del Barret de Palla?",
+      "options": ["Going Merry", "Thousand Sunny", "Red Force", "Oro Jackson"],
+      "correctAnswer": "Thousand Sunny"
+    },
+    {
+      "question": "Quin personatge de 'Attack on Titan' pot transformar-se en Titan Femella?",
+      "options": ["Mikasa Ackerman", "Annie Leonhart", "Historia Reiss", "Sasha Braus"],
+      "correctAnswer": "Annie Leonhart"
+    }
+  ],
+  "expert": [
+    {
+      "question": "Quina és la primera tècnica que aprèn Goku a 'Bola de Drac'?",
+      "options": ["Kamehameha", "Taiyoken", "Dodonpa", "Kikoho"],
+      "correctAnswer": "Kamehameha"
+    },
+    {
+      "question": "Quina posició juga Mitsui a 'Slam Dunk'?",
+      "options": ["Base", "Escorta", "Aler", "Pivot"],
+      "correctAnswer": "Escorta"
+    },
+    {
+      "question": "Quin és el nom del pare de Kagome a 'Inuyasha'?",
+      "options": ["No apareix a la sèrie", "Hiroshi Higurashi", "Toga", "Myoga"],
+      "correctAnswer": "No apareix a la sèrie"
+    },
+    {
+      "question": "Quin és el nom real de Vermouth a 'Detectiu Conan'?",
+      "options": ["Sharon Vineyard", "Chris Vineyard", "Amanda Hughes", "Elena Miyano"],
+      "correctAnswer": "Sharon Vineyard"
+    },
+    {
+      "question": "Quin any es va estrenar el primer episodi de 'Doraemon'?",
+      "options": ["1973", "1979", "1985", "1969"],
+      "correctAnswer": "1979"
+    },
+    {
+      "question": "Quin és el nivell d'evolució més alt d'Agumon a 'Digimon'?",
+      "options": ["WarGreymon", "MetalGreymon", "Omnimon", "Imperialdramon"],
+      "correctAnswer": "WarGreymon"
+    },
+    {
+      "question": "Quants anells de poder existeixen a 'Bola de Drac'?",
+      "options": ["3", "5", "7", "No hi ha anells a Bola de Drac"],
+      "correctAnswer": "No hi ha anells a Bola de Drac"
+    },
+    {
+      "question": "Quin és el rècord personal de Sakuragi en taps a 'Slam Dunk'?",
+      "options": ["5 en un partit", "10 en un partit", "No s'esmenta", "3 en un partit"],
+      "correctAnswer": "No s'esmenta"
+    },
+    {
+      "question": "Quin és el nom de l'espasa d'Inuyasha?",
+      "options": ["Tessaiga", "Tenseiga", "Sou'unga", "Kikujumonji"],
+      "correctAnswer": "Tessaiga"
+    },
+    {
+      "question": "Quin és el nom del detectiu que rivalitza amb Conan?",
+      "options": ["Heiji Hattori", "Kaito Kid", "Saguru Hakuba", "Toichi Kuroba"],
+      "correctAnswer": "Heiji Hattori"
+    },
+    {
+      "question": "Quin és el nom de la tècnica definitiva de Saitama a 'One Punch Man'?",
+      "options": ["Serious Punch", "Normal Punch", "Killer Move", "One Punch"],
+      "correctAnswer": "Serious Punch"
+    },
+    {
+      "question": "Quants caps té el drac Acnologia a 'Fairy Tail'?",
+      "options": ["1", "3", "5", "7"],
+      "correctAnswer": "7"
+    },
+    {
+      "question": "Quin és el nom real del personatge 'V' a 'Cowboy Bebop'?",
+      "options": ["Vincent Volaju", "Valentine Izan", "Vicious", "No es revela mai"],
+      "correctAnswer": "Vincent Volaju"
+    },
+    {
+      "question": "Quina és la data exacta de l'incident del laboratori a 'Steins;Gate'?",
+      "options": ["28 de juliol de 2010", "21 d'agost de 2009", "13 d'abril de 2011", "3 de novembre de 2010"],
+      "correctAnswer": "28 de juliol de 2010"
+    },
+    {
+      "question": "Quin és el nom del creador dels ciborgs a 'Ghost in the Shell'?",
+      "options": ["Dr. Willis", "Dr. Katsuragi", "Dr. Dahlin", "Dr. Kanzaki"],
+      "correctAnswer": "Dr. Willis"
+    },
+    {
+      "question": "Quants 'Death Notes' hi ha a l'univers original?",
+      "options": ["1", "2", "6", "Infinits"],
+      "correctAnswer": "6"
+    },
+    {
+      "question": "Quin és el nom de la primera pel·lícula de Studio Ghibli?",
+      "options": ["El meu veí Totoro", "Nausicaä de la Vall del Vent", "El castell al cel", "La tomba de les lluernes"],
+      "correctAnswer": "Nausicaä de la Vall del Vent"
+    },
+    {
+      "question": "Quin personatge de 'Bleach' té el número 4 als seus tatuatges?",
+      "options": ["Ulquiorra Cifer", "Grimmjow Jaegerjaquez", "Neliel Tu Oderschvank", "Tier Harribel"],
+      "correctAnswer": "Ulquiorra Cifer"
+    },
+    {
+      "question": "Quants capítols té l'anime original 'Neon Genesis Evangelion'?",
+      "options": ["22", "24", "26", "28"],
+      "correctAnswer": "26"
+    },
+    {
+      "question": "Quin és el nom complet de l'escola a 'Assassination Classroom'?",
+      "options": ["Acadèmia Kunugigaoka", "Institut Nacional Kunugigaoka", "Escola Mitjana Kunugigaoka", "Centre Educatiu Kunugigaoka"],
+      "correctAnswer": "Institut Nacional Kunugigaoka"
+    }
+  ]
+}

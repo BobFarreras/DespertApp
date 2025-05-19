@@ -39,8 +39,7 @@ fun AlarmListContent(
 
         LazyColumn(
             modifier = modifier
-                .padding(top = 30.dp)
-            ,
+                .padding(top = 30.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             items(alarms, key = { it.id }) { alarm ->

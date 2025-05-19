@@ -12,5 +12,8 @@ data class AlarmEntity(
     val daysOfWeek: List<Int>, // Dies de la setmana (1 = Dll, ..., 7 = Dg)
     val isActive: Boolean ,// Si l'alarma està activa o no
     val testModel: String = "Bàsic", // Nuevo campo para el modelo de prueba
-    val name: String = "" // Nou camp per al nom
+    val name: String = "", // NOm de l'alarma
+    val alarmSound: String = "default", // Nou camp per identificar el so
+    val alarmSoundName: String = "So per defecte", // Nom amigable per mostrar a la UI
+    val challengeType: String = "Matemàtiques" // Nou camp
 )

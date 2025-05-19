@@ -20,5 +20,5 @@ interface AlarmDao {
     suspend fun delete(alarm: AlarmEntity) // Elimina una alarma existent
 
     @Query("SELECT * FROM alarms WHERE id = :alarmId")
-    suspend fun getAlarmById(alarmId: Int): AlarmEntity?
+    suspend fun getAlarmById(alarmId: Int): AlarmEntity? // Obté una alarma específica per ID
 }

@@ -21,7 +21,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
+
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -118,8 +118,9 @@ class AlarmViewModel @Inject constructor(
 
         val intent = Intent(context, AlarmReceiver::class.java).apply {
             putExtra("ALARM_ID", alarm.id)
+            putExtra("CHALLENGE_TYPE", alarm.challengeType)
             putExtra("TEST_MODEL", alarm.testModel)
-
+            putExtra("ALARM_SOUND", alarm.alarmSound) // Afegim el so seleccionat
         }
 
         val pendingIntent = PendingIntent.getBroadcast(

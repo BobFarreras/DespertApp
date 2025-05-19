@@ -62,8 +62,15 @@ fun DespertAppTheme(
     if(!view.isInEditMode){
         SideEffect {
             val window = (view.context as Activity).window
+
+            // Fes les dues barres transparents
             window.statusBarColor = Color.Transparent.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            window.navigationBarColor = Color.Transparent.toArgb()
+
+            // Ajusta visibilitat d’icones (lluminoses o fosques)
+            val insetsController = WindowCompat.getInsetsController(window, view)
+            insetsController.isAppearanceLightStatusBars = darkTheme
+            insetsController.isAppearanceLightNavigationBars = darkTheme
         }
     }
 
