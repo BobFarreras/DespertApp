@@ -1,5 +1,6 @@
 package com.deixebledenkaito.despertapp.ui.screens.settings.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,7 +27,7 @@ fun SettingsCard(
     icon: ImageVector,
     onClick: () -> Unit,
     isDestructive: Boolean = false,
-    modifier: Modifier = Modifier
+    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
     Card(
         onClick = onClick,

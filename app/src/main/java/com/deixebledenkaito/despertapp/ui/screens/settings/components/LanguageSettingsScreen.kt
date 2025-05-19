@@ -14,7 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.ChevronRight
+
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -30,7 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
@@ -38,7 +38,7 @@ import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 @Composable
 fun LanguageSettingsScreen(
     onBack: () -> Unit,
-    modifier: Modifier = Modifier
+
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         // Fons de pantalla (gradient)

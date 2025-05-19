@@ -5,38 +5,36 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
-import androidx.compose.material.icons.filled.ArrowBack
+
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
-import com.deixebledenkaito.despertapp.ui.screens.components.ButtonsBottomBar
+
 import com.deixebledenkaito.despertapp.ui.screens.settings.components.SettingsCard
 
 @Composable
 fun SettingsScreen(
-    onBack: () -> Unit,
     onNavigateToLanguageSettings: () -> Unit,
     onNavigateToAlarmSettings: () -> Unit,
     onLogout: () -> Unit,
-    modifier: Modifier = Modifier
+
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         // Fons de pantalla (gradient) - igual que a HomeScreen

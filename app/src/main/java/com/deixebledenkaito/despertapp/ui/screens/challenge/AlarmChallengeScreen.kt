@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.sp
 import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.ChallengeQuestion
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 
-import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.MathQuestion
 
 
 @Composable

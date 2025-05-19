@@ -51,7 +51,6 @@ fun NavGraph(
         }
         composable(Screen.Settings.route) {
             SettingsScreen(
-                onBack = { navController.popBackStack() },
                 onNavigateToLanguageSettings = { navController.navigate(Screen.LanguageSettings.route) },
                 onNavigateToAlarmSettings = { navController.navigate(Screen.AlarmSettings.route) },
                 onLogout = { /* Manejar logout */ }

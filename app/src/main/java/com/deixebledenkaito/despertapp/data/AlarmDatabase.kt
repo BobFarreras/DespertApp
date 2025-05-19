@@ -11,7 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 
 // AlarmDatabase.kt
 @Database(entities = [AlarmEntity::class], version = 3)
-@TypeConverters(com.deixebledenkaito.despertapp.data.Converters::class)
+@TypeConverters(Converters::class)
 abstract class AlarmDatabase : RoomDatabase() {
     abstract fun alarmDao(): AlarmDao // Proporciona accés al DAO
 
@@ -35,8 +35,8 @@ abstract class AlarmDatabase : RoomDatabase() {
         }
 
         private val MIGRATION_2_3 = object : Migration(2, 3) {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("ALTER TABLE alarms ADD COLUMN challengeType TEXT NOT NULL DEFAULT 'Matemàtiques'")
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE alarms ADD COLUMN challengeType TEXT NOT NULL DEFAULT 'Matemàtiques'")
             }
         }
     }

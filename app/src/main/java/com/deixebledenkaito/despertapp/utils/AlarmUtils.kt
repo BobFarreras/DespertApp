@@ -3,26 +3,11 @@ package com.deixebledenkaito.despertapp.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.AUDIO_SERVICE
-import android.content.Context.VIBRATOR_SERVICE
-import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
-import android.os.Build
-
 import android.os.PowerManager
-import android.os.VibrationEffect
-import android.os.Vibrator
-
 import com.deixebledenkaito.despertapp.R
-import com.deixebledenkaito.despertapp.ui.screens.challenge.AlarmChallengeActivity
-
-
-
-
-import android.util.Log
-import com.deixebledenkaito.despertapp.ui.screens.selectsounds.AlarmSound
-
 
 object AlarmUtils {
 

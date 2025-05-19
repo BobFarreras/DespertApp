@@ -7,13 +7,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.compose.runtime.collectAsState
-
-
 import androidx.lifecycle.ViewModel
-
 import androidx.lifecycle.viewModelScope
-
 import com.deixebledenkaito.despertapp.data.AlarmEntity
 import com.deixebledenkaito.despertapp.receiver.AlarmReceiver
 import com.deixebledenkaito.despertapp.repositroy.AlarmRepository
