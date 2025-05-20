@@ -1,5 +1,6 @@
 package com.deixebledenkaito.despertapp.ui.screens.challenge
 
+import android.annotation.SuppressLint
 import android.app.admin.DevicePolicyManager
 import android.content.Intent
 import android.media.MediaPlayer
@@ -62,8 +63,8 @@ class AlarmChallengeActivity : ComponentActivity() {
         }
         setContent {
             DespertAppTheme {
-                var selectedAnswer by remember { mutableStateOf<String?>(null) }
-                var answerIsCorrect by remember { mutableStateOf<Boolean?>(null) }
+
+                val answerIsCorrect by remember { mutableStateOf<Boolean?>(null) }
 
                 LaunchedEffect(answerIsCorrect) {
                     if (answerIsCorrect == true) {
@@ -100,6 +101,7 @@ class AlarmChallengeActivity : ComponentActivity() {
     }
 
 
+    @SuppressLint("Wakelock")
     override fun onDestroy() {
         mediaPlayer.release()
         wakeLock.release()

@@ -33,6 +33,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +47,7 @@ import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
 import com.deixebledenkaito.despertapp.data.AlarmEntity
+import kotlinx.coroutines.delay
 
 
 @Composable
@@ -56,6 +58,16 @@ fun AlarmItemCard(
     modifier: Modifier = Modifier
 ) {
     var showMenu by remember { mutableStateOf(false) }
+
+    var tempsActualitzat by remember { mutableStateOf(calcularTempsRestant(alarm)) }
+
+    LaunchedEffect(alarm) {
+        while (true) {
+            delay(60 * 1000) // Cada minut
+            tempsActualitzat = calcularTempsRestant(alarm)
+
+        }
+    }
 
     Card(
         modifier = modifier
@@ -123,31 +135,18 @@ fun AlarmItemCard(
             ) {
                 // Modelo de prueba
                 Text(
-                    text = "Model: ",
+                    text = "Falten: ",
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = Color.White.copy(alpha = 0.5f)
                     )
                 )
                 Text(
-                    text = alarm.testModel,
+                    text = formatarDuracio(tempsActualitzat),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = Color.White.copy(alpha = 0.85f)
                     )
                 )
-                Spacer(modifier = Modifier.weight(1f))
-                // So de l'alarma
-                Text(
-                    text = "Song: ",
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        color = Color.White.copy(alpha = 0.5f)
-                    )
-                )
-                Text(
-                    text = alarm.alarmSoundName,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        color = Color.White.copy(alpha = 0.85f)
-                    )
-                )
+
                 Spacer(modifier = Modifier.weight(1f))
 
                 // Menú de opciones (tres puntos)

@@ -21,4 +21,7 @@ interface AlarmDao {
 
     @Query("SELECT * FROM alarms WHERE id = :alarmId")
     suspend fun getAlarmById(alarmId: Int): AlarmEntity? // Obté una alarma específica per ID
+
+    @Query("SELECT * FROM alarms WHERE isActive = 1")
+    suspend fun getActiveAlarms(): List<AlarmEntity>
 }

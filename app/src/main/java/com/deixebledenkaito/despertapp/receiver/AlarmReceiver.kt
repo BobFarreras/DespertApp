@@ -6,6 +6,9 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 
 import com.deixebledenkaito.despertapp.data.AlarmDatabase
 import com.deixebledenkaito.despertapp.data.AlarmEntity
@@ -17,74 +20,65 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Calendar
+import java.util.concurrent.TimeUnit
 
 // AlarmReceiver.kt
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
+        // Obtenir dades de l'alarma
         val alarmId = intent?.getIntExtra("ALARM_ID", -1) ?: return
         val testModel = intent.getStringExtra("TEST_MODEL") ?: "Bàsic"
         val alarmSound = intent.getStringExtra("ALARM_SOUND") ?: "default"
         val challengeType = intent.getStringExtra("CHALLENGE_TYPE") ?: "Matemàtiques"
-        val repeatType = intent.getStringExtra("REPEAT_TYPE") ?: "Personalitzat"
+        val repeatType = intent.getStringExtra("REPEAT_TYPE") ?: "Diàriament"
 
+        Log.d("AlarmReceiver", "Alarma rebuda. ID: $alarmId, Repte: $challengeType, So: $alarmSound, Repetició: $repeatType")
+
+        // Iniciar servei en primer pla
+        val serviceIntent = Intent(context, AlarmService::class.java).apply {
+            putExtra("ALARM_ID", alarmId)
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(serviceIntent)
+        } else {
+            context.startService(serviceIntent)
+        }
+
+        // Iniciar activitat del repte
         val challengeIntent = Intent(context, AlarmChallengeActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or
                     Intent.FLAG_ACTIVITY_CLEAR_TASK or
                     Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-            putExtra("FROM_LOCK_SCREEN", true)
             putExtra("ALARM_SOUND", alarmSound)
             putExtra("TEST_MODEL", testModel)
             putExtra("CHALLENGE_TYPE", challengeType)
-        }
+            putExtra("REPEAT_TYPE", repeatType)
 
-        // Iniciar servei i activitat
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(Intent(context, AlarmService::class.java))
-        } else {
-            context.startService(Intent(context, AlarmService::class.java))
         }
         context.startActivity(challengeIntent)
 
-        // Reprogramar si és recurrent
+        // Si l'alarma és recurrent, reprogramem-la amb WorkManager; sinó, la desactivem
         if (repeatType != "Una vegada") {
+            val workRequest = OneTimeWorkRequestBuilder<AlarmRescheduleWorker>()
+                .setInitialDelay(1, TimeUnit.MINUTES) // Esperar 1 minut per reprogramar
+                .build()
+
+            WorkManager.getInstance(context).enqueue(workRequest)
+            Log.d("AlarmReceiver", "Alarma recurrent. Es reprogramarà amb WorkManager.")
+
+        } else{
+            // Desactivem l'alarma "Una vegada"
             val repo = AlarmRepository(AlarmDatabase.getDatabase(context).alarmDao())
             CoroutineScope(Dispatchers.IO).launch {
                 val alarm = repo.getAlarmById(alarmId)
                 alarm?.let {
-                    // Calculem el proper dia si cal
-                    val nextAlarm = calculateNextAlarm(it)
-                    AlarmViewModel(repo, context).addAlarm(nextAlarm)
+                    repo.insert(it.copy(isActive = false))
+                    Log.d("AlarmReceiver", "Alarma 'Una vegada' desactivada.")
+
                 }
             }
         }
-    }
-
-    private fun calculateNextAlarm(alarm: AlarmEntity): AlarmEntity {
-        if (alarm.repeatType == "Una vegada") return alarm
-
-        val calendar = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, alarm.hour)
-            set(Calendar.MINUTE, alarm.minute)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-            add(Calendar.DAY_OF_YEAR, 1) // Programem per demà per defecte
-        }
-
-        // Si és "De dilluns a divendres", assegurem que el proper dia és laborable
-        if (alarm.repeatType == "Dl a Dv") {
-            while (true) {
-                val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-                // Si és dissabte (7) o diumenge (1), saltem al següent dia
-                if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
-                    calendar.add(Calendar.DAY_OF_YEAR, 1)
-                } else {
-                    break
-                }
-            }
-        }
-
-        return alarm.copy()
     }
 }

@@ -6,6 +6,8 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -104,7 +106,7 @@ class AlarmViewModel @Inject constructor(
     }
 
     @SuppressLint("ScheduleExactAlarm")
-    private fun scheduleAlarm(alarm: AlarmEntity) {
+    fun scheduleAlarm(alarm: AlarmEntity) {
         if (!alarm.isActive) {
             Log.d("AlarmViewModel", "Alarma ${alarm.id} desactivada, no es programa.")
             return
@@ -117,15 +119,53 @@ class AlarmViewModel @Inject constructor(
             putExtra("TEST_MODEL", alarm.testModel)
             putExtra("ALARM_SOUND", alarm.alarmSound)
             putExtra("REPEAT_TYPE", alarm.repeatType)
+            // Afegim flags addicionals per a millorar la fiabilitat
+            addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
+        }
+
+        // Utilitzem FLAG_IMMUTABLE només per a versions modernes
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
         }
 
         val pendingIntent = PendingIntent.getBroadcast(
             context,
             alarm.id,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            flags
         )
 
+        val calendar = calculateNextAlarmTime(alarm)
+
+        // Configuració per a versions modernes d'Android
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (alarmManager.canScheduleExactAlarms()) {
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.timeInMillis,
+                    pendingIntent
+                )
+            } else {
+                // Sol·licitar permís si no el tenim
+                val intent = Intent(ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(intent)
+                return
+            }
+        } else {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                pendingIntent
+            )
+        }
+
+        Log.d("AlarmViewModel", "Alarma programada: ${alarm.id} a ${alarm.hour}:${alarm.minute}")
+    }
+
+    private fun calculateNextAlarmTime(alarm: AlarmEntity): Calendar {
         val calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, alarm.hour)
@@ -139,16 +179,18 @@ class AlarmViewModel @Inject constructor(
             }
         }
 
-        // Per a totes les alarmes (recurrents o no) fem servir setExactAndAllowWhileIdle
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            pendingIntent
-        )
+        // Ajust per a dies específics
+        if (alarm.repeatType == "Dl a Dv") {
+            while (true) {
+                val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+                if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
+                    calendar.add(Calendar.DAY_OF_YEAR, 1)
+                } else {
+                    break
+                }
+            }
+        }
 
-        Log.d("AlarmViewModel", "Alarma programada: ${alarm.id} a ${alarm.hour}:${alarm.minute} " +
-                "(Model: ${alarm.testModel}, Tipus: ${alarm.repeatType})")
-
-        // Si és recurrent, programem la següent execució des del receiver
+        return calendar
     }
 }

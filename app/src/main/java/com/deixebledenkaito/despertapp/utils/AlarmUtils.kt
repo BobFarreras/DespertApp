@@ -26,7 +26,7 @@ object AlarmUtils {
 
         audioManager.setStreamVolume(
             AudioManager.STREAM_ALARM,
-            0, //AMB 0 NO MOSTRA LA BARRA DEL VOLUM
+            100, //AMB 0 NO MOSTRA LA BARRA DEL VOLUM
             0 // <-- Aquesta línia evita mostrar la barra de volum
         )
 

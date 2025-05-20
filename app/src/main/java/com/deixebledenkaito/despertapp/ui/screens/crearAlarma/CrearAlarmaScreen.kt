@@ -66,6 +66,7 @@ import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components.Animaci
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components.RodaTempsPicker
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components.SegmentedControl
 import com.deixebledenkaito.despertapp.ui.screens.selectsounds.SelectSoundScreen
+import java.util.Calendar
 
 
 @Composable
@@ -74,8 +75,10 @@ fun CrearAlarmaScreen(
     onCancel: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var hour by remember { mutableIntStateOf(12) }
-    var minute by remember { mutableIntStateOf(30) }
+    val calendar = remember { Calendar.getInstance() }
+    var hour by remember { mutableIntStateOf(calendar.get(Calendar.HOUR_OF_DAY)) }
+    var minute by remember { mutableIntStateOf(calendar.get(Calendar.MINUTE)) }
+
     var selectedDays by remember { mutableStateOf(listOf<Int>()) }
     var selectedModel by remember { mutableStateOf("Bàsic") }
     var alarmName by remember { mutableStateOf("") }

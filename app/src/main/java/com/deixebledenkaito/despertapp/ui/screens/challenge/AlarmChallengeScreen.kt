@@ -1,13 +1,9 @@
 package com.deixebledenkaito.despertapp.ui.screens.challenge
 
 
-import android.os.Handler
-import android.os.Looper
-import androidx.compose.animation.animateColor
+
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
+
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

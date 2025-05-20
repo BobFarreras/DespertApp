@@ -1,15 +1,15 @@
 package com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
+
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,6 +17,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -44,9 +46,15 @@ fun RodaTempsPicker(
     val state = rememberLazyListState()
 
     // Scroll inicial quan es mostra el component
+    val initialScrollDone = remember { mutableStateOf(false) }
+
     LaunchedEffect(Unit) {
-        val initialIndex = (value - range.first)
-        state.scrollToItem(initialIndex)
+        if (!initialScrollDone.value) {
+            val initialIndex = (value - range.first).coerceIn(0, itemCount - 1)
+            state.scrollToItem(initialIndex)
+            // 👇 NOTA: aquí **NO** cridem onValueChange directament
+            initialScrollDone.value = true
+        }
     }
 
     Box(
@@ -111,18 +119,35 @@ fun RodaTempsPicker(
                 )
         )
 
-        // Detecta quin valor està centrat
+        // Guarda l'últim valor notificat a onValueChange per evitar duplicats
+        val lastNotifiedValue = remember { mutableStateOf<Int?>(null) }
+
         LaunchedEffect(state) {
-            snapshotFlow { state.firstVisibleItemIndex + middleItemIndex }
-                .collect { index ->
-                    val realIndex = index - middleItemIndex
-                    if (realIndex in 0 until itemCount) {
-                        val newValue = range.first + realIndex
-                        if (newValue != value) {
-                            onValueChange(newValue)
-                        }
+            // Observem contínuament canvis en la posició visible de la LazyColumn
+            snapshotFlow {
+                val centerItem = state.firstVisibleItemIndex + middleItemIndex
+                val offset = state.firstVisibleItemScrollOffset
+                Pair(centerItem, offset)
+            }.collect { (index, offset) ->
+                val realIndex = index - middleItemIndex // Calculem l'índex real dins de la llista de valors
+                if (realIndex in 0 until itemCount) {
+                    val newValue = range.first + realIndex
+
+                    // Log per veure quins valors es detecten
+                    Log.d("RodaTempsPicker", "Scroll detectat: index=$realIndex → valor=$newValue")
+
+                    // Només notifiquem si realment ha canviat el valor mostrat
+                    if (newValue != lastNotifiedValue.value) {
+                        Log.d("RodaTempsPicker", "Nou valor notificat: $newValue")
+                        lastNotifiedValue.value = newValue
+                        onValueChange(newValue)
+                    } else {
+                        Log.d("RodaTempsPicker", "Valor ja notificat, no fem res: $newValue")
                     }
+                } else {
+                    Log.w("RodaTempsPicker", "Índex fora de rang: $realIndex")
                 }
+            }
         }
     }
 }

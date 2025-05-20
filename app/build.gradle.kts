@@ -124,4 +124,7 @@ dependencies {
 
     //Poder lleguir JSON
     implementation ("com.google.code.gson:gson:2.10.1")
+
+    // Afegir a les dependencies de l'app
+    implementation ("androidx.work:work-runtime-ktx:2.7.1")
 }
