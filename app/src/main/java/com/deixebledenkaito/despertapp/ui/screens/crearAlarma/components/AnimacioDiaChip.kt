@@ -6,9 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,37 +26,43 @@ fun AnimacioDiaChip(
     day: String,
     selected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    enabled: Boolean = true
 ) {
     val backgroundColor by animateColorAsState(
-        targetValue = if (selected) Color.White else Color.Transparent,
+        if (selected) Color.White else Color.Transparent,
+        animationSpec = tween(durationMillis = 200)
+    )
+    val contentColor by animateColorAsState(
+        if (selected) Color.Black else Color.White,
         animationSpec = tween(durationMillis = 200)
     )
 
-    val textColor by animateColorAsState(
-        targetValue = if (selected) Color.Black else Color.White,
-        animationSpec = tween(durationMillis = 200)
-    )
-
-    Box(
-        modifier = modifier
+    Surface(
+        modifier = Modifier
             .clip(RoundedCornerShape(16.dp))
             .border(
                 width = 1.dp,
-                color = Color.White,
+                color = if (enabled) Color.White else Color.White.copy(alpha = 0.3f),
                 shape = RoundedCornerShape(16.dp)
             )
-            .clickable(onClick = onClick)
-            .background(backgroundColor, RoundedCornerShape(16.dp))
-            .padding(horizontal = 10.dp, vertical = 8.dp),
-        contentAlignment = Alignment.Center
+            .clickable(
+                enabled = enabled,
+                onClick = onClick
+            ),
+        color = backgroundColor,
+        shape = RoundedCornerShape(16.dp)
     ) {
-        Text(
-            text = day,
-            style = MaterialTheme.typography.labelLarge.copy(
-                color = textColor,
-                fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                .fillMaxWidth()
+        ) {
+            Text(
+                text = day,
+                color = if (enabled) contentColor else contentColor.copy(alpha = 0.3f),
+                style = MaterialTheme.typography.bodyMedium
             )
-        )
+        }
     }
 }

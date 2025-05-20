@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Leaderboard
 import androidx.compose.material.icons.filled.MoreHoriz
 
 import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.Replay
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -169,6 +170,25 @@ fun AlarmItemCard(
 
 
                     ) {
+                        DropdownMenuItem(
+                            text = {
+                                // So de l'alarma
+                                Text(
+                                    text = alarm.repeatType,
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        color = Color.White.copy(alpha = 0.85f)
+                                    )
+                                )
+                            },
+                            onClick = {},
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Default.Replay,
+                                    contentDescription = null,
+                                    tint = Color.White.copy(alpha = 0.85f)
+                                )
+                            }
+                        )
                         DropdownMenuItem(
                             text = {
                                 // So de l'alarma

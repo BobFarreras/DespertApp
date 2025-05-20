@@ -103,30 +103,20 @@ class AlarmViewModel @Inject constructor(
         Log.d("AlarmViewModel", "Alarma cancel·lada ID: $alarmId")
     }
 
-    // Programar alarma al sistema
     @SuppressLint("ScheduleExactAlarm")
     private fun scheduleAlarm(alarm: AlarmEntity) {
-
         if (!alarm.isActive) {
             Log.d("AlarmViewModel", "Alarma ${alarm.id} desactivada, no es programa.")
             return
         }
 
-        val today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK) // 1=Sunday, ..., 7=Saturday
-        val adjustedDay = if (today == Calendar.SUNDAY) 7 else today - 1 // converteix a 1=Dilluns...7=Diumenge
-
-        if (!alarm.daysOfWeek.contains(adjustedDay)) {
-            Log.d("AlarmViewModel", "Avui (${adjustedDay}) no toca l'alarma ${alarm.id}")
-            return
-        }
-
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
         val intent = Intent(context, AlarmReceiver::class.java).apply {
             putExtra("ALARM_ID", alarm.id)
             putExtra("CHALLENGE_TYPE", alarm.challengeType)
             putExtra("TEST_MODEL", alarm.testModel)
-            putExtra("ALARM_SOUND", alarm.alarmSound) // Afegim el so seleccionat
+            putExtra("ALARM_SOUND", alarm.alarmSound)
+            putExtra("REPEAT_TYPE", alarm.repeatType)
         }
 
         val pendingIntent = PendingIntent.getBroadcast(
@@ -142,15 +132,23 @@ class AlarmViewModel @Inject constructor(
             set(Calendar.MINUTE, alarm.minute)
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
-            if (before(Calendar.getInstance())) add(Calendar.DAY_OF_YEAR, 1)// demà si ja ha passat
+
+            // Si l'hora ja ha passat avui, programem per demà
+            if (before(Calendar.getInstance())) {
+                add(Calendar.DAY_OF_YEAR, 1)
+            }
         }
 
+        // Per a totes les alarmes (recurrents o no) fem servir setExactAndAllowWhileIdle
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis, // <-- aquí li dius l'hora exacta
+            calendar.timeInMillis,
             pendingIntent
         )
 
-        Log.d("AlarmViewModel", "Alarma programada: ${alarm.id} a ${alarm.hour}:${alarm.minute} (Model: ${alarm.testModel})")
+        Log.d("AlarmViewModel", "Alarma programada: ${alarm.id} a ${alarm.hour}:${alarm.minute} " +
+                "(Model: ${alarm.testModel}, Tipus: ${alarm.repeatType})")
+
+        // Si és recurrent, programem la següent execució des del receiver
     }
 }

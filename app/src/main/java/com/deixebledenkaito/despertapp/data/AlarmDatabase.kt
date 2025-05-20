@@ -10,7 +10,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 // AlarmDatabase.kt
-@Database(entities = [AlarmEntity::class], version = 3)
+@Database(entities = [AlarmEntity::class], version = 4)
 @TypeConverters(Converters::class)
 abstract class AlarmDatabase : RoomDatabase() {
     abstract fun alarmDao(): AlarmDao // Proporciona accés al DAO
@@ -27,16 +27,16 @@ abstract class AlarmDatabase : RoomDatabase() {
                     AlarmDatabase::class.java,
                     "alarm_db"
                 )
-                    .addMigrations(MIGRATION_2_3) // Afegeix aquesta línia
+                    .addMigrations(MIGRATION_3_4) // Afegeix aquesta línia
                     .build()
                 INSTANCE = instance
                 instance
             }
         }
 
-        private val MIGRATION_2_3 = object : Migration(2, 3) {
+        private val MIGRATION_3_4 = object : Migration(3, 4) {
             override fun migrate(db: SupportSQLiteDatabase) {
-                db.execSQL("ALTER TABLE alarms ADD COLUMN challengeType TEXT NOT NULL DEFAULT 'Matemàtiques'")
+                db.execSQL("ALTER TABLE alarms ADD COLUMN repeatType TEXT NOT NULL DEFAULT 'Diàriament'")
             }
         }
     }

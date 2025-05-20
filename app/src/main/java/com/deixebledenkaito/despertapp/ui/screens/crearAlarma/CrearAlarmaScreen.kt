@@ -16,8 +16,10 @@ import androidx.compose.foundation.layout.height
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ArrowForwardIos
@@ -36,6 +38,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 
 import androidx.compose.runtime.getValue
 
@@ -82,7 +85,8 @@ fun CrearAlarmaScreen(
     var alarmSoundName by remember { mutableStateOf("So per defecte") }
     var showSoundSelector by remember { mutableStateOf(false) }
 
-
+    var repeatType by remember { mutableStateOf("Personalitzat") }
+    val repeatOptions = listOf("Una vegada", "Diàriament", "Personalitzat", "Dl a Dv")
     val days = listOf("Dl", "Dt", "Dc", "Dj", "Dv", "Ds", "Dg")
     val testModels = listOf("Bàsic", "Avançat", "Expert")
 
@@ -90,6 +94,15 @@ fun CrearAlarmaScreen(
     val challengeTypes = listOf("Matemàtiques", "Cultura Catalana", "Anime")
 
     var colorTextButtom = Color(0xF7676161)
+
+    // Actualitzem els dies seleccionats quan canvia el tipus de repetició
+    LaunchedEffect(repeatType) {
+        selectedDays = when (repeatType) {
+            "Dl a Dv" -> listOf(1, 2, 3, 4, 5) // Dl(1) a Dv(5)
+            "Diàriament" -> listOf(1, 2, 3, 4, 5,6,7) //
+            else -> selectedDays // Mantenim la selecció actual per altres opcions
+        }
+    }
 
     if (showSoundSelector) {
         SelectSoundScreen(
@@ -105,6 +118,7 @@ fun CrearAlarmaScreen(
     }
     Column(
         modifier = modifier
+            .verticalScroll(rememberScrollState()) // <-- Afegim scroll vertical
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
@@ -113,30 +127,9 @@ fun CrearAlarmaScreen(
                     endY = Float.POSITIVE_INFINITY
                 )
             )
-            .padding(horizontal = 24.dp),
+            .padding(horizontal = 24.dp, vertical = 50.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
-        // Capçalera amb títol i botó de tancar
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-
-            IconButton(
-                onClick = onCancel,
-                modifier = Modifier
-                    .size(40.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = "Tancar",
-                    tint = Color.White,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-        }
 
         // Nom de l'alarma (opcional)
         OutlinedTextField(
@@ -202,7 +195,20 @@ fun CrearAlarmaScreen(
                 )
             }
         }
+        // Afegim el nou selector de repetició
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(
+                text = "Repetició",
+                style = MaterialTheme.typography.titleMedium.copy(color = Color.White)
+            )
 
+            SegmentedControl(
+                items = repeatOptions,
+                selectedItem = repeatType,
+                onItemSelect = { repeatType = it },
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
         // Dies de la setmana amb xips animats
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(
@@ -210,20 +216,27 @@ fun CrearAlarmaScreen(
                 style = MaterialTheme.typography.titleMedium.copy(color = Color.White)
             )
 
-            Row (
+            Row(
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 days.forEachIndexed { index, day ->
-                    val selected = (index + 1) in selectedDays
+                    val dayNumber = index + 1
+                    val selected = dayNumber in selectedDays
+                    val enabled =
+                        repeatType != "De dilluns a divendres" // Deshabilitem si és "De dilluns a divendres"
+
                     Box(modifier = Modifier.weight(1f)) {
                         AnimacioDiaChip(
                             day = day,
                             selected = selected,
                             onClick = {
-                                selectedDays = if (selected) selectedDays - (index + 1)
-                                else selectedDays + (index + 1)
-                            }
+                                if (enabled) {
+                                    selectedDays = if (selected) selectedDays - dayNumber
+                                    else selectedDays + dayNumber
+                                }
+                            },
+                            enabled = enabled
                         )
                     }
                 }
@@ -259,7 +272,7 @@ fun CrearAlarmaScreen(
         }
 
 
-        if (selectedDays.isNotEmpty()){
+        if (selectedDays.isNotEmpty()) {
             colorTextButtom = Color.Black
 
         }
@@ -304,46 +317,45 @@ fun CrearAlarmaScreen(
                 val newAlarm = AlarmEntity(
                     hour = hour,
                     minute = minute,
-                    daysOfWeek = selectedDays,
+                    daysOfWeek = when (repeatType) {
+                        "Una vegada" -> emptyList() // No calen dies per alarmes d'una sola vegada
+                        "Dl a Dv" -> listOf(1, 2, 3, 4, 5) // Dl a Dv
+                        "Diàriament" -> (1..7).toList() // Tots els dies "Diariament""
+                        else -> selectedDays // Selecció manual per "Diàriament"
+                    },
                     isActive = true,
                     testModel = selectedModel,
-                    name = alarmName, // Afegeix el nom aquí
+                    name = alarmName,
                     alarmSound = alarmSound,
                     alarmSoundName = alarmSoundName,
-                    challengeType = selectedChallenge
+                    challengeType = selectedChallenge,
+                    repeatType = repeatType
                 )
                 onAdd(newAlarm)
-
-
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            enabled = selectedDays.isNotEmpty(),
+            enabled = when (repeatType) {
+                "Una vegada" -> true // Sempre habilitat per alarmes d'una sola vegada
+                else -> selectedDays.isNotEmpty() // Requereix dies seleccionats per altres tipus
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White.copy(alpha = 0.9f),
                 disabledContainerColor = Color.White.copy(alpha = 0.1f)
-
             ),
             shape = RoundedCornerShape(12.dp)
         ) {
-
             Text(
-
                 text = "GUARDAR ALARMA",
                 style = MaterialTheme.typography.labelLarge.copy(
-                    color = colorTextButtom,
-
+                    color = if (selectedDays.isNotEmpty() || repeatType == "Una vegada") Color.Black else colorTextButtom,
                     fontWeight = FontWeight.Bold
-                ),
-
-
+                )
             )
         }
-        Spacer(modifier = Modifier.height(10.dp))
     }
+
 }
-
-
 
 
