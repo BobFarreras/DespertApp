@@ -1,4 +1,6 @@
-package com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge
+package com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.matematiques
+
+import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.ChallengeQuestion
 
 // MathChallengeGenerator.kt
 object MathChallengeGenerator {

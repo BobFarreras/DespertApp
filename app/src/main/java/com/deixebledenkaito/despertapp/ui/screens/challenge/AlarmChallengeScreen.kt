@@ -1,6 +1,14 @@
 package com.deixebledenkaito.despertapp.ui.screens.challenge
 
 
+import android.os.Handler
+import android.os.Looper
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,6 +21,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,7 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.ChallengeQuestion
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
-
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -34,6 +49,17 @@ fun AlarmChallengeScreen(
     question: ChallengeQuestion,
     onCorrect: () -> Unit
 ) {
+
+    val coroutineScope = rememberCoroutineScope()
+    val answerStates = remember { mutableStateMapOf<String, AnswerState>() }
+
+
+
+    // Inicialitza estats
+    question.options.forEach { option ->
+        answerStates.putIfAbsent(option, AnswerState())
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -58,24 +84,50 @@ fun AlarmChallengeScreen(
         )
 
         question.options.forEach { option ->
+            val state = answerStates[option] ?: AnswerState()
+
+            val backgroundColor by animateColorAsState(
+                targetValue = when {
+                    state.isCorrect -> Color(0xFF4CAF50)
+                    state.isWrong -> Color.Red
+                    else -> Color.White.copy(alpha = 0.1f)
+                },
+                animationSpec = tween(durationMillis = 300),
+                label = "buttonColor"
+            )
+
             Button(
                 onClick = {
+                    if (state.isCorrect || answerStates.any { it.value.isCorrect }) return@Button
+
                     if (option == question.correctAnswer) {
-                        onCorrect()
+                        answerStates[option]?.isCorrect = true
+                        coroutineScope.launch {
+                            delay(1000)
+                            onCorrect()
+                        }
+                    } else {
+                        answerStates[option]?.isWrong = true
+                        coroutineScope.launch {
+                            delay(700)
+                            answerStates[option]?.isWrong = false
+                        }
                     }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 16.dp),
-                colors = ButtonDefaults.buttonColors(Color.White.copy(alpha = 0.1f))
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor)
             ) {
-                Text(
-                    text = option,
-                    style = TextStyle(fontSize = 24.sp),
-                    color = Color.White,
-                    modifier = Modifier.padding(6.dp)
-                )
+                val buttonText = if (state.isCorrect) "Correcte!" else option
+                Text(buttonText, fontSize = 24.sp, color = Color.White)
             }
         }
     }
+}
+
+
+class AnswerState {
+    var isCorrect by mutableStateOf(false)
+    var isWrong by mutableStateOf(false)
 }

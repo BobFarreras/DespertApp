@@ -1,4 +1,4 @@
-package com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge
+package com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.cultura
 
 import android.content.Context
 import com.deixebledenkaito.despertapp.R

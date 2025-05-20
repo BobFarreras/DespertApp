@@ -87,7 +87,7 @@ fun CrearAlarmaScreen(
     val testModels = listOf("Bàsic", "Avançat", "Expert")
 
     var selectedChallenge by remember { mutableStateOf("Matemàtiques") }
-    val challengeTypes = listOf("Matemàtiques", "Cultura Catalana")
+    val challengeTypes = listOf("Matemàtiques", "Cultura Catalana", "Anime")
 
     var colorTextButtom = Color(0xF7676161)
 

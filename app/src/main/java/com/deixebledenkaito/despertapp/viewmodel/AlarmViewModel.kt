@@ -7,6 +7,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.deixebledenkaito.despertapp.data.AlarmEntity
@@ -14,6 +16,8 @@ import com.deixebledenkaito.despertapp.receiver.AlarmReceiver
 import com.deixebledenkaito.despertapp.repositroy.AlarmRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 
@@ -28,6 +32,9 @@ class AlarmViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
     val alarms: StateFlow<List<AlarmEntity>> = repository.allAlarms
         .stateIn(
             viewModelScope,
@@ -35,12 +42,16 @@ class AlarmViewModel @Inject constructor(
             emptyList()
         )
 
+
     init {
         viewModelScope.launch {
-            alarms.collect { currentAlarms ->
+            delay(500) // ← espera un mínim perquè el loader es vegi
+            repository.allAlarms.collect { currentAlarms ->
                 Log.d("AlarmViewModel", "Alarmes actualitzades: ${currentAlarms.size} alarmes")
+                _isLoading.value = false
             }
         }
+
     }
 
     // Funció unificada per afegir/actualitzar alarmes
