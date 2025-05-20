@@ -18,7 +18,7 @@ fun formatarDuracio(duration: Duration): String {
     val diesFinals = if (hores > 0 || minuts > 0) dies + 1 else dies
 
     return buildString {
-        if (dies > 0) append("$dies d, ")
+        if (dies > 0) append("$diesFinals d, ")
         if (hores > 0 || dies > 0) append("$hores h, ")
         append("$minuts min")
     }

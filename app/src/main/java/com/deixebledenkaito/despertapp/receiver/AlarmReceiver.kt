@@ -61,13 +61,15 @@ class AlarmReceiver : BroadcastReceiver() {
 
         // Si l'alarma és recurrent, reprogramem-la amb WorkManager; sinó, la desactivem
         if (repeatType != "Una vegada") {
-            val workRequest = OneTimeWorkRequestBuilder<AlarmRescheduleWorker>()
-                .setInitialDelay(1, TimeUnit.MINUTES) // Esperar 1 minut per reprogramar
-                .build()
-
-            WorkManager.getInstance(context).enqueue(workRequest)
-            Log.d("AlarmReceiver", "Alarma recurrent. Es reprogramarà amb WorkManager.")
-
+            CoroutineScope(Dispatchers.IO).launch {
+                val repo = AlarmRepository(AlarmDatabase.getDatabase(context).alarmDao())
+                val alarm = repo.getAlarmById(alarmId)
+                alarm?.let {
+                    Log.d("AlarmReceiver", "Reprogramant alarma recurrent ID: $alarmId")
+                    val viewModel = AlarmViewModel(repo, context.applicationContext)
+                    viewModel.scheduleAlarm(it)
+                }
+            }
         } else{
             // Desactivem l'alarma "Una vegada"
             val repo = AlarmRepository(AlarmDatabase.getDatabase(context).alarmDao())

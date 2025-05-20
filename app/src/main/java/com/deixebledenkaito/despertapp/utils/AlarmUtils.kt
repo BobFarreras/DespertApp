@@ -8,6 +8,9 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.PowerManager
 import com.deixebledenkaito.despertapp.R
+import com.deixebledenkaito.despertapp.data.AlarmEntity
+import java.time.Duration
+import java.util.Calendar
 
 object AlarmUtils {
 
@@ -22,11 +25,11 @@ object AlarmUtils {
         val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM)
 
         //AIXÒ ET RETORNA EL VOLUM DEL MOVIL
-        val adjustedVolume = volume.coerceIn(0, maxVolume)
+//        val adjustedVolume = volume.coerceIn(0, maxVolume)
 
         audioManager.setStreamVolume(
             AudioManager.STREAM_ALARM,
-            100, //AMB 0 NO MOSTRA LA BARRA DEL VOLUM
+            1, // VOLUM DE L'ALARMA
             0 // <-- Aquesta línia evita mostrar la barra de volum
         )
 
@@ -63,4 +66,6 @@ object AlarmUtils {
             }
         }
     }
+
+    
 }

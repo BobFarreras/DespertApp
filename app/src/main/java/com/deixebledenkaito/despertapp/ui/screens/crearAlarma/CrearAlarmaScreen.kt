@@ -172,7 +172,7 @@ fun CrearAlarmaScreen(
                 RodaTempsPicker(
                     value = hour,
                     onValueChange = { hour = it },
-                    range = 0..24,
+                    range = 0..23,
                     modifier = Modifier.weight(1f)
                 )
 
@@ -186,7 +186,7 @@ fun CrearAlarmaScreen(
                 RodaTempsPicker(
                     value = minute,
                     onValueChange = { minute = it },
-                    range = 0..60,
+                    range = 0..59,
                     modifier = Modifier.weight(1f)
                 )
 

@@ -16,6 +16,6 @@ data class AlarmEntity(
     val alarmSound: String = "default", // Nou camp per identificar el so
     val alarmSoundName: String = "So per defecte", // Nom amigable per mostrar a la UI
     val challengeType: String = "Matemàtiques", // Nou camp
-    val repeatType: String = "Diàriament" // Nou camp: "Una vegada", "Diàriament", "De dilluns a divendres"
+    val repeatType: String = "Diàriament" // Nou camp: "Una vegada", "Diàriament", "Dl a Dv"
 
 )
