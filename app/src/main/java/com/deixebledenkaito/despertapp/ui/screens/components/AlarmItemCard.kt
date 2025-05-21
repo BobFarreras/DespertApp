@@ -169,25 +169,7 @@ fun AlarmItemCard(
 
 
                     ) {
-                        DropdownMenuItem(
-                            text = {
-                                // So de l'alarma
-                                Text(
-                                    text = alarm.repeatType,
-                                    style = MaterialTheme.typography.bodyMedium.copy(
-                                        color = Color.White.copy(alpha = 0.85f)
-                                    )
-                                )
-                            },
-                            onClick = {},
-                            leadingIcon = {
-                                Icon(
-                                    Icons.Default.Replay,
-                                    contentDescription = null,
-                                    tint = Color.White.copy(alpha = 0.85f)
-                                )
-                            }
-                        )
+
                         DropdownMenuItem(
                             text = {
                                 // So de l'alarma

@@ -33,10 +33,11 @@ class AlarmViewModel @Inject constructor(
     private val repository: AlarmRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
-
+    // Estat de càrrega
     private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading
 
+    // Llista d'alarmes com a StateFlow
     val alarms: StateFlow<List<AlarmEntity>> = repository.allAlarms
         .stateIn(
             viewModelScope,
@@ -46,6 +47,7 @@ class AlarmViewModel @Inject constructor(
 
 
     init {
+        // Inicialitza la càrrega de dades
         viewModelScope.launch {
             delay(500) // ← espera un mínim perquè el loader es vegi
             repository.allAlarms.collect { currentAlarms ->
@@ -118,7 +120,7 @@ class AlarmViewModel @Inject constructor(
             putExtra("CHALLENGE_TYPE", alarm.challengeType)
             putExtra("TEST_MODEL", alarm.testModel)
             putExtra("ALARM_SOUND", alarm.alarmSound)
-            putExtra("REPEAT_TYPE", alarm.repeatType)
+
             // Afegim flags addicionals per a millorar la fiabilitat
             addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
         }
@@ -138,7 +140,7 @@ class AlarmViewModel @Inject constructor(
         )
 
         val calendar = calculateNextAlarmTime(alarm)
-
+        Log.d("AlarmViewModel", "Alarma ${alarm.id} programada per ${calendar.time}")
         // Configuració per a versions modernes d'Android
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             if (alarmManager.canScheduleExactAlarms()) {
@@ -179,17 +181,7 @@ class AlarmViewModel @Inject constructor(
             }
         }
 
-        // Ajust per a dies específics
-        if (alarm.repeatType == "Dl a Dv") {
-            while (true) {
-                val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-                if (dayOfWeek == Calendar.SATURDAY || dayOfWeek == Calendar.SUNDAY) {
-                    calendar.add(Calendar.DAY_OF_YEAR, 1)
-                } else {
-                    break
-                }
-            }
-        }
+
 
         return calendar
     }

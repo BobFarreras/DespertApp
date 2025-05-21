@@ -39,7 +39,7 @@ class AlarmChallengeActivity : ComponentActivity() {
         CulturaChallengeGenerator.init(applicationContext)
         AnimeChallengeGenerator.init(applicationContext)
 
-        // Obtenir el so de l'intent
+        // 1. Configurar so i wake lock
         val alarmSound = intent.getStringExtra("ALARM_SOUND") ?: "default"
         // Configurar el mediaPlayer amb el so correcte
         mediaPlayer = AlarmUtils.playAlarmSound(this, volume, alarmSound)
@@ -61,9 +61,10 @@ class AlarmChallengeActivity : ComponentActivity() {
             "Anime" -> AnimeChallengeGenerator.generate(testModel)
             else -> MathChallengeGenerator.generate(testModel)
         }
+
+        // 4. Mostrar pantalla de repte
         setContent {
             DespertAppTheme {
-
                 val answerIsCorrect by remember { mutableStateOf<Boolean?>(null) }
 
                 LaunchedEffect(answerIsCorrect) {

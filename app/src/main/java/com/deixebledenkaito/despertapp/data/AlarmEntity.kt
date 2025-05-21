@@ -6,16 +6,15 @@ import androidx.room.PrimaryKey
 // AlarmEntity.kt
 @Entity(tableName = "alarms")
 data class AlarmEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0, // ID autogenerat per cada alarma
-    val hour: Int, // Hora de l'alarma
-    val minute: Int, // Minut de l'alarma
-    val daysOfWeek: List<Int>, // Dies de la setmana (1 = Dll, ..., 7 = Dg)
-    val isActive: Boolean ,// Si l'alarma està activa o no
-    val testModel: String = "Bàsic", // Nuevo campo para el modelo de prueba
-    val name: String = "", // NOm de l'alarma
-    val alarmSound: String = "default", // Nou camp per identificar el so
-    val alarmSoundName: String = "So per defecte", // Nom amigable per mostrar a la UI
-    val challengeType: String = "Matemàtiques", // Nou camp
-    val repeatType: String = "Diàriament" // Nou camp: "Una vegada", "Diàriament", "Dl a Dv"
-
+    @PrimaryKey(autoGenerate = true) val id: Int = 0, // ID autogenerat
+    val hour: Int, // Hora de l'alarma (0-23)
+    val minute: Int, // Minut de l'alarma (0-59)
+    val daysOfWeek: List<Int>, // Dies activats (1=Dilluns, 7=Diumenge)
+    val isActive: Boolean, // Estat d'activació
+    val testModel: String = "Bàsic", // Dificultat del repte
+    val name: String = "", // Nom descriptiu
+    val alarmSound: String = "default", // ID del so
+    val alarmSoundName: String = "So per defecte", // Nom del so
+    val challengeType: String = "Matemàtiques", // Tipus de repte
+    val isRecurring: Boolean = true
 )

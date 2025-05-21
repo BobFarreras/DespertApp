@@ -18,7 +18,10 @@ import com.deixebledenkaito.despertapp.ui.screens.challenge.AlarmChallengeActivi
 import com.deixebledenkaito.despertapp.viewmodel.AlarmViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
@@ -31,9 +34,8 @@ class AlarmReceiver : BroadcastReceiver() {
         val testModel = intent.getStringExtra("TEST_MODEL") ?: "Bàsic"
         val alarmSound = intent.getStringExtra("ALARM_SOUND") ?: "default"
         val challengeType = intent.getStringExtra("CHALLENGE_TYPE") ?: "Matemàtiques"
-        val repeatType = intent.getStringExtra("REPEAT_TYPE") ?: "Diàriament"
 
-        Log.d("AlarmReceiver", "Alarma rebuda. ID: $alarmId, Repte: $challengeType, So: $alarmSound, Repetició: $repeatType")
+        Log.d("AlarmReceiver", "Alarma rebuda. ID: $alarmId, Repte: $challengeType, So: $alarmSound")
 
         // Iniciar servei en primer pla
         val serviceIntent = Intent(context, AlarmService::class.java).apply {
@@ -54,33 +56,63 @@ class AlarmReceiver : BroadcastReceiver() {
             putExtra("ALARM_SOUND", alarmSound)
             putExtra("TEST_MODEL", testModel)
             putExtra("CHALLENGE_TYPE", challengeType)
-            putExtra("REPEAT_TYPE", repeatType)
+
 
         }
         context.startActivity(challengeIntent)
 
-        // Si l'alarma és recurrent, reprogramem-la amb WorkManager; sinó, la desactivem
-        if (repeatType != "Una vegada") {
-            CoroutineScope(Dispatchers.IO).launch {
+        // Utilitzem un scope amb SupervisorJob per gestionar errors
+        CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
+            try {
                 val repo = AlarmRepository(AlarmDatabase.getDatabase(context).alarmDao())
                 val alarm = repo.getAlarmById(alarmId)
-                alarm?.let {
-                    Log.d("AlarmReceiver", "Reprogramant alarma recurrent ID: $alarmId")
-                    val viewModel = AlarmViewModel(repo, context.applicationContext)
-                    viewModel.scheduleAlarm(it)
-                }
-            }
-        } else{
-            // Desactivem l'alarma "Una vegada"
-            val repo = AlarmRepository(AlarmDatabase.getDatabase(context).alarmDao())
-            CoroutineScope(Dispatchers.IO).launch {
-                val alarm = repo.getAlarmById(alarmId)
-                alarm?.let {
-                    repo.insert(it.copy(isActive = false))
-                    Log.d("AlarmReceiver", "Alarma 'Una vegada' desactivada.")
 
+                alarm?.let {
+                    if (it.isRecurring) {
+                        Log.d("AlarmReceiver", "Reprogramant alarma recurrent ID: $alarmId")
+                        val viewModel = AlarmViewModel(repo, context.applicationContext)
+                        // Calculem la propera activació abans de reprogramar
+                        val nextTriggerTime = calculateNextTriggerTime(it)
+                        val updatedAlarm = it.copy(
+                            hour = nextTriggerTime.hour,
+                            minute = nextTriggerTime.minute
+                        )
+                        repo.update(updatedAlarm)
+                        viewModel.scheduleAlarm(updatedAlarm)
+                    } else {
+                        // Desactivem l'alarma d'una sola vegada
+                        repo.update(it.copy(isActive = false))
+                        Log.d("AlarmReceiver", "Alarma 'Una vegada' desactivada correctament.")
+                    }
                 }
+            } catch (e: Exception) {
+                Log.e("AlarmReceiver", "Error en gestionar l'alarma", e)
             }
         }
+    }
+
+}
+
+private fun calculateNextTriggerTime(alarm: AlarmEntity): LocalTime {
+    return if (alarm.isRecurring && alarm.daysOfWeek.isNotEmpty()) {
+        // Per alarmes setmanals, calculem el proper dia
+        val now = LocalDateTime.now()
+        val currentDayOfWeek = now.dayOfWeek.value % 7 // Convertim a 1-7 (Dilluns-Diumenge)
+
+        val nextDay = alarm.daysOfWeek
+            .sorted()
+            .firstOrNull { it > currentDayOfWeek }
+            ?: alarm.daysOfWeek.first() // Si no n'hi ha, agafem el primer de la setmana següent
+
+        val daysToAdd = if (nextDay > currentDayOfWeek) {
+            nextDay - currentDayOfWeek
+        } else {
+            7 - (currentDayOfWeek - nextDay)
+        }
+
+        now.plusDays(daysToAdd.toLong()).toLocalTime()
+    } else {
+        // Per alarmes diàries, simplement afegim 24 hores
+        LocalTime.of(alarm.hour, alarm.minute).plusHours(24)
     }
 }

@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,13 +22,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
-import androidx.compose.material.icons.filled.ArrowForwardIos
-import androidx.compose.material.icons.filled.Close
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+
 import androidx.compose.material3.MaterialTheme
 
 import androidx.compose.material3.OutlinedButton
@@ -101,12 +99,13 @@ fun CrearAlarmaScreen(
     // Actualitzem els dies seleccionats quan canvia el tipus de repetició
     LaunchedEffect(repeatType) {
         selectedDays = when (repeatType) {
-            "Dl a Dv" -> listOf(1, 2, 3, 4, 5) // Dl(1) a Dv(5)
-            "Diàriament" -> listOf(1, 2, 3, 4, 5,6,7) //
-            else -> selectedDays // Mantenim la selecció actual per altres opcions
+            "Dl a Dv" -> (1..5).toList()
+            "Diàriament" -> (1..7).toList()
+            "Una vegada" -> emptyList()
+            "Personalitzat" -> emptyList()
+            else -> selectedDays
         }
     }
-
     if (showSoundSelector) {
         SelectSoundScreen(
             onSoundSelected = { soundId, soundName ->
@@ -226,8 +225,7 @@ fun CrearAlarmaScreen(
                 days.forEachIndexed { index, day ->
                     val dayNumber = index + 1
                     val selected = dayNumber in selectedDays
-                    val enabled =
-                        repeatType != "De dilluns a divendres" // Deshabilitem si és "De dilluns a divendres"
+                    val enabled = repeatType != "Dl a Dv" // Deshabilitem si és "De dilluns a divendres"
 
                     Box(modifier = Modifier.weight(1f)) {
                         AnimacioDiaChip(
@@ -321,7 +319,7 @@ fun CrearAlarmaScreen(
                     hour = hour,
                     minute = minute,
                     daysOfWeek = when (repeatType) {
-                        "Una vegada" -> emptyList() // No calen dies per alarmes d'una sola vegada
+                        "Una vegada" -> selectedDays
                         "Dl a Dv" -> listOf(1, 2, 3, 4, 5) // Dl a Dv
                         "Diàriament" -> (1..7).toList() // Tots els dies "Diariament""
                         else -> selectedDays // Selecció manual per "Diàriament"
@@ -332,17 +330,16 @@ fun CrearAlarmaScreen(
                     alarmSound = alarmSound,
                     alarmSoundName = alarmSoundName,
                     challengeType = selectedChallenge,
-                    repeatType = repeatType
+                    isRecurring = repeatType != "Una vegada",
+
                 )
                 onAdd(newAlarm)
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            enabled = when (repeatType) {
-                "Una vegada" -> true // Sempre habilitat per alarmes d'una sola vegada
-                else -> selectedDays.isNotEmpty() // Requereix dies seleccionats per altres tipus
-            },
+            enabled = selectedDays.isNotEmpty(), // Requereix dies seleccionats
+
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White.copy(alpha = 0.9f),
                 disabledContainerColor = Color.White.copy(alpha = 0.1f)

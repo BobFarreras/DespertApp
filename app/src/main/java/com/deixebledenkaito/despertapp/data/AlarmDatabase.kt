@@ -19,7 +19,7 @@ abstract class AlarmDatabase : RoomDatabase() {
     companion object {
         @Volatile
         private var INSTANCE: AlarmDatabase? = null
-
+        // Patró Singleton per a la instància de la base de dades
         fun getDatabase(context: Context): AlarmDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
