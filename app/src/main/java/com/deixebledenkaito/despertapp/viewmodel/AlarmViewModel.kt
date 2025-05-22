@@ -11,6 +11,7 @@ import android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.deixebledenkaito.despertapp.data.AlarmEntity
@@ -22,6 +23,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -36,6 +38,7 @@ class AlarmViewModel @Inject constructor(
     // Estat de càrrega
     private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading
+
     private val alarmScheduler = AlarmScheduler(context)
 
     // Llista d'alarmes com a StateFlow
@@ -47,26 +50,35 @@ class AlarmViewModel @Inject constructor(
         )
 
     init {
+        observeAlarms()
+    }
+
+    private fun observeAlarms() {
         viewModelScope.launch {
-            repository.allAlarms.collect { currentAlarms ->
-                _isLoading.value = false
-                // Només reprogramem alarmes quan realment cal (inicialització o canvis rellevants)
-                if (currentAlarms != alarms.value) {
-                    currentAlarms.filter { it.isActive }.forEach { alarm ->
+            repository.allAlarms.collectLatest { currentAlarms ->
+
+                // Evitem reprogramar si no hi ha canvis reals
+                currentAlarms.forEach { alarm ->
+                    if (alarm.isActive) {
                         Log.d("AlarmViewModel", "Reprogramant alarma ID: ${alarm.id}")
                         alarmScheduler.schedule(alarm)
+                    } else {
+                        cancelAlarm(alarm.id)
                     }
                 }
             }
+
         }
+        _isLoading.value = false
     }
+
 
 
     // Funció unificada per afegir/actualitzar alarmes
     private suspend fun upsertAlarm(alarm: AlarmEntity) {
         repository.insert(alarm)
         if (alarm.isActive) {
-            alarmScheduler.schedule(alarm)
+//            alarmScheduler.schedule(alarm)
         } else {
             Log.d("AlarmViewModel", "  private suspend fun upsertAlarm(alarm: AlarmEntity) nose que em de fer")
 
@@ -99,31 +111,20 @@ class AlarmViewModel @Inject constructor(
 
     // Cancel·lar alarma al sistema
     private fun cancelAlarm(alarmId: Int) {
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(context, AlarmReceiver::class.java)
+        val intent = Intent(context, AlarmReceiver::class.java).apply {
+            data = "alarm://$alarmId".toUri()
+            action = "action.$alarmId"
+        }
+
         val pendingIntent = PendingIntent.getBroadcast(
             context,
             alarmId,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.cancel(pendingIntent)
         Log.d("AlarmViewModel", "Alarma cancel·lada ID: $alarmId")
     }
 
-    private fun calculateNextAlarmTime(alarm: AlarmEntity): Calendar {
-        val calendar = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, alarm.hour)
-            set(Calendar.MINUTE, alarm.minute)
-            set(Calendar.SECOND, 0)
-            set(Calendar.MILLISECOND, 0)
-
-            // Si l'hora ja ha passat avui, programem per demà
-            if (before(Calendar.getInstance())) {
-                add(Calendar.DAY_OF_YEAR, 1)
-            }
-        }
-        return calendar
-    }
 }

@@ -86,7 +86,8 @@ class AlarmChallengeActivity : ComponentActivity() {
         // Aturar recursos
         mediaPlayer.stop()
         mediaPlayer.release()
-        wakeLock.release()
+        if (wakeLock.isHeld) wakeLock.release() // ✅ Comprovació abans de fer release()
+
 
 
         // Si venim de pantalla bloquejada, tornar al bloqueig
@@ -97,15 +98,15 @@ class AlarmChallengeActivity : ComponentActivity() {
         }
 
 
-            finish()
+        finish()
 
     }
 
 
-    @SuppressLint("Wakelock")
+    @SuppressLint("Wakelock", "ImplicitSamInstance")
     override fun onDestroy() {
         mediaPlayer.release()
-        wakeLock.release()
+        if (wakeLock.isHeld) wakeLock.release() // ✅ Comprovació aquí també
         stopService(Intent(this, AlarmService::class.java))
         super.onDestroy()
     }
