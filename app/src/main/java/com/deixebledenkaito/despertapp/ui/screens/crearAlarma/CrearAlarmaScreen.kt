@@ -331,6 +331,7 @@ fun CrearAlarmaScreen(
                     alarmSoundName = alarmSoundName,
                     challengeType = selectedChallenge,
                     isRecurring = repeatType != "Una vegada",
+                    repeticioDays = repeatType
 
                 )
                 onAdd(newAlarm)

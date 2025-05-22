@@ -2,7 +2,6 @@ package com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.anim
 
 import android.content.Context
 import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.ChallengeQuestion
-import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.cultura.loadCulturaQuestions
 
 object AnimeChallengeGenerator{
 

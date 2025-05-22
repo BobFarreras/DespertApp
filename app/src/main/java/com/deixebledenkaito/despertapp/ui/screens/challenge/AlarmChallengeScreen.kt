@@ -2,6 +2,7 @@ package com.deixebledenkaito.despertapp.ui.screens.challenge
 
 
 
+import android.util.Log
 import androidx.compose.animation.animateColorAsState
 
 import androidx.compose.animation.core.tween
@@ -48,11 +49,16 @@ fun AlarmChallengeScreen(
 
     val coroutineScope = rememberCoroutineScope()
     val answerStates = remember { mutableStateMapOf<String, AnswerState>() }
-
+    Log.d("AlarmChallengeScreen", "Shuffled options: ${question.options}")
+    // Es barreja només un cop
+    val shuffledOptions = remember(question) {
+        question.options.shuffled()
+    }
+    Log.d("AlarmChallengeScreen", "Shuffled options shuffled: $shuffledOptions")
 
 
     // Inicialitza estats
-    question.options.forEach { option ->
+    shuffledOptions.forEach{ option ->
         answerStates.putIfAbsent(option, AnswerState())
     }
 
@@ -79,7 +85,7 @@ fun AlarmChallengeScreen(
             textAlign = TextAlign.Center
         )
 
-        question.options.forEach { option ->
+        shuffledOptions.forEach { option ->
             val state = answerStates[option] ?: AnswerState()
 
             val backgroundColor by animateColorAsState(

@@ -1,14 +1,20 @@
 package com.deixebledenkaito.despertapp.ui.screens.challenge
 
 import android.annotation.SuppressLint
+import android.app.ActivityManager
 import android.app.admin.DevicePolicyManager
+import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.PowerManager
 import android.util.Log
+import android.view.View
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -62,6 +68,7 @@ class AlarmChallengeActivity : ComponentActivity() {
             else -> MathChallengeGenerator.generate(testModel)
         }
 
+
         // 4. Mostrar pantalla de repte
         setContent {
             DespertAppTheme {
@@ -102,6 +109,44 @@ class AlarmChallengeActivity : ComponentActivity() {
 
     }
 
+//AMAGAR LA BOTTOM BAR DEL MOBIL
+    @Suppress("DEPRECATION")
+    private fun hideSystemUI() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(false)
+            window.insetsController?.let { controller ->
+                controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+                controller.systemBarsBehavior =
+                    WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        } else {
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = (
+                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                            or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            or View.SYSTEM_UI_FLAG_FULLSCREEN
+                    )
+        }
+    }
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            hideSystemUI()
+        }
+    }
+
+    override fun onUserInteraction() {
+        super.onUserInteraction()
+        hideSystemUI()
+    }
+    @SuppressLint("MissingSuperCall")
+    @Deprecated("This method has been deprecated in favor of using the\n      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.\n      The OnBackPressedDispatcher controls how back button events are dispatched\n      to one or more {@link OnBackPressedCallback} objects.")
+    override fun onBackPressed() {
+        // No fem res per bloquejar la sortida amb el botó enrere
+    }
 
     @SuppressLint("Wakelock", "ImplicitSamInstance")
     override fun onDestroy() {
@@ -110,4 +155,5 @@ class AlarmChallengeActivity : ComponentActivity() {
         stopService(Intent(this, AlarmService::class.java))
         super.onDestroy()
     }
+
 }

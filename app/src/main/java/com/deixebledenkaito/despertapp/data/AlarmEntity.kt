@@ -16,5 +16,6 @@ data class AlarmEntity(
     val alarmSound: String = "default", // ID del so
     val alarmSoundName: String = "So per defecte", // Nom del so
     val challengeType: String = "Matemàtiques", // Tipus de repte
-    val isRecurring: Boolean = true
+    val isRecurring: Boolean = true,
+    val repeticioDays: String = "Personalitzat"
 )

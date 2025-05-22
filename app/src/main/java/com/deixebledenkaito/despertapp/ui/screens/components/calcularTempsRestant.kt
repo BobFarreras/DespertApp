@@ -1,5 +1,6 @@
 package com.deixebledenkaito.despertapp.ui.screens.components
 
+import android.util.Log
 import com.deixebledenkaito.despertapp.data.AlarmEntity
 import java.time.Duration
 import java.time.LocalDateTime
@@ -18,6 +19,9 @@ fun calcularTempsRestant(alarm: AlarmEntity): Duration {
 
     // Busquem el següent dia d'activació que sigui avui o després
     var daysUntilNextAlarm = Int.MAX_VALUE
+
+    var foundTodayButAlreadyPassed = false
+
     for (day in alarmDaysSorted) {
         val diff = if (day >= currentDayOfWeek) {
             day - currentDayOfWeek
@@ -32,14 +36,26 @@ fun calcularTempsRestant(alarm: AlarmEntity): Duration {
                 daysUntilNextAlarm = 0
                 break
             } else {
+                // Avui ha passat → marquem-ho, però seguim buscant
+                foundTodayButAlreadyPassed = true
                 // ja ha passat avui, buscar proper dia
                 continue
             }
         } else {
+            // Guardem el mínim
             if (diff < daysUntilNextAlarm) {
                 daysUntilNextAlarm = diff
             }
         }
+
+        Log.d("TempsRestant", "Ara és: $now")
+        Log.d("TempsRestant", "Proper dia: $daysUntilNextAlarm dies")
+        Log.d("TempsRestant", "AlarmTime: ${alarm.hour}:${alarm.minute}")
+
+    }
+    // Si avui era el dia però ja ha passat, i no hem trobat cap altra activació abans → programar per la setmana vinent
+    if (foundTodayButAlreadyPassed && daysUntilNextAlarm == Int.MAX_VALUE) {
+        daysUntilNextAlarm = 7
     }
 
     if (daysUntilNextAlarm == Int.MAX_VALUE) {

@@ -81,6 +81,7 @@ class AlarmReceiver : BroadcastReceiver() {
                         val nextTriggerTime = calculateNextTriggerTime(it)
                         // 2. Crear una còpia de l'alarma amb la nova hora
                         val updatedAlarm = it.copy(
+
                             hour = nextTriggerTime.hour,
                             minute = nextTriggerTime.minute
                         )
