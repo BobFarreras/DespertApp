@@ -11,6 +11,11 @@ import android.os.IBinder
 import android.util.Log
 import com.deixebledenkaito.despertapp.R
 
+//Un Service és una component d’Android que fa feina en segon pla, però sense interfície d’usuari.
+//
+//Pot continuar corrent encara que l’usuari canviï d’aplicació.
+//
+//Un Foreground Service és un servei amb una notificació activa, obligatori a Android 8.0+ si vols que no el matin.
 class AlarmService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -27,8 +32,8 @@ class AlarmService : Service() {
             )
             val manager = getSystemService(NotificationManager::class.java)
             manager.createNotificationChannel(channel)
-            // Construïm una notificació per mostrar durant el servei
 
+            // Construïm una notificació per mostrar durant el servei
             val notification = Notification.Builder(this, "alarm_channel")
                 .setContentTitle("Alarma activa")
                 .setContentText("Resol el repte per aturar l'alarma")
@@ -42,6 +47,8 @@ class AlarmService : Service() {
         }
     }
 
+//    START_STICKY indica que si el servei és matat, Android l’intentarà reiniciar automàticament.
+    //    L’Intent pot contenir dades (tot i que aquí no s’usa).
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         return START_STICKY
     }

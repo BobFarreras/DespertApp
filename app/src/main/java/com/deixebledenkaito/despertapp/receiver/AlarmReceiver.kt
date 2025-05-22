@@ -15,6 +15,7 @@ import com.deixebledenkaito.despertapp.data.AlarmEntity
 import com.deixebledenkaito.despertapp.repositroy.AlarmRepository
 
 import com.deixebledenkaito.despertapp.ui.screens.challenge.AlarmChallengeActivity
+import com.deixebledenkaito.despertapp.viewmodel.AlarmScheduler
 import com.deixebledenkaito.despertapp.viewmodel.AlarmViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,10 +35,13 @@ class AlarmReceiver : BroadcastReceiver() {
         val testModel = intent.getStringExtra("TEST_MODEL") ?: "Bàsic"
         val alarmSound = intent.getStringExtra("ALARM_SOUND") ?: "default"
         val challengeType = intent.getStringExtra("CHALLENGE_TYPE") ?: "Matemàtiques"
+        val alarmaName = intent.getStringExtra("NOM_ALARMA") ?: "No te nom"
 
-        Log.d("AlarmReceiver", "Alarma rebuda. ID: $alarmId, Repte: $challengeType, So: $alarmSound")
+        Log.d("AlarmReceiver", "Alarma rebuda. ID: $alarmId, Nom: $alarmaName, Repte: $challengeType, So: $alarmSound")
 
         // Iniciar servei en primer pla
+//        Mantenir l'alarma activa encara que l'app estigui en segon pla.
+//        Mostrar una notificació persistent mentre sona l'alarma (obligatori a Android O+).
         val serviceIntent = Intent(context, AlarmService::class.java).apply {
             putExtra("ALARM_ID", alarmId)
         }
@@ -48,7 +52,8 @@ class AlarmReceiver : BroadcastReceiver() {
             context.startService(serviceIntent)
         }
 
-        // Iniciar activitat del repte
+        // Iniciar activitat del repte L'ACTIVIITY
+//        Això obre la pantalla del repte (matemàtiques, memorització, etc.) que l'usuari ha de completar per aturar l'alarma.
         val challengeIntent = Intent(context, AlarmChallengeActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or
                     Intent.FLAG_ACTIVITY_CLEAR_TASK or
@@ -56,8 +61,6 @@ class AlarmReceiver : BroadcastReceiver() {
             putExtra("ALARM_SOUND", alarmSound)
             putExtra("TEST_MODEL", testModel)
             putExtra("CHALLENGE_TYPE", challengeType)
-
-
         }
         context.startActivity(challengeIntent)
 
@@ -69,16 +72,23 @@ class AlarmReceiver : BroadcastReceiver() {
 
                 alarm?.let {
                     if (it.isRecurring) {
-                        Log.d("AlarmReceiver", "Reprogramant alarma recurrent ID: $alarmId")
-                        val viewModel = AlarmViewModel(repo, context.applicationContext)
+                        // Obtenim una còpia FRESCA de l'alarma original
+                        val originalAlarm = repo.getAlarmById(alarmId) ?: return@launch
+                        Log.d("AlarmReceiver", "Alarma Original Id: $alarmId, total $originalAlarm")
+                        Log.d("AlarmReceiver", "Reprogramant alarma recurrent ID: $alarmId total $it")
+
                         // Calculem la propera activació abans de reprogramar
                         val nextTriggerTime = calculateNextTriggerTime(it)
+                        // 2. Crear una còpia de l'alarma amb la nova hora
                         val updatedAlarm = it.copy(
                             hour = nextTriggerTime.hour,
                             minute = nextTriggerTime.minute
                         )
+                        // 3. Actualitzar-la a la base de dades
                         repo.update(updatedAlarm)
-                        viewModel.scheduleAlarm(updatedAlarm)
+
+                        // 2. Programem la nova alarma amb AlarmScheduler
+                        AlarmScheduler(context).schedule(updatedAlarm)
                     } else {
                         // Desactivem l'alarma d'una sola vegada
                         repo.update(it.copy(isActive = false))

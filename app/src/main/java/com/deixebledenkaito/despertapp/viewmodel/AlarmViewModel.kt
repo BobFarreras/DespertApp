@@ -36,6 +36,7 @@ class AlarmViewModel @Inject constructor(
     // Estat de càrrega
     private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading
+    private val alarmScheduler = AlarmScheduler(context)
 
     // Llista d'alarmes com a StateFlow
     val alarms: StateFlow<List<AlarmEntity>> = repository.allAlarms
@@ -45,27 +46,30 @@ class AlarmViewModel @Inject constructor(
             emptyList()
         )
 
-
     init {
-        // Inicialitza la càrrega de dades
         viewModelScope.launch {
-            delay(500) // ← espera un mínim perquè el loader es vegi
             repository.allAlarms.collect { currentAlarms ->
-                Log.d("AlarmViewModel", "Alarmes actualitzades: ${currentAlarms.size} alarmes")
                 _isLoading.value = false
+                // Només reprogramem alarmes quan realment cal (inicialització o canvis rellevants)
+                if (currentAlarms != alarms.value) {
+                    currentAlarms.filter { it.isActive }.forEach { alarm ->
+                        Log.d("AlarmViewModel", "Reprogramant alarma ID: ${alarm.id}")
+                        alarmScheduler.schedule(alarm)
+                    }
+                }
             }
         }
-
     }
+
 
     // Funció unificada per afegir/actualitzar alarmes
     private suspend fun upsertAlarm(alarm: AlarmEntity) {
-        Log.d("AlarmViewModel", "Actualitzant/afegint alarma ID: ${alarm.id}")
         repository.insert(alarm)
         if (alarm.isActive) {
-            scheduleAlarm(alarm)
+            alarmScheduler.schedule(alarm)
         } else {
-            cancelAlarm(alarm.id)
+            Log.d("AlarmViewModel", "  private suspend fun upsertAlarm(alarm: AlarmEntity) nose que em de fer")
+
         }
     }
 
@@ -86,7 +90,7 @@ class AlarmViewModel @Inject constructor(
         }
     }
 
-    // Funció unificada per canviar estat
+    // Funció unificada per ativar desactivar alarma
     fun toggleAlarmActive(alarm: AlarmEntity, isActive: Boolean) {
         viewModelScope.launch {
             upsertAlarm(alarm.copy(isActive = isActive))
@@ -107,66 +111,6 @@ class AlarmViewModel @Inject constructor(
         Log.d("AlarmViewModel", "Alarma cancel·lada ID: $alarmId")
     }
 
-    @SuppressLint("ScheduleExactAlarm")
-    fun scheduleAlarm(alarm: AlarmEntity) {
-        if (!alarm.isActive) {
-            Log.d("AlarmViewModel", "Alarma ${alarm.id} desactivada, no es programa.")
-            return
-        }
-
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(context, AlarmReceiver::class.java).apply {
-            putExtra("ALARM_ID", alarm.id)
-            putExtra("CHALLENGE_TYPE", alarm.challengeType)
-            putExtra("TEST_MODEL", alarm.testModel)
-            putExtra("ALARM_SOUND", alarm.alarmSound)
-
-            // Afegim flags addicionals per a millorar la fiabilitat
-            addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
-        }
-
-        // Utilitzem FLAG_IMMUTABLE només per a versions modernes
-        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        } else {
-            PendingIntent.FLAG_UPDATE_CURRENT
-        }
-
-        val pendingIntent = PendingIntent.getBroadcast(
-            context,
-            alarm.id,
-            intent,
-            flags
-        )
-
-        val calendar = calculateNextAlarmTime(alarm)
-        Log.d("AlarmViewModel", "Alarma ${alarm.id} programada per ${calendar.time}")
-        // Configuració per a versions modernes d'Android
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (alarmManager.canScheduleExactAlarms()) {
-                alarmManager.setExactAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP,
-                    calendar.timeInMillis,
-                    pendingIntent
-                )
-            } else {
-                // Sol·licitar permís si no el tenim
-                val intent = Intent(ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                context.startActivity(intent)
-                return
-            }
-        } else {
-            alarmManager.setExactAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP,
-                calendar.timeInMillis,
-                pendingIntent
-            )
-        }
-
-        Log.d("AlarmViewModel", "Alarma programada: ${alarm.id} a ${alarm.hour}:${alarm.minute}")
-    }
-
     private fun calculateNextAlarmTime(alarm: AlarmEntity): Calendar {
         val calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
@@ -180,9 +124,6 @@ class AlarmViewModel @Inject constructor(
                 add(Calendar.DAY_OF_YEAR, 1)
             }
         }
-
-
-
         return calendar
     }
 }

@@ -6,10 +6,12 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.deixebledenkaito.despertapp.data.AlarmDatabase
 import com.deixebledenkaito.despertapp.repositroy.AlarmRepository
+import com.deixebledenkaito.despertapp.viewmodel.AlarmScheduler
 import com.deixebledenkaito.despertapp.viewmodel.AlarmViewModel
 import kotlinx.coroutines.delay
 
 // Crear una classe Worker per a reprogramacions
+//Un Worker (en aquest cas un CoroutineWorker) és una classe usada amb WorkManager per executar tasques en segon pla, de forma fiable i tolerant a reinicis del dispositiu.
 class AlarmRescheduleWorker(
     context: Context,
     params: WorkerParameters
@@ -19,20 +21,17 @@ class AlarmRescheduleWorker(
         return try {
             val repo = AlarmRepository(AlarmDatabase.getDatabase(applicationContext).alarmDao())
             val alarms = repo.getActiveAlarms()
+            val scheduler = AlarmScheduler(applicationContext)
 
-            alarms.forEach { alarm ->
-                // Utilitzem una nova instància del ViewModel
-                val viewModel = AlarmViewModel(repo, applicationContext)
-                viewModel.scheduleAlarm(alarm)
-
-                // Petita pausa per evitar sobrecarrega
+            alarms.forEach {
+                scheduler.schedule(it)
                 delay(100)
             }
 
             Result.success()
         } catch (e: Exception) {
-            Log.e("AlarmRescheduleWorker", "Error en reprogramar alarmes", e)
-            Result.retry() // Reintentar en cas d'error
+            Log.e("AlarmRescheduleWorker", "Error reprogramant", e)
+            Result.retry()
         }
     }
 }
