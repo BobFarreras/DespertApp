@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
+import androidx.compose.material.icons.filled.BarChart
 
 import androidx.compose.material.icons.filled.Settings
 
@@ -34,23 +35,32 @@ fun ButtonsBottomBar(
 
     Box(modifier = modifier){
         Row(
-            modifier = Modifier.align(Alignment.Center).padding(horizontal = 30.dp).padding(bottom = 38.dp),
+            modifier = Modifier.align(Alignment.Center).padding(horizontal = 30.dp).padding(bottom = 16.dp),
 
         ) {
-            IconButton(onClick = onAlarmClick) {
+            IconButton(onClick = onAlarmClick, modifier = Modifier.size(98.dp)) {
                 Icon(
                     imageVector = Icons.Default.Alarm,
                     contentDescription = "Alarm",
-                    modifier = Modifier.size(40.dp).padding(4.dp), // Mida lleugerament reduïda
+                    modifier = Modifier.size(48.dp).padding(6.dp), // Mida lleugerament reduïda
                     tint = if(selectedButtom == "Alarmes") Color.White else Color.White.copy(alpha = 0.4f)
 
                 )
             }
-            IconButton(onClick = onSettingsClick) {
+            IconButton(onClick = onAlarmClick, modifier = Modifier.size(98.dp)) {
+                Icon(
+                    imageVector = Icons.Default.BarChart,
+                    contentDescription = "BarChar",
+                    modifier = Modifier.size(48.dp).padding(6.dp), // Mida lleugerament reduïda
+                    tint = if(selectedButtom == "Estadisitiques") Color.White else Color.White.copy(alpha = 0.4f)
+
+                )
+            }
+            IconButton(onClick = onSettingsClick, modifier = Modifier.size(98.dp)) {
                 Icon(
                     imageVector = Icons.Default.Settings,
                     contentDescription = "Settings",
-                    modifier = Modifier.size(40.dp).padding(4.dp), // Mida lleugerament reduïda
+                    modifier = Modifier.size(48.dp).padding(6.dp), // Mida lleugerament reduïda
                     tint = if(selectedButtom == "Settings") Color.White else Color.White.copy(alpha = 0.4f)
                 )
             }

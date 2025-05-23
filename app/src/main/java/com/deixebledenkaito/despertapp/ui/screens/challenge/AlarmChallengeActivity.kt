@@ -25,6 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.deixebledenkaito.despertapp.receiver.AlarmService
+import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.angles.AnglesChallengeGenerator
 import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.anime.AnimeChallengeGenerator
 import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.cultura.CulturaChallengeGenerator
 import com.deixebledenkaito.despertapp.ui.theme.DespertAppTheme
@@ -44,6 +45,7 @@ class AlarmChallengeActivity : ComponentActivity() {
 
         CulturaChallengeGenerator.init(applicationContext)
         AnimeChallengeGenerator.init(applicationContext)
+        AnglesChallengeGenerator.init(applicationContext)
 
         // 1. Configurar so i wake lock
         val alarmSound = intent.getStringExtra("ALARM_SOUND") ?: "default"
@@ -65,6 +67,7 @@ class AlarmChallengeActivity : ComponentActivity() {
             "Matemàtiques" -> MathChallengeGenerator.generate(testModel)
             "Cultura Catalana" -> CulturaChallengeGenerator.generate(testModel)
             "Anime" -> AnimeChallengeGenerator.generate(testModel)
+            "Angles" -> AnglesChallengeGenerator.generate(testModel)
             else -> MathChallengeGenerator.generate(testModel)
         }
 

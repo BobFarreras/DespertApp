@@ -1,0 +1,308 @@
+{
+  "basic": [
+    {
+      "question": "What’s the opposite of 'happy'?",
+      "options": ["Sad", "Angry", "Tall", "Fast"],
+      "correctAnswer": "Sad"
+    },
+    {
+      "question": "Which word means 'a place to sleep'?",
+      "options": ["Bed", "Chair", "Table", "Lamp"],
+      "correctAnswer": "Bed"
+    },
+    {
+      "question": "What do you call the meal you eat in the morning?",
+      "options": ["Breakfast", "Lunch", "Dinner", "Snack"],
+      "correctAnswer": "Breakfast"
+    },
+    {
+      "question": "Which is correct: 'She ___ a book every week.'?",
+      "options": ["reads", "read", "reading", "to read"],
+      "correctAnswer": "reads"
+    },
+    {
+      "question": "What’s the plural of 'child'?",
+      "options": ["Children", "Childs", "Childes", "Childen"],
+      "correctAnswer": "Children"
+    },
+    {
+      "question": "Which word is a color?",
+      "options": ["Blue", "Dog", "Run", "Apple"],
+      "correctAnswer": "Blue"
+    },
+    {
+      "question": "What’s the past tense of 'go'?",
+      "options": ["Went", "Gone", "Goed", "Going"],
+      "correctAnswer": "Went"
+    },
+    {
+      "question": "Which phrase means 'to clean the floor'?",
+      "options": ["Sweep", "Cook", "Jump", "Sing"],
+      "correctAnswer": "Sweep"
+    },
+    {
+      "question": "What’s the weather like when it’s raining heavily?",
+      "options": ["Pouring", "Sunny", "Windy", "Cold"],
+      "correctAnswer": "Pouring"
+    },
+    {
+      "question": "Which word means 'not expensive'?",
+      "options": ["Cheap", "Rich", "Heavy", "Noisy"],
+      "correctAnswer": "Cheap"
+    },
+    {
+      "question": "What’s the capital of France?",
+      "options": ["Paris", "London", "Berlin", "Madrid"],
+      "correctAnswer": "Paris"
+    },
+    {
+      "question": "Which is a fruit?",
+      "options": ["Banana", "Carrot", "Bread", "Milk"],
+      "correctAnswer": "Banana"
+    },
+    {
+      "question": "What’s the opposite of 'fast'?",
+      "options": ["Slow", "Quick", "Loud", "Bright"],
+      "correctAnswer": "Slow"
+    },
+    {
+      "question": "Which word means 'to say sorry'?",
+      "options": ["Apologize", "Shout", "Laugh", "Run"],
+      "correctAnswer": "Apologize"
+    },
+    {
+      "question": "What’s the correct greeting in the morning?",
+      "options": ["Good morning", "Good night", "Good afternoon", "Goodbye"],
+      "correctAnswer": "Good morning"
+    },
+    {
+      "question": "Which is a vegetable?",
+      "options": ["Tomato", "Apple", "Chicken", "Rice"],
+      "correctAnswer": "Tomato"
+    },
+    {
+      "question": "What’s the past tense of 'eat'?",
+      "options": ["Ate", "Eaten", "Eating", "Eats"],
+      "correctAnswer": "Ate"
+    },
+    {
+      "question": "Which word means 'very big'?",
+      "options": ["Huge", "Tiny", "Slow", "Quiet"],
+      "correctAnswer": "Huge"
+    },
+    {
+      "question": "What’s the opposite of 'hot'?",
+      "options": ["Cold", "Warm", "Spicy", "Sweet"],
+      "correctAnswer": "Cold"
+    },
+    {
+      "question": "Which is a day of the week?",
+      "options": ["Wednesday", "January", "Summer", "Holiday"],
+      "correctAnswer": "Wednesday"
+    }
+  ],
+  "advanced": [
+    {
+      "question": "What’s the meaning of 'procrastinate'?",
+      "options": ["Delay doing something", "Work quickly", "Plan carefully", "Celebrate"],
+      "correctAnswer": "Delay doing something"
+    },
+    {
+      "question": "Which idiom means 'to be very happy'?",
+      "options": ["On cloud nine", "Under the weather", "Hit the books", "Spill the beans"],
+      "correctAnswer": "On cloud nine"
+    },
+    {
+      "question": "What’s the synonym of 'angry'?",
+      "options": ["Furious", "Happy", "Tired", "Hungry"],
+      "correctAnswer": "Furious"
+    },
+    {
+      "question": "Which phrasal verb means 'to cancel'?",
+      "options": ["Call off", "Put on", "Take out", "Go over"],
+      "correctAnswer": "Call off"
+    },
+    {
+      "question": "What’s the correct passive form of: 'They built this house.'?",
+      "options": ["This house was built.", "This house is built.", "This house built.", "This house has built."],
+      "correctAnswer": "This house was built."
+    },
+    {
+      "question": "What does 'barking up the wrong tree' mean?",
+      "options": ["Accusing the wrong person", "Climbing a tree", "Making loud noises", "Planting a tree"],
+      "correctAnswer": "Accusing the wrong person"
+    },
+    {
+      "question": "Which word means 'to make something better'?",
+      "options": ["Improve", "Worsen", "Break", "Ignore"],
+      "correctAnswer": "Improve"
+    },
+    {
+      "question": "What’s the antonym of 'generous'?",
+      "options": ["Selfish", "Kind", "Rich", "Brave"],
+      "correctAnswer": "Selfish"
+    },
+    {
+      "question": "Which is the correct indirect speech for: 'She said, 'I am tired.'?",
+      "options": ["She said she was tired.", "She said she is tired.", "She said she tired.", "She said she had tired."],
+      "correctAnswer": "She said she was tired."
+    },
+    {
+      "question": "What’s the meaning of 'sophisticated'?",
+      "options": ["Elegant and complex", "Simple and cheap", "Rude and loud", "Old and broken"],
+      "correctAnswer": "Elegant and complex"
+    },
+    {
+      "question": "Which phrase means 'to start a journey'?",
+      "options": ["Set off", "Sit down", "Fall apart", "Give up"],
+      "correctAnswer": "Set off"
+    },
+    {
+      "question": "What’s the correct tag question for: 'She can swim, ___?'",
+      "options": ["can’t she", "can she", "doesn’t she", "isn’t she"],
+      "correctAnswer": "can’t she"
+    },
+    {
+      "question": "What does 'the ball is in your court' mean?",
+      "options": ["It’s your turn to decide", "Let’s play tennis", "I’m angry with you", "The ball is lost"],
+      "correctAnswer": "It’s your turn to decide"
+    },
+    {
+      "question": "Which word means 'a person who hates people'?",
+      "options": ["Misanthrope", "Philanthropist", "Optimist", "Pessimist"],
+      "correctAnswer": "Misanthrope"
+    },
+    {
+      "question": "What’s the meaning of 'beyond the pale'?",
+      "options": ["Unacceptable", "Very far", "Colorful", "Expensive"],
+      "correctAnswer": "Unacceptable"
+    },
+    {
+      "question": "Which is the correct conditional: 'If I ___ rich, I would travel.'",
+      "options": ["were", "am", "will be", "have been"],
+      "correctAnswer": "were"
+    },
+    {
+      "question": "What’s the synonym of 'beautiful'?",
+      "options": ["Gorgeous", "Ugly", "Plain", "Strange"],
+      "correctAnswer": "Gorgeous"
+    },
+    {
+      "question": "Which idiom means 'to avoid a topic'?",
+      "options": ["Beat around the bush", "Hit the nail on the head", "Burn the midnight oil", "Let the cat out of the bag"],
+      "correctAnswer": "Beat around the bush"
+    },
+    {
+      "question": "What’s the meaning of 'ephemeral'?",
+      "options": ["Lasting a short time", "Very old", "Extremely loud", "Highly valuable"],
+      "correctAnswer": "Lasting a short time"
+    },
+    {
+      "question": "Which phrasal verb means 'to investigate'?",
+      "options": ["Look into", "Put up", "Take off", "Go away"],
+      "correctAnswer": "Look into"
+    }
+  ],
+  "expert": [
+    {
+      "question": "What’s the meaning of 'defenestration'?",
+      "options": ["Throwing someone out a window", "Building a window", "Cleaning glass", "Breaking a door"],
+      "correctAnswer": "Throwing someone out a window"
+    },
+    {
+      "question": "Which word means 'the fear of long words'?",
+      "options": ["Hippopotomonstrosesquipedaliophobia", "Arachnophobia", "Claustrophobia", "Acrophobia"],
+      "correctAnswer": "Hippopotomonstrosesquipedaliophobia"
+    },
+    {
+      "question": "What’s the term for words that sound alike (e.g., 'there/their')?",
+      "options": ["Homophones", "Synonyms", "Antonyms", "Homonyms"],
+      "correctAnswer": "Homophones"
+    },
+    {
+      "question": "Which literary device is used in: 'The wind whispered through the trees.'?",
+      "options": ["Personification", "Metaphor", "Simile", "Hyperbole"],
+      "correctAnswer": "Personification"
+    },
+    {
+      "question": "What’s the meaning of 'quintessential'?",
+      "options": ["Representing the perfect example", "Very rare", "Extremely large", "Highly dangerous"],
+      "correctAnswer": "Representing the perfect example"
+    },
+    {
+      "question": "Which is the correct subjunctive form: 'I suggest that he ___ on time.'?",
+      "options": ["be", "is", "was", "will be"],
+      "correctAnswer": "be"
+    },
+    {
+      "question": "What’s the term for a word that’s spelled the same backward (e.g., 'madam')?",
+      "options": ["Palindrome", "Anagram", "Acronym", "Oxymoron"],
+      "correctAnswer": "Palindrome"
+    },
+    {
+      "question": "Which idiom means 'to exaggerate'?",
+      "options": ["Make a mountain out of a molehill", "Burn bridges", "Cry over spilled milk", "Jump the gun"],
+      "correctAnswer": "Make a mountain out of a molehill"
+    },
+    {
+      "question": "What’s the meaning of 'sesquipedalian'?",
+      "options": ["Using long words", "Very short", "Extremely fast", "Highly emotional"],
+      "correctAnswer": "Using long words"
+    },
+    {
+      "question": "Which is the rarest English letter?",
+      "options": ["Z", "Q", "X", "J"],
+      "correctAnswer": "Z"
+    },
+    {
+      "question": "What’s the term for a word that contradicts itself (e.g., 'bittersweet')?",
+      "options": ["Oxymoron", "Metonymy", "Euphemism", "Alliteration"],
+      "correctAnswer": "Oxymoron"
+    },
+    {
+      "question": "Which Latin phrase means 'by the fact itself'?",
+      "options": ["Ipso facto", "Carpe diem", "Ad hoc", "In vitro"],
+      "correctAnswer": "Ipso facto"
+    },
+    {
+      "question": "What’s the meaning of 'zeitgeist'?",
+      "options": ["The spirit of the times", "A German car", "A type of art", "A musical note"],
+      "correctAnswer": "The spirit of the times"
+    },
+    {
+      "question": "Which word means 'to remove offensive parts from a text'?",
+      "options": ["Redact", "Plagiarize", "Translate", "Summarize"],
+      "correctAnswer": "Redact"
+    },
+    {
+      "question": "What’s the term for a word borrowed from another language (e.g., 'karaoke')?",
+      "options": ["Loanword", "Neologism", "Portmanteau", "Jargon"],
+      "correctAnswer": "Loanword"
+    },
+    {
+      "question": "Which is the correct plural of 'octopus'?",
+      "options": ["Octopuses", "Octopi", "Octopodes", "All are correct"],
+      "correctAnswer": "All are correct"
+    },
+    {
+      "question": "What’s the meaning of 'antediluvian'?",
+      "options": ["Extremely old", "Related to floods", "Very modern", "Highly intelligent"],
+      "correctAnswer": "Extremely old"
+    },
+    {
+      "question": "Which word means 'the study of word origins'?",
+      "options": ["Etymology", "Entomology", "Ecology", "Epistemology"],
+      "correctAnswer": "Etymology"
+    },
+    {
+      "question": "What’s the term for a sentence with all 26 letters (e.g., 'The quick brown fox...')?",
+      "options": ["Pangram", "Palindrome", "Anagram", "Acrostic"],
+      "correctAnswer": "Pangram"
+    },
+    {
+      "question": "Which is the only English word ending in '-mt'?",
+      "options": ["Dreamt", "Prompt", "Attempt", "Exempt"],
+      "correctAnswer": "Dreamt"
+    }
+  ]
+}

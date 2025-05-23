@@ -104,24 +104,30 @@ class AlarmReceiver : BroadcastReceiver() {
 
 }
 
+
 private fun calculateNextTriggerTime(alarm: AlarmEntity): LocalTime {
     return if (alarm.isRecurring && alarm.daysOfWeek.isNotEmpty()) {
         // Per alarmes setmanals, calculem el proper dia
         val now = LocalDateTime.now()
         val currentDayOfWeek = now.dayOfWeek.value % 7 // Convertim a 1-7 (Dilluns-Diumenge)
+        Log.e("CalcularAlarmReceiver", "now: $now, currentDayOfWeek: $currentDayOfWeek")
 
         val nextDay = alarm.daysOfWeek
             .sorted()
             .firstOrNull { it > currentDayOfWeek }
             ?: alarm.daysOfWeek.first() // Si no n'hi ha, agafem el primer de la setmana següent
 
+        Log.e("CalcularAlarmReceiver", "nextDay: $nextDay")
         val daysToAdd = if (nextDay > currentDayOfWeek) {
             nextDay - currentDayOfWeek
         } else {
             7 - (currentDayOfWeek - nextDay)
+
         }
+        Log.e("CalcularAlarmReceiver", "daysToAdd: $daysToAdd")
 
         now.plusDays(daysToAdd.toLong()).toLocalTime()
+
     } else {
         // Per alarmes diàries, simplement afegim 24 hores
         LocalTime.of(alarm.hour, alarm.minute).plusHours(24)

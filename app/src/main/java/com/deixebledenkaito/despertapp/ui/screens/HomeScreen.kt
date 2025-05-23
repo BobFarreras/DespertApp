@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 
 
 import androidx.compose.runtime.Composable
@@ -22,13 +23,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 
 import androidx.compose.ui.unit.dp
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 
 import com.deixebledenkaito.despertapp.ui.screens.components.AddAlarmFAB
 import com.deixebledenkaito.despertapp.ui.screens.components.AlarmListContent
-import com.deixebledenkaito.despertapp.ui.screens.components.ButtonsBottomBar
+import com.deixebledenkaito.despertapp.ui.screens.components.EmptyAlarmsState
 
 
 import com.deixebledenkaito.despertapp.viewmodel.AlarmViewModel
@@ -39,11 +41,10 @@ import com.deixebledenkaito.despertapp.viewmodel.AlarmViewModel
 fun HomeScreen(
     viewModel: AlarmViewModel,
     onNavigateToAlarmForm: () -> Unit,
-    onNavigateToSettings: () -> Unit,
-    onNavigateToListAlarm: () -> Unit
+
 ) {
 
-    val alarms by viewModel.alarms.collectAsState()
+    val alarms by viewModel.alarms.collectAsState(initial = null)
 
 
     Log.d("HomeScreen", "Renderitzant pantalla principal")
@@ -70,20 +71,29 @@ fun HomeScreen(
                     .weight(1f)
                     .fillMaxWidth()
             ) {
-                AlarmListContent(
-                    alarms = alarms,
-                    viewModel = viewModel,
-                    onNavigateToAlarmForm = onNavigateToAlarmForm
-                )
+                when{
+                    alarms == null -> {
+                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator(color = Color.White)
+                        }
+                    }
+                    alarms!!.isEmpty() -> {
+                        Log.d("AlarmListContent", "Mostrant estat buit")
+                        EmptyAlarmsState(onNavigateToAlarmForm)
+                    }
+                    else -> {
+                        AlarmListContent(
+                            alarms = alarms!!,
+                            viewModel = viewModel,
+
+                        )
+                    }
+                }
+
+
             }
 
-            // Barra inferior de botons
-            ButtonsBottomBar(
-                onSettingsClick = onNavigateToSettings,
-                onAlarmClick = onNavigateToListAlarm,
-                modifier = Modifier.fillMaxWidth(),
-                selectedButtom = "Alarmes",
-            )
+
         }
 
         // Floating Action Button (posicionat absolutament sobre els altres elements)

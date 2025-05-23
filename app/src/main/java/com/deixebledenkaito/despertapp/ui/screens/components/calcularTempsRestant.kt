@@ -11,64 +11,27 @@ import java.time.LocalTime
 fun calcularTempsRestant(alarm: AlarmEntity): Duration {
     val now = LocalDateTime.now()
     val currentDayOfWeek = now.dayOfWeek.value  // 1=Monday ... 7=Sunday
+    val alarmTime = LocalTime.of(alarm.hour, alarm.minute)
 
-    // Els dies de la setmana en alarm.daysOfWeek s'han d'expressar també de 1 a 7 (o adaptar-ho)
-
-    // Trobar el següent dia de l'alarma (pot ser avui)
     val alarmDaysSorted = alarm.daysOfWeek.sorted()
+    Log.d("calcularTempsRestant", "alarmDaysSorted: $alarmDaysSorted")
+    Log.d("calcularTempsRestant", "currentDayOfWeek: $currentDayOfWeek")
+    Log.d("calcularTempsRestant", "alarmTime: $alarmTime")
+    Log.d("calcularTempsRestant", "now: $now")
 
-    // Busquem el següent dia d'activació que sigui avui o després
-    var daysUntilNextAlarm = Int.MAX_VALUE
+    var nextAlarmDateTime: LocalDateTime? = null
 
-    var foundTodayButAlreadyPassed = false
-
-    for (day in alarmDaysSorted) {
-        val diff = if (day >= currentDayOfWeek) {
-            day - currentDayOfWeek
-        } else {
-            7 - (currentDayOfWeek - day)
-        }
-
-        // Si és avui, cal comparar hores i minuts per saber si ja ha passat
-        if (diff == 0) {
-            val alarmTime = LocalTime.of(alarm.hour, alarm.minute)
-            if (now.toLocalTime().isBefore(alarmTime)) {
-                daysUntilNextAlarm = 0
+    for (i in 0 until 7) {
+        val day = (currentDayOfWeek + i - 1) % 7 + 1 // normalitzem entre 1 i 7
+        if (alarmDaysSorted.contains(day)) {
+            val candidateDate = now.toLocalDate().plusDays(i.toLong())
+            val candidateDateTime = LocalDateTime.of(candidateDate, alarmTime)
+            if (candidateDateTime.isAfter(now)) {
+                nextAlarmDateTime = candidateDateTime
                 break
-            } else {
-                // Avui ha passat → marquem-ho, però seguim buscant
-                foundTodayButAlreadyPassed = true
-                // ja ha passat avui, buscar proper dia
-                continue
-            }
-        } else {
-            // Guardem el mínim
-            if (diff < daysUntilNextAlarm) {
-                daysUntilNextAlarm = diff
             }
         }
-
-        Log.d("TempsRestant", "Ara és: $now")
-        Log.d("TempsRestant", "Proper dia: $daysUntilNextAlarm dies")
-        Log.d("TempsRestant", "AlarmTime: ${alarm.hour}:${alarm.minute}")
-
-    }
-    // Si avui era el dia però ja ha passat, i no hem trobat cap altra activació abans → programar per la setmana vinent
-    if (foundTodayButAlreadyPassed && daysUntilNextAlarm == Int.MAX_VALUE) {
-        daysUntilNextAlarm = 7
     }
 
-    if (daysUntilNextAlarm == Int.MAX_VALUE) {
-        // Si no hi ha cap dia activat, retorna 0 o Duration.ZERO
-        return Duration.ZERO
-    }
-
-    val nextAlarmDateTime = now
-        .plusDays(daysUntilNextAlarm.toLong())
-        .withHour(alarm.hour)
-        .withMinute(alarm.minute)
-        .withSecond(0)
-        .withNano(0)
-
-    return Duration.between(now, nextAlarmDateTime)
+    return nextAlarmDateTime?.let { Duration.between(now, it) } ?: Duration.ZERO
 }

@@ -50,10 +50,12 @@ import androidx.compose.ui.Modifier
 
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 
 import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 
 import com.deixebledenkaito.despertapp.data.AlarmEntity
@@ -62,8 +64,11 @@ import com.deixebledenkaito.despertapp.data.AlarmEntity
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components.AnimacioDiaChip
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components.RodaTempsPicker
+import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components.RodetaSeleccioHorizontal
+
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components.SegmentedControl
-import com.deixebledenkaito.despertapp.ui.screens.selectsounds.SelectSoundScreen
+import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.selectChallenge.SelectChallengeScreen
+import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.selectsounds.SelectSoundScreen
 import java.util.Calendar
 
 
@@ -81,21 +86,23 @@ fun CrearAlarmaScreen(
     var selectedModel by remember { mutableStateOf("Bàsic") }
     var alarmName by remember { mutableStateOf("") }
 
-//    SO ALARMA
+    // SO ALARMA
     var alarmSound by remember { mutableStateOf("default") }
     var alarmSoundName by remember { mutableStateOf("So per defecte") }
     var showSoundSelector by remember { mutableStateOf(false) }
 
+    // TIPUS DE REPTE
+    var selectedChallenge by remember { mutableStateOf("Matemàtiques") }
+    var selectedChallengeName by remember { mutableStateOf("Matemàtiques") }
+    var showChallengeSelector by remember { mutableStateOf(false) }
+
     var repeatType by remember { mutableStateOf("Personalitzat") }
-    val repeatOptions = listOf("Una vegada", "Diàriament", "Personalitzat", "Dl a Dv")
+    val repeatOptions = listOf("Una vegada","Personalitzat", "Diàriament", "Dl a Dv")
     val days = listOf("Dl", "Dt", "Dc", "Dj", "Dv", "Ds", "Dg")
     val testModels = listOf("Bàsic", "Avançat", "Expert")
 
-    var selectedChallenge by remember { mutableStateOf("Matemàtiques") }
-    val challengeTypes = listOf("Matemàtiques", "Cultura Catalana", "Anime")
-
     var colorTextButtom = Color(0xF7676161)
-
+    var fontSizeTitols = MaterialTheme.typography.titleSmall.copy(color = Color.White)
     // Actualitzem els dies seleccionats quan canvia el tipus de repetició
     LaunchedEffect(repeatType) {
         selectedDays = when (repeatType) {
@@ -106,6 +113,7 @@ fun CrearAlarmaScreen(
             else -> selectedDays
         }
     }
+
     if (showSoundSelector) {
         SelectSoundScreen(
             onSoundSelected = { soundId, soundName ->
@@ -118,245 +126,289 @@ fun CrearAlarmaScreen(
         )
         return
     }
-    Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState()) // <-- Afegim scroll vertical
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = BackgroundApp(),
-                    startY = 0f,
-                    endY = Float.POSITIVE_INFINITY
-                )
-            )
-            .padding(horizontal = 24.dp, vertical = 50.dp),
-        verticalArrangement = Arrangement.spacedBy(14.dp)
-    ) {
 
-        // Nom de l'alarma (opcional)
-        OutlinedTextField(
-            value = alarmName,
-            onValueChange = { alarmName = it },
-            label = { Text("Nom de l'alarma (opcional)", color = Color.White.copy(alpha = 0.8f)) },
-            modifier = Modifier.fillMaxWidth(),
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color.Transparent,
-                unfocusedContainerColor = Color.Transparent,
-                focusedTextColor = Color.White,
-                unfocusedTextColor = Color.White,
-                focusedLabelColor = Color.White.copy(alpha = 0.8f),
-                unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
-                focusedIndicatorColor = Color.White,
-                unfocusedIndicatorColor = Color.White.copy(alpha = 0.5f)
-            ),
-            shape = RoundedCornerShape(12.dp),
-            singleLine = true
+    if (showChallengeSelector) {
+        SelectChallengeScreen(
+            onChallengeSelected = { challengeId, challengeName ->
+                selectedChallenge = challengeId
+                selectedChallengeName = challengeName
+                showChallengeSelector = false
+            },
+            onCancel = { showChallengeSelector = false },
+            modifier = Modifier.fillMaxSize()
         )
+        return
+    }
 
-        // Time Picker amb rodets (Wheel Style)
-        Box(
+    Box(modifier = modifier.fillMaxSize()) {
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .background(Color.White.copy(alpha = 0.1f), RoundedCornerShape(16.dp))
-                .padding(16.dp),
-            contentAlignment = Alignment.Center
+                .verticalScroll(rememberScrollState())
+                .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = BackgroundApp(),
+                        startY = 0f,
+                        endY = Float.POSITIVE_INFINITY
+                    )
+                )
+                .padding(horizontal = 24.dp, vertical = 26.dp)
+                .padding(bottom = 80.dp), // Espai per al botó fix
+            verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            Row(
+            // Nom de l'alarma (opcional)
+            OutlinedTextField(
+                value = alarmName,
+                onValueChange = { alarmName = it },
+                label = { Text("Nom de l'alarma (opcional)", color = Color.White.copy(alpha = 0.8f)) },
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedTextColor = Color.White,
+                    unfocusedTextColor = Color.White,
+                    focusedLabelColor = Color.White.copy(alpha = 0.8f),
+                    unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
+                    focusedIndicatorColor = Color.White,
+                    unfocusedIndicatorColor = Color.White.copy(alpha = 0.5f)
+                ),
+                shape = RoundedCornerShape(12.dp),
+                singleLine = true
+            )
+
+            // Time Picker amb rodets (Wheel Style)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
+                    .background(Color.White.copy(alpha = 0.1f), RoundedCornerShape(16.dp))
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
             ) {
-                // Selector d'hores
-                RodaTempsPicker(
-                    value = hour,
-                    onValueChange = { hour = it },
-                    range = 0..23,
-                    modifier = Modifier.weight(1f)
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // Selector d'hores
+                    RodaTempsPicker(
+                        value = hour,
+                        onValueChange = { hour = it },
+                        range = 0..23,
+                        modifier = Modifier.weight(1f)
+                    )
 
+                    Text(
+                        text = ":",
+                        style = MaterialTheme.typography.displaySmall.copy(color = Color.White),
+                        modifier = Modifier.padding(horizontal = 8.dp)
+                    )
+
+                    // Selector de minuts
+                    RodaTempsPicker(
+                        value = minute,
+                        onValueChange = { minute = it },
+                        range = 0..59,
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    // AM/PM (opcional per a format 12h)
+                    Text(
+                        text = if (hour < 12) "AM" else "PM",
+                        style = MaterialTheme.typography.titleLarge.copy(color = Color.White),
+                        modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
+            }
+
+            // Afegim el nou selector de repetició
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(
-                    text = ":",
-                    style = MaterialTheme.typography.displaySmall.copy(color = Color.White),
-                    modifier = Modifier.padding(horizontal = 8.dp)
+                    text = "Repetició",
+                    style = fontSizeTitols
                 )
 
-                // Selector de minuts
-                RodaTempsPicker(
-                    value = minute,
-                    onValueChange = { minute = it },
-                    range = 0..59,
-                    modifier = Modifier.weight(1f)
-                )
-
-                // AM/PM (opcional per a format 12h)
-                Text(
-                    text = if (hour < 12) "AM" else "PM",
-                    style = MaterialTheme.typography.titleLarge.copy(color = Color.White),
-                    modifier = Modifier.padding(start = 16.dp)
+                RodetaSeleccioHorizontal (
+                    items = repeatOptions,
+                    value = repeatType,
+                    onValueChange = { repeatType = it }
                 )
             }
-        }
-        // Afegim el nou selector de repetició
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(
-                text = "Repetició",
-                style = MaterialTheme.typography.titleMedium.copy(color = Color.White)
-            )
 
-            SegmentedControl(
-                items = repeatOptions,
-                selectedItem = repeatType,
-                onItemSelect = { repeatType = it },
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-        // Dies de la setmana amb xips animats
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(
-                text = "Selecciona un dia",
-                style = MaterialTheme.typography.titleMedium.copy(color = Color.White)
-            )
+            // Dies de la setmana amb xips animats
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = "Selecciona un dia",
+                    style = fontSizeTitols
+                )
 
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                days.forEachIndexed { index, day ->
-                    val dayNumber = index + 1
-                    val selected = dayNumber in selectedDays
-                    val enabled = repeatType != "Dl a Dv" // Deshabilitem si és "De dilluns a divendres"
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    days.forEachIndexed { index, day ->
+                        val dayNumber = index + 1
+                        val selected = dayNumber in selectedDays
+                        val enabled = when (repeatType) {
+                            "Dl a Dv", "Diàriament" -> false
+                            else -> true
+                        }
 
-                    Box(modifier = Modifier.weight(1f)) {
-                        AnimacioDiaChip(
-                            day = day,
-                            selected = selected,
-                            onClick = {
-                                if (enabled) {
-                                    selectedDays = if (selected) selectedDays - dayNumber
-                                    else selectedDays + dayNumber
-                                }
-                            },
-                            enabled = enabled
+                        Box(modifier = Modifier.weight(1f)) {
+                            AnimacioDiaChip(
+                                day = day,
+                                selected = selected,
+                                onClick = {
+                                    if (enabled) {
+                                        selectedDays = if (selected) selectedDays - dayNumber
+                                        else selectedDays + dayNumber
+                                    }
+                                },
+                                enabled = enabled
+                            )
+                        }
+                    }
+                }
+            }
+
+            // Tipus de repte (nova implementació)
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text(
+                    text = "Tipus de repte",
+                    style = fontSizeTitols
+                )
+
+                OutlinedButton(
+                    onClick = { showChallengeSelector = true },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = Color.Transparent,
+                        contentColor = Color.White
+                    ),
+                    border = BorderStroke(1.dp, Color.White.copy(alpha = 0.5f)),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = selectedChallengeName,
+                            style = MaterialTheme.typography.bodyMedium.copy(color = Color.White)
+                        )
+                        Icon(
+                            imageVector = Icons.Default.ArrowBackIosNew,
+                            contentDescription = "Seleccionar repte",
+                            tint = Color.White,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                }
+            }
+
+            // Model de prova amb selector modern
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = "Nivell",
+                    style = fontSizeTitols
+                )
+
+                SegmentedControl(
+                    items = testModels,
+                    selectedItem = selectedModel,
+                    onItemSelect = { selectedModel = it },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            // Nova secció per seleccionar el so
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Text(
+                    text = "So de l'alarma",
+                    style = fontSizeTitols
+                )
+
+                OutlinedButton(
+                    onClick = { showSoundSelector = true },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = Color.Transparent,
+                        contentColor = Color.White
+                    ),
+                    border = BorderStroke(1.dp, Color.White.copy(alpha = 0.5f)),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = alarmSoundName,
+                            style = MaterialTheme.typography.bodyMedium.copy(color = Color.White)
+                        )
+                        Icon(
+                            imageVector = Icons.Default.ArrowBackIosNew,
+                            contentDescription = "Seleccionar so",
+                            tint = Color.White,
+                            modifier = Modifier.size(16.dp)
                         )
                     }
                 }
             }
         }
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(
-                text = "Tipus de repte",
-                style = MaterialTheme.typography.titleMedium.copy(color = Color.White)
-            )
 
-            SegmentedControl(
-                items = challengeTypes,
-                selectedItem = selectedChallenge,
-                onItemSelect = { selectedChallenge = it },
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
+        // Botó de guardar fix a la part inferior
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp, vertical = 24.dp)
 
-        // Model de prova amb selector modern
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(
-                text = "Model de prova",
-                style = MaterialTheme.typography.titleMedium.copy(color = Color.White)
-            )
+        ) {
+            Button(
+                onClick = {
+                    val newAlarm = AlarmEntity(
+                        hour = hour,
+                        minute = minute,
+                        daysOfWeek = when (repeatType) {
+                            "Una vegada" -> selectedDays
+                            "Dl a Dv" -> listOf(1, 2, 3, 4, 5) // Dl a Dv
+                            "Diàriament" -> (1..7).toList() // Tots els dies "Diariament""
+                            else -> selectedDays // Selecció manual per "Diàriament"
+                        },
+                        isActive = true,
+                        testModel = selectedModel,
+                        name = alarmName,
+                        alarmSound = alarmSound,
+                        alarmSoundName = alarmSoundName,
+                        challengeType = selectedChallenge,
+                        isRecurring = repeatType != "Una vegada",
+                        repeticioDays = repeatType
+                    )
+                    onAdd(newAlarm)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 26.dp)
+                    .height(56.dp),
 
-            SegmentedControl(
-                items = testModels,
-                selectedItem = selectedModel,
-                onItemSelect = { selectedModel = it },
-                modifier = Modifier.fillMaxWidth()
-            )
-        }
-
-
-        if (selectedDays.isNotEmpty()) {
-            colorTextButtom = Color.Black
-
-        }
-        // Nova secció per seleccionar el so
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Text(
-                text = "So de l'alarma",
-                style = MaterialTheme.typography.titleMedium.copy(color = Color.White)
-            )
-
-            OutlinedButton(
-                onClick = { showSoundSelector = true },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = Color.Transparent,
-                    contentColor = Color.White
+                enabled = selectedDays.isNotEmpty() || repeatType == "Una vegada",
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White,
+                    disabledContainerColor = Color(0xFF282727)  // Blanc amb ~10% alpha
                 ),
-                border = BorderStroke(1.dp, Color.White.copy(alpha = 0.5f)),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = alarmSoundName,
-                        style = MaterialTheme.typography.bodyMedium.copy(color = Color.White)
+                Text(
+                    text = "GUARDAR ALARMA",
+                    style = MaterialTheme.typography.labelLarge.copy(
+                        color = if (selectedDays.isNotEmpty() || repeatType == "Una vegada") Color.Black else colorTextButtom,
+                        fontWeight = FontWeight.Bold
                     )
-                    Icon(
-                        imageVector = Icons.Default.ArrowBackIosNew,
-                        contentDescription = "Seleccionar so",
-                        tint = Color.White,
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
+                )
             }
         }
-        // Botó de guardar amb efecte
-        Button(
-            onClick = {
-                val newAlarm = AlarmEntity(
-                    hour = hour,
-                    minute = minute,
-                    daysOfWeek = when (repeatType) {
-                        "Una vegada" -> selectedDays
-                        "Dl a Dv" -> listOf(1, 2, 3, 4, 5) // Dl a Dv
-                        "Diàriament" -> (1..7).toList() // Tots els dies "Diariament""
-                        else -> selectedDays // Selecció manual per "Diàriament"
-                    },
-                    isActive = true,
-                    testModel = selectedModel,
-                    name = alarmName,
-                    alarmSound = alarmSound,
-                    alarmSoundName = alarmSoundName,
-                    challengeType = selectedChallenge,
-                    isRecurring = repeatType != "Una vegada",
-                    repeticioDays = repeatType
-
-                )
-                onAdd(newAlarm)
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            enabled = selectedDays.isNotEmpty(), // Requereix dies seleccionats
-
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White.copy(alpha = 0.9f),
-                disabledContainerColor = Color.White.copy(alpha = 0.1f)
-            ),
-            shape = RoundedCornerShape(12.dp)
-        ) {
-            Text(
-                text = "GUARDAR ALARMA",
-                style = MaterialTheme.typography.labelLarge.copy(
-                    color = if (selectedDays.isNotEmpty() || repeatType == "Una vegada") Color.Black else colorTextButtom,
-                    fontWeight = FontWeight.Bold
-                )
-            )
-        }
     }
-
 }
-
-

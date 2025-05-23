@@ -55,13 +55,13 @@ fun SegmentedControl(
             items.forEach { item ->
                 Text(
                     text = item,
-                    style = MaterialTheme.typography.labelLarge.copy(
+                    style = MaterialTheme.typography.titleMedium.copy(
                         color = if (item == selectedItem) Color.White else colorTextModels
                     ),
                     modifier = Modifier
                         .weight(1f)
                         .clickable { onItemSelect(item) }
-                        .padding(vertical = 12.dp)
+                        .padding(vertical = 10.dp)
                         .wrapContentWidth()
                 )
             }

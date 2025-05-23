@@ -23,9 +23,9 @@ import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 
 
 @Composable
-fun EmptyAlarmsState(modifier: Modifier = Modifier, onNavigateToAlarmForm: () -> Unit) {
+fun EmptyAlarmsState(onNavigateToAlarmForm: () -> Unit) {
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(

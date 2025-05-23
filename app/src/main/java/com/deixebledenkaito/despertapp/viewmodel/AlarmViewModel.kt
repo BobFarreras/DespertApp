@@ -35,22 +35,17 @@ class AlarmViewModel @Inject constructor(
     private val repository: AlarmRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
-    // Estat de càrrega
-    private val _isLoading = MutableStateFlow(true)
-    val isLoading: StateFlow<Boolean> = _isLoading
+
 
     private val alarmScheduler = AlarmScheduler(context)
 
     // Llista d'alarmes com a StateFlow
-    val alarms: StateFlow<List<AlarmEntity>> = repository.allAlarms
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            emptyList()
-        )
+    val alarms = repository.allAlarms // sense stateIn
+
 
     init {
         observeAlarms()
+
     }
 
     private fun observeAlarms() {
@@ -66,10 +61,10 @@ class AlarmViewModel @Inject constructor(
                         cancelAlarm(alarm.id)
                     }
                 }
-            }
 
+
+            }
         }
-        _isLoading.value = false
     }
 
 

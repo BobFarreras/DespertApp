@@ -29,47 +29,35 @@ fun AlarmListContent(
     alarms: List<AlarmEntity>,
     viewModel: AlarmViewModel,
     modifier: Modifier = Modifier,
-    onNavigateToAlarmForm: () -> Unit
+
 ) {
-    val isLoading by viewModel.isLoading.collectAsState()
+
 
     // Estat local per a la llista d'alarmes
     LaunchedEffect(alarms) {
         Log.d("AlarmListContent", "Rebuda llista d'alarmes amb ${alarms.size} elements")
     }
-    Log.d("AlarmListContent", "isLoading $isLoading")
 
-    if(isLoading) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator(color = Color.White)
-        }
-    }
-    else{
-        if(alarms.isEmpty()) {
-            Log.d("AlarmListContent", "Mostrant estat buit")
-            EmptyAlarmsState(modifier, onNavigateToAlarmForm)
-        } else {
 
-            LazyColumn(
-                modifier = modifier
-                    .padding(top = 30.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                items(alarms, key = { it.id }) { alarm ->
-                    Log.d("AlarmListContent", "Renderitzant alarma ID: ${alarm.id}")
-                    AlarmItemCard(
-                        alarm = alarm,
-                        onToggleActive = { isActive ->
-                            Log.d("AlarmListContent", "Canviant estat alarma ${alarm.id}")
-                            viewModel.toggleAlarmActive(alarm, isActive)
-                        },
-                        onDelete = {
-                            Log.d("AlarmListContent", "Eliminant alarma ${alarm.id}")
-                            viewModel.deleteAlarm(alarm)
-                        }
-                    )
-                }
+        LazyColumn(
+            modifier = modifier
+                .padding(top = 30.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            items(alarms, key = { it.id }) { alarm ->
+                Log.d("AlarmListContent", "Renderitzant alarma ID: ${alarm.id}")
+                AlarmItemCard(
+                    alarm = alarm,
+                    onToggleActive = { isActive ->
+                        Log.d("AlarmListContent", "Canviant estat alarma ${alarm.id}")
+                        viewModel.toggleAlarmActive(alarm, isActive)
+                    },
+                    onDelete = {
+                        Log.d("AlarmListContent", "Eliminant alarma ${alarm.id}")
+                        viewModel.deleteAlarm(alarm)
+                    }
+                )
             }
-         }
-    }
+        }
+
 }
