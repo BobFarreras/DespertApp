@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 
@@ -63,8 +64,22 @@ fun RodetaSeleccioHorizontal(
             val centeredIndex = (initialIndex - middleItemIndex).coerceAtLeast(0)
             state.scrollToItem(centeredIndex)
             initialScrollDone.value = true
+
+            // 🔄 Animació de suggeriment de scroll (un cop)
+            if (itemCount > centeredIndex + 1) {
+                delay(300)
+                state.animateScrollToItem(centeredIndex )
+                delay(300)
+                state.animateScrollToItem(centeredIndex + 1)
+                delay(300)
+                state.animateScrollToItem(centeredIndex + 2)
+                delay(300)
+                state.animateScrollToItem(centeredIndex + 3)
+            }
         }
+
     }
+
 
     // Dibuixa la interfície
     Box(
@@ -136,95 +151,3 @@ fun RodetaSeleccioHorizontal(
     }
 }
 
-//@Composable
-//fun RodetaSeleccioHorizontal(
-//    items: List<String>,
-//    value: String,
-//    onValueChange: (String) -> Unit,
-//    modifier: Modifier = Modifier
-//) {
-//    val itemWidth = 120.dp
-//    val visibleItems = 3
-//    val middleItemIndex = visibleItems / 2
-//    val itemCount = items.size
-//
-//    val state = rememberLazyListState()
-//    val initialScrollDone = remember { mutableStateOf(false) }
-//
-//    LaunchedEffect(Unit) {
-//        if (!initialScrollDone.value) {
-//            val initialIndex = (items.indexOf(value)).coerceIn(0, itemCount - 1)
-//            state.scrollToItem((initialIndex - middleItemIndex).coerceAtLeast(0))
-//            initialScrollDone.value = true
-//        }
-//    }
-//
-//    Box(
-//        modifier = modifier
-//            .width(itemWidth * visibleItems)
-//            .fillMaxHeight()
-//            .background(Color.White.copy(alpha = 0.08f), RoundedCornerShape(8.dp)),
-//        contentAlignment = Alignment.Center
-//    ) {
-//        LazyRow(
-//            state = state,
-//            modifier = Modifier.fillMaxSize().padding(vertical = 12.dp),
-//            horizontalArrangement = Arrangement.spacedBy(8.dp),
-//            verticalAlignment = Alignment.CenterVertically,
-//            flingBehavior = rememberSnapFlingBehavior(state)
-//        ) {
-//            // Espai al principi
-//            items(middleItemIndex) {
-//                Spacer(modifier = Modifier.width(itemWidth))
-//            }
-//
-//            // Ítems reals
-//            items(itemCount) { index ->
-//                val item = items[index]
-//                val isSelected = state.firstVisibleItemIndex + middleItemIndex == index
-//
-//                Text(
-//                    text = item,
-//                    modifier = Modifier
-//                        .width(itemWidth)
-//                        .fillMaxHeight(),
-//                    textAlign = TextAlign.Center,
-//                    style = if (isSelected) {
-//                        MaterialTheme.typography.titleLarge.copy(
-//                            color = Color.White,
-//                            fontWeight = FontWeight.Bold
-//                        )
-//                    } else {
-//                        MaterialTheme.typography.bodyMedium.copy(
-//                            color = Color.White.copy(alpha = 0.6f)
-//                        )
-//                    }
-//                )
-//            }
-//
-//            // Espai al final
-//            items(middleItemIndex) {
-//                Spacer(modifier = Modifier.width(itemWidth))
-//            }
-//        }
-//
-//
-//
-//        val lastNotifiedValue = remember { mutableStateOf<String?>(null) }
-//
-//        LaunchedEffect(state) {
-//            snapshotFlow {
-//                val centerItem = state.firstVisibleItemIndex + middleItemIndex
-//                centerItem
-//            }.distinctUntilChanged().collect { centerIndex ->
-//                if (centerIndex in items.indices) {
-//                    val newValue = items[centerIndex]
-//                    if (newValue != lastNotifiedValue.value) {
-//                        lastNotifiedValue.value = newValue
-//                        onValueChange(newValue)
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}

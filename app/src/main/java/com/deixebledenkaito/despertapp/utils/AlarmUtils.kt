@@ -6,9 +6,18 @@ import android.content.Context.AUDIO_SERVICE
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Build
 import android.os.PowerManager
+import android.os.VibrationEffect
+import android.os.Vibrator
 import com.deixebledenkaito.despertapp.R
 import com.deixebledenkaito.despertapp.data.AlarmEntity
+import com.deixebledenkaito.despertapp.preferences.AlarmPreferencesManager
+import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.selectsounds.AlarmSound
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.Duration
 import java.util.Calendar
 
@@ -20,37 +29,56 @@ object AlarmUtils {
      * Reprodueix l'àudio de l'alarma al màxim volum.
      * Retorna el MediaPlayer actiu.
      */
-    fun playAlarmSound(context: Context, volume: Int, soundId: String = "default"): MediaPlayer {
-        val audioManager = context.getSystemService(AUDIO_SERVICE) as AudioManager
+    suspend fun playAlarmSound(context: Context, soundId: String = "default"): MediaPlayer {
+        val prefs = AlarmPreferencesManager.loadPreferences(context)
+
+        val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM)
+        val volumeLevel = (prefs.volume / 100f * maxVolume).toInt()
 
-        //AIXÒ ET RETORNA EL VOLUM DEL MOVIL
-//        val adjustedVolume = volume.coerceIn(0, maxVolume)
+        if (!prefs.increasingVolume) {
+            audioManager.setStreamVolume(AudioManager.STREAM_ALARM, volumeLevel, 0)
+        }
 
-        audioManager.setStreamVolume(
-            AudioManager.STREAM_ALARM,
-            1, // VOLUM DE L'ALARMA
-            0 // <-- Aquesta línia evita mostrar la barra de volum
-        )
-
-        // Obtenim el recurs de so segons l'ID
         val soundResource = when (soundId) {
             "bebe" -> R.raw.bebe
             "bolaDeDrac" -> R.raw.boladedrac
             "insultsCatala" -> R.raw.insults
             "SoldatAlarma" -> R.raw.soldatalarma
-            else -> R.raw.alarm // So per defecte
+            "Vegeta" -> R.raw.vegeta
+            "LinkinPark" -> R.raw.linkpark
+            "ImagineDragons" -> R.raw.imagindragons
+            else -> R.raw.alarm
         }
 
-        return MediaPlayer().apply {
+        val mediaPlayer = MediaPlayer().apply {
             setAudioStreamType(AudioManager.STREAM_ALARM)
             setDataSource(context, Uri.parse("android.resource://${context.packageName}/$soundResource"))
             isLooping = true
             prepare()
             start()
         }
-    }
 
+        if (prefs.increasingVolume) {
+            CoroutineScope(Dispatchers.IO).launch {
+                for (i in 1..volumeLevel) {
+                    delay(500)
+                    audioManager.setStreamVolume(AudioManager.STREAM_ALARM, i, 0)
+                }
+            }
+        }
+
+        if (prefs.vibrationEnabled) {
+            val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE))
+            } else {
+                vibrator.vibrate(1000)
+            }
+        }
+
+        return mediaPlayer
+    }
     /**
      * Retorna un WakeLock actiu per mantenir el dispositiu despert.
      */

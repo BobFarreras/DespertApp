@@ -24,6 +24,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.lifecycleScope
 import com.deixebledenkaito.despertapp.receiver.AlarmService
 import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.angles.AnglesChallengeGenerator
 import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.anime.AnimeChallengeGenerator
@@ -31,7 +33,10 @@ import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.cultu
 import com.deixebledenkaito.despertapp.ui.theme.DespertAppTheme
 import com.deixebledenkaito.despertapp.utils.AlarmUtils
 import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.matematiques.MathChallengeGenerator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class AlarmChallengeActivity : ComponentActivity() {
     private lateinit var mediaPlayer: MediaPlayer
@@ -49,8 +54,15 @@ class AlarmChallengeActivity : ComponentActivity() {
 
         // 1. Configurar so i wake lock
         val alarmSound = intent.getStringExtra("ALARM_SOUND") ?: "default"
+
         // Configurar el mediaPlayer amb el so correcte
-        mediaPlayer = AlarmUtils.playAlarmSound(this, volume, alarmSound)
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                mediaPlayer = AlarmUtils.playAlarmSound(this@AlarmChallengeActivity, soundId = alarmSound)
+            } catch (e: Exception) {
+                Log.e("AlarmChallenge", "Error en reproduir el so de l'alarma", e)
+            }
+        }
         wakeLock = AlarmUtils.acquireWakeLock(this)
 
         // Configuració per mostrar sobre el bloqueig

@@ -75,6 +75,7 @@ dependencies {
     implementation(libs.androidx.animation.android)
     implementation(libs.androidx.databinding.adapters)
     implementation(libs.androidx.games.activity)
+    implementation(libs.androidx.datastore.core.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -128,4 +129,7 @@ dependencies {
 
     // Afegir a les dependencies de l'app
     implementation ("androidx.work:work-runtime-ktx:2.7.1")
+
+    // DataStore Preferences
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 }

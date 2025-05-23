@@ -96,8 +96,8 @@ fun CrearAlarmaScreen(
     var selectedChallengeName by remember { mutableStateOf("Matemàtiques") }
     var showChallengeSelector by remember { mutableStateOf(false) }
 
-    var repeatType by remember { mutableStateOf("Personalitzat") }
-    val repeatOptions = listOf("Una vegada","Personalitzat", "Diàriament", "Dl a Dv")
+    var repeatType by remember { mutableStateOf("Una vegada") }
+    val repeatOptions = listOf("Personalitzat","Una vegada", "Diàriament", "Dl a Dv")
     val days = listOf("Dl", "Dt", "Dc", "Dj", "Dv", "Ds", "Dg")
     val testModels = listOf("Bàsic", "Avançat", "Expert")
 

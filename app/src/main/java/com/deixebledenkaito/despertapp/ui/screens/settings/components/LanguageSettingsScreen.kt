@@ -57,7 +57,7 @@ fun LanguageSettingsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 24.dp)
+                .padding(horizontal = 16.dp, vertical = 44.dp)
         ) {
             // Títol
             Text(
@@ -87,19 +87,6 @@ fun LanguageSettingsScreen(
             }
         }
 
-        // Botó de tornada
-        IconButton(
-            onClick = onBack,
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Tornar",
-                tint = Color.White
-            )
-        }
     }
 }
 

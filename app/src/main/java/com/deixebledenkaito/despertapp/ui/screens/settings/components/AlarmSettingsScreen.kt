@@ -25,6 +25,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -34,19 +35,42 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.deixebledenkaito.despertapp.preferences.AlarmPreferences
+import com.deixebledenkaito.despertapp.preferences.AlarmPreferencesManager
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 @Composable
 fun AlarmSettingsScreen(
     onBack: () -> Unit,
 
 ) {
+    val context = LocalContext.current
     var volume by remember { mutableFloatStateOf(80f) }
     var vibrationEnabled by remember { mutableStateOf(true) }
     var increasingVolume by remember { mutableStateOf(false) }
 
+    // Carrega preferències quan s'obre la pantalla
+    LaunchedEffect(true) {
+        val prefs = AlarmPreferencesManager.loadPreferences(context)
+        volume = prefs.volume.toFloat()
+        vibrationEnabled = prefs.vibrationEnabled
+        increasingVolume = prefs.increasingVolume
+    }
+
+    // Guarda automàticament quan hi ha canvis
+    LaunchedEffect(volume, vibrationEnabled, increasingVolume) {
+        AlarmPreferencesManager.savePreferences(
+            context,
+            AlarmPreferences(
+                volume = volume.toInt(),
+                vibrationEnabled = vibrationEnabled,
+                increasingVolume = increasingVolume
+            )
+        )
+    }
     Box(modifier = Modifier.fillMaxSize()) {
         // Fons de pantalla (gradient)
         Box(
@@ -64,7 +88,7 @@ fun AlarmSettingsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 24.dp)
+                .padding(horizontal = 16.dp, vertical = 44.dp)
         ) {
             // Títol
             Text(
@@ -164,18 +188,6 @@ fun AlarmSettingsScreen(
             }
         }
 
-        // Botó de tornada
-        IconButton(
-            onClick = onBack,
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(16.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Tornar",
-                tint = Color.White
-            )
-        }
+
     }
 }
