@@ -1,21 +1,20 @@
 package com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components
 
+import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
+
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
+
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -25,7 +24,6 @@ import androidx.compose.runtime.LaunchedEffect
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -37,7 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.delay
+
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 
@@ -55,30 +53,19 @@ fun RodetaSeleccioHorizontal(
 
     val state = rememberLazyListState()
     val density = LocalDensity.current
+
+    val lastNotifiedValue = remember { mutableStateOf<String?>(null) }
     val initialScrollDone = remember { mutableStateOf(false) }
 
     // Scroll inicial per posar el valor seleccionat al mig
-    LaunchedEffect(Unit) {
-        if (!initialScrollDone.value) {
-            val initialIndex = items.indexOf(value).coerceIn(0, itemCount - 1)
-            val centeredIndex = (initialIndex - middleItemIndex).coerceAtLeast(0)
-            state.scrollToItem(centeredIndex)
-            initialScrollDone.value = true
-
-            // 🔄 Animació de suggeriment de scroll (un cop)
-            if (itemCount > centeredIndex + 1) {
-                delay(300)
-                state.animateScrollToItem(centeredIndex )
-                delay(300)
-                state.animateScrollToItem(centeredIndex + 1)
-                delay(300)
-                state.animateScrollToItem(centeredIndex + 2)
-                delay(300)
-                state.animateScrollToItem(centeredIndex + 3)
-            }
+    LaunchedEffect(value) {
+        val index = items.indexOf(value)
+        if (index != -1) {
+            state.scrollToItem(index)
+            initialScrollDone.value = true // Marquem quan el scroll ja està fet
         }
-
     }
+
 
 
     // Dibuixa la interfície
@@ -101,10 +88,9 @@ fun RodetaSeleccioHorizontal(
             items(middleItemIndex) {
                 Spacer(modifier = Modifier.width(itemWidth))
             }
-
+            // Ítems reals
             items(itemCount) { index ->
                 val item = items[index]
-
 
                 Text(
                     text = item,
@@ -136,6 +122,7 @@ fun RodetaSeleccioHorizontal(
 
                 val indexOffset = ((offsetPx + itemWidthPx / 2) / itemWidthPx).toInt()
                 val centerIndex = state.firstVisibleItemIndex + indexOffset
+                Log.d("RodetaSeleccioHorizontal", "Center Index: $centerIndex")
 
                 centerIndex
             }.distinctUntilChanged().collect { centerIndex ->
@@ -144,6 +131,7 @@ fun RodetaSeleccioHorizontal(
                     if (newValue != lastNotifiedValue.value) {
                         lastNotifiedValue.value = newValue
                         onValueChange(newValue)
+                        Log.d("RodetaSeleccioHorizontal", "Value changed to: $newValue")
                     }
                 }
             }

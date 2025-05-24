@@ -55,7 +55,8 @@ fun SelectChallengeScreen(
         Challenge("Matemàtiques", "Matemàtiques", R.drawable.matematiques),
         Challenge("Cultura Catalana", "Cultura Catalana", R.drawable.catalunya),
         Challenge("Anime", "Anime", R.drawable.anime),
-        Challenge("Angles", "Angles", R.drawable.angles)
+        Challenge("Angles", "Angles", R.drawable.angles),
+        Challenge("Aleatori", "Aleatori", R.drawable.icon_aleatori)
     )
 
     Column(
@@ -110,6 +111,7 @@ fun SelectChallengeScreen(
                     }
                 )
             }
+
         }
     }
 }

@@ -43,6 +43,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 
@@ -75,7 +76,6 @@ import java.util.Calendar
 @Composable
 fun CrearAlarmaScreen(
     onAdd: (AlarmEntity) -> Unit,
-    onCancel: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val calendar = remember { Calendar.getInstance() }
@@ -83,7 +83,7 @@ fun CrearAlarmaScreen(
     var minute by remember { mutableIntStateOf(calendar.get(Calendar.MINUTE)) }
 
     var selectedDays by remember { mutableStateOf(listOf<Int>()) }
-    var selectedModel by remember { mutableStateOf("Bàsic") }
+
     var alarmName by remember { mutableStateOf("") }
 
     // SO ALARMA
@@ -96,13 +96,17 @@ fun CrearAlarmaScreen(
     var selectedChallengeName by remember { mutableStateOf("Matemàtiques") }
     var showChallengeSelector by remember { mutableStateOf(false) }
 
-    var repeatType by remember { mutableStateOf("Una vegada") }
+    var repeatType by rememberSaveable { mutableStateOf("Una vegada") }
     val repeatOptions = listOf("Personalitzat","Una vegada", "Diàriament", "Dl a Dv")
+
     val days = listOf("Dl", "Dt", "Dc", "Dj", "Dv", "Ds", "Dg")
+
+    var selectedModel by remember { mutableStateOf("Bàsic") }
     val testModels = listOf("Bàsic", "Avançat", "Expert")
 
     var colorTextButtom = Color(0xF7676161)
     var fontSizeTitols = MaterialTheme.typography.titleSmall.copy(color = Color.White)
+
     // Actualitzem els dies seleccionats quan canvia el tipus de repetició
     LaunchedEffect(repeatType) {
         selectedDays = when (repeatType) {

@@ -82,7 +82,7 @@ fun NavGraph(
                         viewModel.addAlarm(alarm)
                         navController.popBackStack()
                     },
-                    onCancel = { navController.popBackStack() }
+
                 )
             }
             composable(Screen.Settings.route) {

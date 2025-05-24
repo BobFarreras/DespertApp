@@ -75,7 +75,14 @@ class AlarmChallengeActivity : ComponentActivity() {
         val challengeType = intent.getStringExtra("CHALLENGE_TYPE") ?: "Matemàtiques"
         Log.d("AlarmChallenge", "Tipus de desafiament: $challengeType")
 
-        val question = when (challengeType) {
+        val finalChallengeType = if (challengeType == "Aleatori") {
+            listOf("Matemàtiques", "Cultura Catalana", "Anime", "Angles").random()
+        } else {
+            challengeType
+        }
+        Log.d("AlarmChallenge", "Tipus de desafiament: $finalChallengeType")
+
+        val question = when (finalChallengeType) {
             "Matemàtiques" -> MathChallengeGenerator.generate(testModel)
             "Cultura Catalana" -> CulturaChallengeGenerator.generate(testModel)
             "Anime" -> AnimeChallengeGenerator.generate(testModel)
