@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 
 import com.deixebledenkaito.despertapp.ui.screens.components.AddAlarmFAB
@@ -41,7 +42,7 @@ import com.deixebledenkaito.despertapp.viewmodel.AlarmViewModel
 fun HomeScreen(
     viewModel: AlarmViewModel,
     onNavigateToAlarmForm: () -> Unit,
-
+    navController: NavController,
 ) {
 
     val alarms by viewModel.alarms.collectAsState(initial = null)
@@ -85,7 +86,7 @@ fun HomeScreen(
                         AlarmListContent(
                             alarms = alarms!!,
                             viewModel = viewModel,
-
+                            navController = navController
                         )
                     }
                 }

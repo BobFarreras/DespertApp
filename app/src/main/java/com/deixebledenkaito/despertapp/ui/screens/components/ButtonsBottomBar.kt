@@ -47,15 +47,7 @@ fun ButtonsBottomBar(
 
                 )
             }
-            IconButton(onClick = onAlarmClick, modifier = Modifier.size(98.dp)) {
-                Icon(
-                    imageVector = Icons.Default.BarChart,
-                    contentDescription = "BarChar",
-                    modifier = Modifier.size(48.dp).padding(6.dp), // Mida lleugerament reduïda
-                    tint = if(selectedButtom == "Estadisitiques") Color.White else Color.White.copy(alpha = 0.4f)
 
-                )
-            }
             IconButton(onClick = onSettingsClick, modifier = Modifier.size(98.dp)) {
                 Icon(
                     imageVector = Icons.Default.Settings,

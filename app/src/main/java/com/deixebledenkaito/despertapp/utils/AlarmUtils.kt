@@ -2,24 +2,27 @@ package com.deixebledenkaito.despertapp.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Context.AUDIO_SERVICE
+
+import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaPlayer
-import android.net.Uri
+
 import android.os.Build
 import android.os.PowerManager
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.util.Log
 import com.deixebledenkaito.despertapp.R
-import com.deixebledenkaito.despertapp.data.AlarmEntity
+
 import com.deixebledenkaito.despertapp.preferences.AlarmPreferencesManager
-import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.selectsounds.AlarmSound
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.time.Duration
-import java.util.Calendar
+
+import androidx.core.net.toUri
+import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.selectsounds.CustomSoundManager
 
 object AlarmUtils {
 
@@ -31,7 +34,6 @@ object AlarmUtils {
      */
     suspend fun playAlarmSound(context: Context, soundId: String = "default"): MediaPlayer {
         val prefs = AlarmPreferencesManager.loadPreferences(context)
-
         val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM)
         val volumeLevel = (prefs.volume / 100f * maxVolume).toInt()
@@ -40,25 +42,56 @@ object AlarmUtils {
             audioManager.setStreamVolume(AudioManager.STREAM_ALARM, volumeLevel, 0)
         }
 
-        val soundResource = when (soundId) {
-            "bebe" -> R.raw.bebe
-            "bolaDeDrac" -> R.raw.boladedrac
-            "insultsCatala" -> R.raw.insults
-            "SoldatAlarma" -> R.raw.soldatalarma
-            "Vegeta" -> R.raw.vegeta
-            "LinkinPark" -> R.raw.linkpark
-            "ImagineDragons" -> R.raw.imagindragons
-            else -> R.raw.alarm
+        val mediaPlayer = MediaPlayer()
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM)
+        mediaPlayer.isLooping = true
+
+        try {
+            if (soundId.startsWith("content://")) {
+                Log.d("AlarmUtils", "🔊 És un so personalitzat amb URI: $soundId")
+
+                val uri = soundId.toUri()
+                context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                mediaPlayer.setDataSource(context, uri)
+                mediaPlayer.prepare()
+
+                // 🔍 Comprovem el startTime guardat
+                val customSounds = CustomSoundManager.getCustomSounds(context)
+                Log.d("AlarmUtils", "🔎 Trobats ${customSounds.size} sons personalitzats")
+
+                val matched = customSounds.find { it.uriString == soundId }
+                val startTimeMs = matched?.startTimeMs ?: 0L
+                Log.d("AlarmUtils", "🎯 StartTime per a aquest so: $startTimeMs ms")
+
+                mediaPlayer.seekTo(startTimeMs.toInt()) // Exigeix Int
+                mediaPlayer.start()
+
+            } else {
+                Log.d("AlarmUtils", "🔊 És un so integrat (resource): $soundId")
+
+                val soundResource = when (soundId) {
+                    "Piano" -> R.raw.piano
+                    "bolaDeDrac" -> R.raw.boladedrac
+                    "insultsCatala" -> R.raw.insults
+                    "SoldatAlarma" -> R.raw.soldatalarma
+                    "Vegeta" -> R.raw.vegeta
+                    "LinkinPark" -> R.raw.linkpark
+                    "ImagineDragons" -> R.raw.imagindragons
+                    "RumbaMediterrani" -> R.raw.rumbamediterrani
+                    "PianoDos" -> R.raw.pianodos
+                    else -> R.raw.alarm
+                }
+
+                val uri = "android.resource://${context.packageName}/$soundResource".toUri()
+                mediaPlayer.setDataSource(context, uri)
+                mediaPlayer.prepare()
+                mediaPlayer.start()
+            }
+        } catch (e: Exception) {
+            Log.e("AlarmUtils", "❌ Error reproduint el so", e)
         }
 
-        val mediaPlayer = MediaPlayer().apply {
-            setAudioStreamType(AudioManager.STREAM_ALARM)
-            setDataSource(context, Uri.parse("android.resource://${context.packageName}/$soundResource"))
-            isLooping = true
-            prepare()
-            start()
-        }
-
+        // Augment progressiu del volum
         if (prefs.increasingVolume) {
             CoroutineScope(Dispatchers.IO).launch {
                 for (i in 1..volumeLevel) {
@@ -68,6 +101,7 @@ object AlarmUtils {
             }
         }
 
+        // Vibració
         if (prefs.vibrationEnabled) {
             val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -79,6 +113,7 @@ object AlarmUtils {
 
         return mediaPlayer
     }
+
     /**
      * Retorna un WakeLock actiu per mantenir el dispositiu despert.
      */

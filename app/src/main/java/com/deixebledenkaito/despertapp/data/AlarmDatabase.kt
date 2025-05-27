@@ -9,11 +9,13 @@ import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
+
 // AlarmDatabase.kt
 @Database(entities = [AlarmEntity::class], version = 4)
 @TypeConverters(Converters::class)
 abstract class AlarmDatabase : RoomDatabase() {
     abstract fun alarmDao(): AlarmDao // Proporciona accés al DAO
+
 
     // AlarmDatabase.kt
     companion object {
@@ -39,5 +41,9 @@ abstract class AlarmDatabase : RoomDatabase() {
                 db.execSQL("ALTER TABLE alarms ADD COLUMN repeatType TEXT NOT NULL DEFAULT 'Diàriament'")
             }
         }
+
+
     }
+
+
 }

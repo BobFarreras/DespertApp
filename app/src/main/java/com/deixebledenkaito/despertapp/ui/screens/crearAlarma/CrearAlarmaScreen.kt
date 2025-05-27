@@ -51,12 +51,12 @@ import androidx.compose.ui.Modifier
 
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
+
 
 import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+
 
 
 import com.deixebledenkaito.despertapp.data.AlarmEntity
@@ -75,45 +75,48 @@ import java.util.Calendar
 
 @Composable
 fun CrearAlarmaScreen(
-    onAdd: (AlarmEntity) -> Unit,
-    modifier: Modifier = Modifier
+    onSave: (AlarmEntity) -> Unit,
+    modifier: Modifier = Modifier,
+    initialAlarm: AlarmEntity? = null
 ) {
     val calendar = remember { Calendar.getInstance() }
-    var hour by remember { mutableIntStateOf(calendar.get(Calendar.HOUR_OF_DAY)) }
-    var minute by remember { mutableIntStateOf(calendar.get(Calendar.MINUTE)) }
 
-    var selectedDays by remember { mutableStateOf(listOf<Int>()) }
 
-    var alarmName by remember { mutableStateOf("") }
+    var hour by remember { mutableIntStateOf(initialAlarm?.hour ?: calendar.get(Calendar.HOUR_OF_DAY)) }
+    var minute by remember { mutableIntStateOf(initialAlarm?.minute ?: calendar.get(Calendar.MINUTE))}
+
+
+    var selectedDays by remember { mutableStateOf(initialAlarm?.daysOfWeek ?: emptyList()) }
+
+    var alarmName by remember { mutableStateOf(initialAlarm?.name ?: "") }
 
     // SO ALARMA
-    var alarmSound by remember { mutableStateOf("default") }
-    var alarmSoundName by remember { mutableStateOf("So per defecte") }
+    var alarmSound by remember { mutableStateOf(initialAlarm?.alarmSound ?: "default") }
+    var alarmSoundName by remember { mutableStateOf(initialAlarm?.alarmSoundName ?: "So per defecte") }
     var showSoundSelector by remember { mutableStateOf(false) }
 
     // TIPUS DE REPTE
-    var selectedChallenge by remember { mutableStateOf("Matemàtiques") }
-    var selectedChallengeName by remember { mutableStateOf("Matemàtiques") }
+    var selectedChallenge by remember { mutableStateOf(initialAlarm?.challengeType ?: "Matemàtiques") }
+    var selectedChallengeName by remember { mutableStateOf(initialAlarm?.challengeType ?: "Matemàtiques") }
     var showChallengeSelector by remember { mutableStateOf(false) }
 
-    var repeatType by rememberSaveable { mutableStateOf("Una vegada") }
+    var repeatType by remember { mutableStateOf(initialAlarm?.repeticioDays ?: "Una vegada") }
     val repeatOptions = listOf("Personalitzat","Una vegada", "Diàriament", "Dl a Dv")
 
     val days = listOf("Dl", "Dt", "Dc", "Dj", "Dv", "Ds", "Dg")
-
-    var selectedModel by remember { mutableStateOf("Bàsic") }
+    var selectedModel by remember { mutableStateOf(initialAlarm?.testModel ?: "Bàsic") }
     val testModels = listOf("Bàsic", "Avançat", "Expert")
 
     var colorTextButtom = Color(0xF7676161)
     var fontSizeTitols = MaterialTheme.typography.titleSmall.copy(color = Color.White)
-
+    val customSelectedDays = remember { mutableStateOf(listOf<Int>()) }
     // Actualitzem els dies seleccionats quan canvia el tipus de repetició
     LaunchedEffect(repeatType) {
         selectedDays = when (repeatType) {
             "Dl a Dv" -> (1..5).toList()
             "Diàriament" -> (1..7).toList()
             "Una vegada" -> emptyList()
-            "Personalitzat" -> emptyList()
+            "Personalitzat" -> customSelectedDays.value
             else -> selectedDays
         }
     }
@@ -125,9 +128,8 @@ fun CrearAlarmaScreen(
                 alarmSoundName = soundName
                 showSoundSelector = false
             },
-            onCancel = { showSoundSelector = false },
-            modifier = Modifier.fillMaxSize()
-        )
+            onCancel = { showSoundSelector = false }
+     )
         return
     }
 
@@ -265,8 +267,10 @@ fun CrearAlarmaScreen(
                                 onClick = {
                                     if (enabled) {
                                         selectedDays = if (selected) selectedDays - dayNumber
+
                                         else selectedDays + dayNumber
                                     }
+                                    customSelectedDays.value = selectedDays
                                 },
                                 enabled = enabled
                             )
@@ -391,14 +395,14 @@ fun CrearAlarmaScreen(
                         isRecurring = repeatType != "Una vegada",
                         repeticioDays = repeatType
                     )
-                    onAdd(newAlarm)
+                    onSave(newAlarm)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 26.dp)
                     .height(56.dp),
 
-                enabled = selectedDays.isNotEmpty() || repeatType == "Una vegada",
+                enabled = selectedDays.isNotEmpty() ,
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White,
                     disabledContainerColor = Color(0xFF282727)  // Blanc amb ~10% alpha

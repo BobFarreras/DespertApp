@@ -1,15 +1,16 @@
 package com.deixebledenkaito.despertapp.ui.screens.challenge
 
 import android.annotation.SuppressLint
-import android.app.ActivityManager
+import android.app.KeyguardManager
+
 import android.app.admin.DevicePolicyManager
 import android.content.Context
+
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+
 import android.os.PowerManager
 import android.util.Log
 import android.view.View
@@ -23,26 +24,31 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
+
 import androidx.lifecycle.lifecycleScope
+import com.deixebledenkaito.despertapp.data.AlarmDatabase
+
 import com.deixebledenkaito.despertapp.receiver.AlarmService
+import com.deixebledenkaito.despertapp.repositroy.AlarmRepository
 import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.angles.AnglesChallengeGenerator
 import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.anime.AnimeChallengeGenerator
 import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.cultura.CulturaChallengeGenerator
 import com.deixebledenkaito.despertapp.ui.theme.DespertAppTheme
 import com.deixebledenkaito.despertapp.utils.AlarmUtils
 import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.matematiques.MathChallengeGenerator
+import com.deixebledenkaito.despertapp.viewmodel.AlarmScheduler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 class AlarmChallengeActivity : ComponentActivity() {
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var wakeLock: PowerManager.WakeLock
     private var fromLockScreen = false
     private var volume = 8 // Volum per defecte
+    private lateinit var finalChallengeType: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,8 +72,17 @@ class AlarmChallengeActivity : ComponentActivity() {
         wakeLock = AlarmUtils.acquireWakeLock(this)
 
         // Configuració per mostrar sobre el bloqueig
-        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
-        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+
+            val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+            keyguardManager.requestDismissKeyguard(this, null)
+        } else {
+            window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
+            window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
+        }
+
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         //        AQUI AGAFEM EL TIPUS DE MODEL QUE TE L'ALARMA'
@@ -104,12 +119,13 @@ class AlarmChallengeActivity : ComponentActivity() {
                 }
                 AlarmChallengeScreen(
                     question = question,
-                    onCorrect = ::handleCorrectAnswer
+                    onCorrect = ::handleCorrectAnswer,
+                    onSnooze = ::handleSnooze
                 )
             }
         }
     }
-
+//    FUNCIO QUE COMPROVA LA LOGICA DE SI L'USUARI A ASERTAT!'
     private fun handleCorrectAnswer() {
 
         // Aturar recursos
@@ -127,11 +143,53 @@ class AlarmChallengeActivity : ComponentActivity() {
         }
 
 
+
         finish()
 
     }
+//    FUNCIO QUE POSPOSA L'ALARMA 10 MIN'
+private fun handleSnooze() {
+    mediaPlayer.stop()
+    mediaPlayer.release()
+    if (wakeLock.isHeld) wakeLock.release()
 
-//AMAGAR LA BOTTOM BAR DEL MOBIL
+    val alarmId = intent.getIntExtra("ALARM_ID", -1)
+    if (alarmId == -1) {
+        Toast.makeText(this, "Error: ID d'alarma no vàlid", Toast.LENGTH_SHORT).show()
+        finish()
+        return
+    }
+
+    // Recuperar i modificar l'alarma a la base de dades
+    CoroutineScope(Dispatchers.IO).launch {
+        val dao = AlarmDatabase.getDatabase(this@AlarmChallengeActivity).alarmDao()
+        val repo = AlarmRepository(dao)
+        val alarm = repo.getAlarmById(alarmId)
+        Log.d("AlarmChallenge", "Alarma recuperada: $alarm")
+        if (alarm != null) {
+            val snoozedTime = Calendar.getInstance().apply {
+                timeInMillis = System.currentTimeMillis()
+                add(Calendar.MINUTE, 10)
+            }
+            Log.d("AlarmChallenge", "Alarma posposada a: $snoozedTime")
+            val updatedAlarm = alarm.copy(
+                hour = snoozedTime.get(Calendar.HOUR_OF_DAY),
+                minute = snoozedTime.get(Calendar.MINUTE)
+            )
+
+            repo.update(updatedAlarm) // Això desencadena el Flow per refrescar la UI
+
+            AlarmScheduler(this@AlarmChallengeActivity).schedule(updatedAlarm)
+        }
+    }
+
+    runOnUiThread {
+        Toast.makeText(this, "Alarma posposada per 10 minuts", Toast.LENGTH_SHORT).show()
+        finish()
+    }
+}
+
+    //AMAGAR LA BOTTOM BAR DEL MOBIL
     @Suppress("DEPRECATION")
     private fun hideSystemUI() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {

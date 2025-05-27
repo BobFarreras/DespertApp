@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Leaderboard
+import androidx.compose.material.icons.filled.Mode
 import androidx.compose.material.icons.filled.MoreHoriz
 
 import androidx.compose.material.icons.filled.MusicNote
@@ -46,7 +47,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.deixebledenkaito.despertapp.data.AlarmEntity
+import com.deixebledenkaito.despertapp.navigation.Screen
 import kotlinx.coroutines.delay
 
 
@@ -55,7 +58,8 @@ fun AlarmItemCard(
     alarm: AlarmEntity,
     onToggleActive: (Boolean) -> Unit,
     onDelete: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController // <- AFEGIT
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
@@ -218,7 +222,10 @@ fun AlarmItemCard(
                                     )
                                 )
                             },
-                            onClick = {},
+                            onClick = {
+                                showMenu = false
+                                navController.navigate(Screen.EditAlarm.createRoute(alarm.id))
+                            },
                             leadingIcon = {
                                 Icon(
                                     Icons.Default.Leaderboard,
@@ -241,6 +248,27 @@ fun AlarmItemCard(
                             leadingIcon = {
                                 Icon(
                                     Icons.Default.MusicNote,
+                                    contentDescription = null,
+                                    tint = Color.White.copy(alpha = 0.85f)
+                                )
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    "Modificar",
+                                    style = MaterialTheme.typography.bodyMedium.copy(
+                                        color = Color.White.copy(alpha = 0.85f)
+                                    )
+                                )
+                            },
+                            onClick = {
+                                showMenu = false
+                                navController.navigate(Screen.EditAlarm.createRoute(alarm.id))
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    Icons.Default.Mode,
                                     contentDescription = null,
                                     tint = Color.White.copy(alpha = 0.85f)
                                 )

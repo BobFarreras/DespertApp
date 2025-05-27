@@ -11,10 +11,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 
-import androidx.compose.material.icons.filled.ColorLens
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Language
-import androidx.compose.material.icons.filled.Settings
+
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -33,7 +31,7 @@ import com.deixebledenkaito.despertapp.ui.screens.settings.components.SettingsCa
 fun SettingsScreen(
     onNavigateToLanguageSettings: () -> Unit,
     onNavigateToAlarmSettings: () -> Unit,
-    onLogout: () -> Unit,
+
 
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
@@ -70,20 +68,13 @@ fun SettingsScreen(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                item {
-                    SettingsCard(
-                        title = "Configuració general",
-                        icon = Icons.Default.Settings,
-                        onClick = { /* Navigate to general settings */ }
-                    )
-                }
-                item {
-                    SettingsCard(
-                        title = "Idioma",
-                        icon = Icons.Default.Language,
-                        onClick = onNavigateToLanguageSettings
-                    )
-                }
+//                item {
+//                    SettingsCard(
+//                        title = "Configuració general",
+//                        icon = Icons.Default.Settings,
+//                        onClick = { /* Navigate to general settings */ }
+//                    )
+//                }
                 item {
                     SettingsCard(
                         title = "Configuració d'alarmes",
@@ -93,19 +84,27 @@ fun SettingsScreen(
                 }
                 item {
                     SettingsCard(
-                        title = "Tema",
-                        icon = Icons.Default.ColorLens,
-                        onClick = { /* Navigate to theme settings */ }
+                        title = "Idioma",
+                        icon = Icons.Default.Language,
+                        onClick = onNavigateToLanguageSettings
                     )
                 }
-                item {
-                    SettingsCard(
-                        title = "Tancar sessió",
-                        icon = Icons.Default.ExitToApp,
-                        onClick = onLogout,
-                        isDestructive = true
-                    )
-                }
+
+//                item {
+//                    SettingsCard(
+//                        title = "Tema",
+//                        icon = Icons.Default.ColorLens,
+//                        onClick = { /* Navigate to theme settings */ }
+//                    )
+//                }
+//                item {
+//                    SettingsCard(
+//                        title = "Tancar sessió",
+//                        icon = Icons.Default.ExitToApp,
+//                        onClick = onLogout,
+//                        isDestructive = true
+//                    )
+//                }
             }
 
         }

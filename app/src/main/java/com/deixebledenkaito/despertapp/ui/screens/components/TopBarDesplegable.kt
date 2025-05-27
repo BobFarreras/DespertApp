@@ -6,12 +6,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Logout
+
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Divider
+
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +29,7 @@ fun TopBarDesplegable (
 
     showMenu: Boolean,
     onMenuToggle: (Boolean) -> Unit,
-    onLogout: () -> Unit
+
 ) {
     Box {
         IconButton(onClick = { onMenuToggle(!showMenu) }) {
@@ -60,14 +61,14 @@ fun TopBarDesplegable (
                 onClick = { /* TODO */ },
                 leadingIcon = { Icon(Icons.Default.Settings, null) }
             )
-            Divider()
-            DropdownMenuItem(
-                text = { Text("Tancar sessió", color = MaterialTheme.colorScheme.error) },
-                onClick = onLogout,
-                leadingIcon = {
-                    Icon(Icons.Default.Logout, null, tint = MaterialTheme.colorScheme.error)
-                }
-            )
+            HorizontalDivider()
+//            DropdownMenuItem(
+//                text = { Text("Tancar sessió", color = MaterialTheme.colorScheme.error) },
+//                onClick = onLogout,
+//                leadingIcon = {
+//                    Icon(Icons.Default.Logout, null, tint = MaterialTheme.colorScheme.error)
+//                }
+//            )
         }
     }
 }

@@ -7,8 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
+
 
 import com.deixebledenkaito.despertapp.data.AlarmDatabase
 import com.deixebledenkaito.despertapp.data.AlarmEntity
@@ -16,15 +15,13 @@ import com.deixebledenkaito.despertapp.repositroy.AlarmRepository
 
 import com.deixebledenkaito.despertapp.ui.screens.challenge.AlarmChallengeActivity
 import com.deixebledenkaito.despertapp.viewmodel.AlarmScheduler
-import com.deixebledenkaito.despertapp.viewmodel.AlarmViewModel
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.util.Calendar
-import java.util.concurrent.TimeUnit
 
 // AlarmReceiver.kt
 
@@ -58,6 +55,7 @@ class AlarmReceiver : BroadcastReceiver() {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or
                     Intent.FLAG_ACTIVITY_CLEAR_TASK or
                     Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+            putExtra("ALARM_ID", alarmId) // <- AIXÒ ÉS CLAU!
             putExtra("ALARM_SOUND", alarmSound)
             putExtra("TEST_MODEL", testModel)
             putExtra("CHALLENGE_TYPE", challengeType)

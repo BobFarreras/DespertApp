@@ -54,7 +54,7 @@ fun RodetaSeleccioHorizontal(
     val state = rememberLazyListState()
     val density = LocalDensity.current
 
-    val lastNotifiedValue = remember { mutableStateOf<String?>(null) }
+
     val initialScrollDone = remember { mutableStateOf(false) }
 
     // Scroll inicial per posar el valor seleccionat al mig

@@ -44,7 +44,8 @@ object MathChallengeGenerator {
 data class MathQuestion(
     override val question: String,
     val numericOptions: List<Int>,
-    val correctNumericAnswer: Int
+    val correctNumericAnswer: Int,
+
 ) : ChallengeQuestion {
     override val options: List<String> get() = numericOptions.map { it.toString() }
     override val correctAnswer: String get() = correctNumericAnswer.toString()

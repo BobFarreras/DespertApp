@@ -33,7 +33,7 @@ fun AlarmTopBar(
             TopBarDesplegable(
                 showMenu = showMenu,
                 onMenuToggle = onMenuToggle,
-                onLogout = onLogout
+
             )
         }
     )

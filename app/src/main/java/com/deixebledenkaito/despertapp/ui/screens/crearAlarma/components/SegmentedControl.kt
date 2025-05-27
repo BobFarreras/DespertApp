@@ -12,7 +12,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
+
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,8 +29,8 @@ fun SegmentedControl(
     modifier: Modifier = Modifier
 ) {
     val selectedIndex = items.indexOf(selectedItem)
-    val rowWidth = remember { mutableStateOf(0) }
-    val rowHeight = remember { mutableStateOf(0) }
+    val rowWidth = remember { mutableIntStateOf(0) }
+    val rowHeight = remember { mutableIntStateOf(0) }
     val colorTextModels = Color(0xF7676161)
 
     Box(
@@ -40,12 +41,12 @@ fun SegmentedControl(
         // Indicador de selecció
         Box(
             modifier = Modifier
-                .offset(x = with(LocalDensity.current) { (rowWidth.value / items.size * selectedIndex).toDp() })
+                .offset(x = with(LocalDensity.current) { (rowWidth.intValue / items.size * selectedIndex).toDp() })
                 .fillMaxWidth(1f / items.size)
                 .background(Color.White, RoundedCornerShape(8.dp))
                 .onSizeChanged {
-                    rowWidth.value = it.width * items.size
-                    rowHeight.value = it.height
+                    rowWidth.intValue = it.width * items.size
+                    rowHeight.intValue = it.height
                 }
         )
 

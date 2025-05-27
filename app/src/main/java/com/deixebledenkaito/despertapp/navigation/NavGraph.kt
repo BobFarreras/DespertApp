@@ -2,24 +2,30 @@ package com.deixebledenkaito.despertapp.navigation
 
 
 import android.app.Activity
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
+
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.CrearAlarmaScreen
 import com.deixebledenkaito.despertapp.ui.screens.HomeScreen
@@ -39,6 +45,9 @@ sealed class Screen(val route: String) {
     object Settings : Screen("settings")
     object LanguageSettings : Screen("language")
     object AlarmSettings : Screen("alarm_settings")
+    object EditAlarm : Screen("edit_alarm/{alarmId}") {
+        fun createRoute(alarmId: Int) = "edit_alarm/$alarmId"
+    }
 }
 
 @Composable
@@ -73,15 +82,16 @@ fun NavGraph(
 
                 HomeScreen(
                     viewModel = viewModel,
-                    onNavigateToAlarmForm = { navController.navigate(Screen.AlarmForm.route) }
+                    onNavigateToAlarmForm = { navController.navigate(Screen.AlarmForm.route) },
+                    navController = navController
                 )
             }
             composable(Screen.AlarmForm.route) {
                 CrearAlarmaScreen(
-                    onAdd = { alarm ->
+                    onSave = { alarm ->
                         viewModel.addAlarm(alarm)
                         navController.popBackStack()
-                    },
+                    }
 
                 )
             }
@@ -89,7 +99,7 @@ fun NavGraph(
                 SettingsScreen(
                     onNavigateToLanguageSettings = { navController.navigate(Screen.LanguageSettings.route) },
                     onNavigateToAlarmSettings = { navController.navigate(Screen.AlarmSettings.route) },
-                    onLogout = { /* Manejar logout */ }
+
                 )
             }
             composable(Screen.LanguageSettings.route) {
@@ -101,6 +111,34 @@ fun NavGraph(
                 AlarmSettingsScreen(
                     onBack = { navController.popBackStack() }
                 )
+            }
+            composable(
+                route = Screen.EditAlarm.route,
+                arguments = listOf(navArgument("alarmId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val alarmId = backStackEntry.arguments?.getInt("alarmId") ?: return@composable
+                val alarms by viewModel.alarms.collectAsStateWithLifecycle(initialValue = emptyList())
+
+                val alarm = alarms.find { it.id == alarmId }
+
+                if (alarm != null) {
+                    CrearAlarmaScreen(
+                        initialAlarm = alarm,
+                        onSave = { updatedAlarm ->
+                            viewModel.addAlarm(updatedAlarm.copy(id = alarmId))
+                            navController.popBackStack()
+                        }
+                    )
+                } else {
+                    // No facis popBackStack immediatament!
+                    // Esperem que potser encara no ha carregat
+                    LaunchedEffect(alarms) {
+                        if (alarms.isNotEmpty() && alarms.none { it.id == alarmId }) {
+                            Log.d("NavGraph", "Alarm with ID $alarmId not found (després de carregar)")
+                            navController.popBackStack()
+                        }
+                    }
+                }
             }
         }
         // 🔽 Afegim el BottomBar només a les rutes que ens interessen

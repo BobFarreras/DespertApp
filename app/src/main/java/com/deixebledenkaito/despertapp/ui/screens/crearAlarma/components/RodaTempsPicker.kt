@@ -128,7 +128,7 @@ fun RodaTempsPicker(
                 val centerItem = state.firstVisibleItemIndex + middleItemIndex
                 val offset = state.firstVisibleItemScrollOffset
                 Pair(centerItem, offset)
-            }.collect { (index, offset) ->
+            }.collect { (index) ->
                 val realIndex = index - middleItemIndex // Calculem l'índex real dins de la llista de valors
                 if (realIndex in 0 until itemCount) {
                     val newValue = range.first + realIndex

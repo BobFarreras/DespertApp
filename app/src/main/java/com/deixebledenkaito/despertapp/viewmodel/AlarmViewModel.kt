@@ -1,16 +1,14 @@
 package com.deixebledenkaito.despertapp.viewmodel
 
-import android.annotation.SuppressLint
+
 import android.app.AlarmManager
 
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
-import android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+
 import android.util.Log
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,15 +17,11 @@ import com.deixebledenkaito.despertapp.receiver.AlarmReceiver
 import com.deixebledenkaito.despertapp.repositroy.AlarmRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
+
 import kotlinx.coroutines.flow.collectLatest
 
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.util.Calendar
+
 import javax.inject.Inject
 
 @HiltViewModel

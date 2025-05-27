@@ -76,6 +76,7 @@ dependencies {
     implementation(libs.androidx.databinding.adapters)
     implementation(libs.androidx.games.activity)
     implementation(libs.androidx.datastore.core.android)
+    implementation(libs.androidx.compose.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -132,4 +133,7 @@ dependencies {
 
     // DataStore Preferences
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+//EXPOTAR AUDIOS
+    implementation("androidx.media3:media3-exoplayer:1.7.1")
 }
