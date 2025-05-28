@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.KeyboardDoubleArrowRight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -153,7 +154,7 @@ fun ChallengeCard(
             }
 
             Icon(
-                imageVector = Icons.Default.ArrowForwardIos,
+                imageVector = Icons.Default.KeyboardDoubleArrowRight,
                 contentDescription = "Seleccionar",
                 tint = Color.White.copy(alpha = 0.7f),
                 modifier = Modifier.size(20.dp)

@@ -42,8 +42,7 @@ class AlarmChallengeActivity : ComponentActivity() {
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var wakeLock: PowerManager.WakeLock
     private var fromLockScreen = false
-    private var volume = 8 // Volum per defecte
-    private lateinit var finalChallengeType: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
