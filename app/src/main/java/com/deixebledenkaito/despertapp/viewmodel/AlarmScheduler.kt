@@ -1,11 +1,8 @@
 package com.deixebledenkaito.despertapp.viewmodel
-
-
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-
 import com.deixebledenkaito.despertapp.data.AlarmEntity
 import com.deixebledenkaito.despertapp.receiver.AlarmReceiver
 import java.util.Calendar
@@ -13,7 +10,6 @@ import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import androidx.core.net.toUri
-
 
 class AlarmScheduler(private val context: Context) {
 
@@ -70,6 +66,7 @@ class AlarmScheduler(private val context: Context) {
         Log.d("AlarmScheduler", "Dies seleccionats: ${alarm.daysOfWeek.joinToString()}")
         Log.d("AlarmScheduler", "Hora: ${alarm.hour}:${alarm.minute}")
         Log.d("AlarmScheduler", "Recurrent: ${alarm.isRecurring}")
+
         return Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, alarm.hour)

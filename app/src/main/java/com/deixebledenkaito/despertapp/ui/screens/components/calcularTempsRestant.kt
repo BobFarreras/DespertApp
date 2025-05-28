@@ -7,7 +7,6 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 
 
-
 fun calcularTempsRestant(alarm: AlarmEntity): Duration {
     val now = LocalDateTime.now()
     val currentDayOfWeek = now.dayOfWeek.value  // 1=Monday ... 7=Sunday
@@ -19,19 +18,30 @@ fun calcularTempsRestant(alarm: AlarmEntity): Duration {
     Log.d("calcularTempsRestant", "alarmTime: $alarmTime")
     Log.d("calcularTempsRestant", "now: $now")
 
+
     var nextAlarmDateTime: LocalDateTime? = null
 
     for (i in 0 until 7) {
-        val day = (currentDayOfWeek + i - 1) % 7 + 1 // normalitzem entre 1 i 7
-        if (alarmDaysSorted.contains(day)) {
+        val candidateDay = (currentDayOfWeek + i - 1) % 7 + 1  // 1..7
+        if (alarmDaysSorted.contains(candidateDay)) {
             val candidateDate = now.toLocalDate().plusDays(i.toLong())
             val candidateDateTime = LocalDateTime.of(candidateDate, alarmTime)
-            if (candidateDateTime.isAfter(now)) {
-                nextAlarmDateTime = candidateDateTime
-                break
+
+            // Si és avui i l’hora ja ha passat, ignora’l
+            if (i == 0 && candidateDateTime.isBefore(now)) {
+                continue
             }
+
+            nextAlarmDateTime = candidateDateTime
+            break
         }
     }
 
-    return nextAlarmDateTime?.let { Duration.between(now, it) } ?: Duration.ZERO
+    // Si no hem trobat cap dia vàlid (molt improbable), afegim 7 dies a avui
+    if (nextAlarmDateTime == null) {
+        val nextDate = now.toLocalDate().plusDays(7)
+        nextAlarmDateTime = LocalDateTime.of(nextDate, alarmTime)
+    }
+
+    return Duration.between(now, nextAlarmDateTime)
 }

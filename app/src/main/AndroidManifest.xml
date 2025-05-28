@@ -10,7 +10,8 @@
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" tools:ignore="ProtectedPermissions"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
     <application
         android:name=".DespertApp"
         android:hardwareAccelerated="true"
@@ -50,7 +51,7 @@
         <receiver
             android:name=".receiver.AlarmReceiver"
             android:enabled="true"
-            android:exported="false"
+            android:exported="true"
             android:permission="android.permission.WAKE_LOCK">
         </receiver>
         <receiver
@@ -67,12 +68,15 @@
         <!-- Servei -->
         <service
             android:name=".receiver.AlarmService"
+            android:foregroundServiceType="mediaPlayback"
             android:enabled="true"
             android:exported="false" />
         <!-- Whitelist per al LockTaskMode -->
         <meta-data
             android:name="android.app.default_lock_task_packages"
-            android:value="com.deixebledenkaito.despertapp" />
+            android:value="com.deixebledenkaito.despertapp"
+
+            />
     </application>
 
 </manifest>

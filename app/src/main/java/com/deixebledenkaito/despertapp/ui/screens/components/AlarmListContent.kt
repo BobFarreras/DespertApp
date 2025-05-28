@@ -1,20 +1,13 @@
 package com.deixebledenkaito.despertapp.ui.screens.components
 
 import android.util.Log
-
 import androidx.compose.foundation.layout.Arrangement
-
-
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-
 import androidx.compose.ui.Modifier
-
-
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.deixebledenkaito.despertapp.data.AlarmEntity
@@ -44,6 +37,7 @@ fun AlarmListContent(
         ) {
             items(alarms, key = { it.id }) { alarm ->
                 Log.d("AlarmListContent", "Renderitzant alarma ID: ${alarm.id}")
+
                 AlarmItemCard(
                     alarm = alarm,
                     onToggleActive = { isActive ->
