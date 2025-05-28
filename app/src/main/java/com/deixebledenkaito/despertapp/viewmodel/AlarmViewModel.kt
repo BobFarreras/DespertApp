@@ -1,14 +1,10 @@
 package com.deixebledenkaito.despertapp.viewmodel
 
-
 import android.app.AlarmManager
-
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-
 import android.util.Log
-
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,11 +13,8 @@ import com.deixebledenkaito.despertapp.receiver.AlarmReceiver
 import com.deixebledenkaito.despertapp.repositroy.AlarmRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-
 import kotlinx.coroutines.flow.collectLatest
-
 import kotlinx.coroutines.launch
-
 import javax.inject.Inject
 
 @HiltViewModel

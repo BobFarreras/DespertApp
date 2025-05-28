@@ -2,71 +2,46 @@ package com.deixebledenkaito.despertapp.ui.screens.crearAlarma
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-
 import androidx.compose.foundation.layout.Row
-
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-
-
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
-
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-
 import androidx.compose.material3.MaterialTheme
-
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-
-
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-
 import androidx.compose.runtime.getValue
-
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-
 import androidx.compose.ui.Modifier
-
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-
-
 import androidx.compose.ui.text.font.FontWeight
-
 import androidx.compose.ui.unit.dp
-
-
-
 import com.deixebledenkaito.despertapp.data.AlarmEntity
-
-
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components.AnimacioDiaChip
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components.RodaTempsPicker
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components.RodetaSeleccioHorizontal
-
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components.SegmentedControl
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.selectChallenge.SelectChallengeScreen
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.selectsounds.SelectSoundScreen
@@ -77,13 +52,21 @@ import java.util.Calendar
 fun CrearAlarmaScreen(
     onSave: (AlarmEntity) -> Unit,
     modifier: Modifier = Modifier,
-    initialAlarm: AlarmEntity? = null
+    initialAlarm: AlarmEntity? = null,
 ) {
     val calendar = remember { Calendar.getInstance() }
 
 
-    var hour by remember { mutableIntStateOf(initialAlarm?.hour ?: calendar.get(Calendar.HOUR_OF_DAY)) }
-    var minute by remember { mutableIntStateOf(initialAlarm?.minute ?: calendar.get(Calendar.MINUTE))}
+    var hour by remember {
+        mutableIntStateOf(
+            initialAlarm?.hour ?: calendar.get(Calendar.HOUR_OF_DAY)
+        )
+    }
+    var minute by remember {
+        mutableIntStateOf(
+            initialAlarm?.minute ?: calendar.get(Calendar.MINUTE)
+        )
+    }
 
 
     var selectedDays by remember { mutableStateOf(initialAlarm?.daysOfWeek ?: emptyList()) }
@@ -92,16 +75,28 @@ fun CrearAlarmaScreen(
 
     // SO ALARMA
     var alarmSound by remember { mutableStateOf(initialAlarm?.alarmSound ?: "default") }
-    var alarmSoundName by remember { mutableStateOf(initialAlarm?.alarmSoundName ?: "So per defecte") }
+    var alarmSoundName by remember {
+        mutableStateOf(
+            initialAlarm?.alarmSoundName ?: "So per defecte"
+        )
+    }
     var showSoundSelector by remember { mutableStateOf(false) }
 
     // TIPUS DE REPTE
-    var selectedChallenge by remember { mutableStateOf(initialAlarm?.challengeType ?: "Matemàtiques") }
-    var selectedChallengeName by remember { mutableStateOf(initialAlarm?.challengeType ?: "Matemàtiques") }
+    var selectedChallenge by remember {
+        mutableStateOf(
+            initialAlarm?.challengeType ?: "Matemàtiques"
+        )
+    }
+    var selectedChallengeName by remember {
+        mutableStateOf(
+            initialAlarm?.challengeType ?: "Matemàtiques"
+        )
+    }
     var showChallengeSelector by remember { mutableStateOf(false) }
 
     var repeatType by remember { mutableStateOf(initialAlarm?.repeticioDays ?: "Una vegada") }
-    val repeatOptions = listOf("Personalitzat","Una vegada", "Diàriament", "Dl a Dv")
+    val repeatOptions = listOf("Personalitzat", "Una vegada", "Diàriament", "Dl a Dv")
 
     val days = listOf("Dl", "Dt", "Dc", "Dj", "Dv", "Ds", "Dg")
     var selectedModel by remember { mutableStateOf(initialAlarm?.testModel ?: "Bàsic") }
@@ -110,8 +105,15 @@ fun CrearAlarmaScreen(
     var colorTextButtom = Color(0xF7676161)
     var fontSizeTitols = MaterialTheme.typography.titleSmall.copy(color = Color.White)
     val customSelectedDays = remember { mutableStateOf(listOf<Int>()) }
+
+
+    if (initialAlarm != null) {
+        customSelectedDays.value = selectedDays
+    }
+
     // Actualitzem els dies seleccionats quan canvia el tipus de repetició
     LaunchedEffect(repeatType) {
+
         selectedDays = when (repeatType) {
             "Dl a Dv" -> (1..5).toList()
             "Diàriament" -> (1..7).toList()
@@ -129,7 +131,7 @@ fun CrearAlarmaScreen(
                 showSoundSelector = false
             },
             onCancel = { showSoundSelector = false }
-     )
+        )
         return
     }
 
@@ -166,7 +168,12 @@ fun CrearAlarmaScreen(
             OutlinedTextField(
                 value = alarmName,
                 onValueChange = { alarmName = it },
-                label = { Text("Nom de l'alarma (opcional)", color = Color.White.copy(alpha = 0.8f)) },
+                label = {
+                    Text(
+                        "Nom de l'alarma (opcional)",
+                        color = Color.White.copy(alpha = 0.8f)
+                    )
+                },
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
@@ -234,7 +241,7 @@ fun CrearAlarmaScreen(
                     style = fontSizeTitols
                 )
 
-                RodetaSeleccioHorizontal (
+                RodetaSeleccioHorizontal(
                     items = repeatOptions,
                     value = repeatType,
                     onValueChange = { repeatType = it }
@@ -267,7 +274,6 @@ fun CrearAlarmaScreen(
                                 onClick = {
                                     if (enabled) {
                                         selectedDays = if (selected) selectedDays - dayNumber
-
                                         else selectedDays + dayNumber
                                     }
                                     customSelectedDays.value = selectedDays
@@ -402,7 +408,7 @@ fun CrearAlarmaScreen(
                     .padding(bottom = 26.dp)
                     .height(56.dp),
 
-                enabled = selectedDays.isNotEmpty() ,
+                enabled = selectedDays.isNotEmpty(),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White,
                     disabledContainerColor = Color(0xFF282727)  // Blanc amb ~10% alpha
@@ -412,7 +418,7 @@ fun CrearAlarmaScreen(
                 Text(
                     text = "GUARDAR ALARMA",
                     style = MaterialTheme.typography.labelLarge.copy(
-                        color = if (selectedDays.isNotEmpty() || repeatType == "Una vegada") Color.Black else colorTextButtom,
+                        color = if (selectedDays.isNotEmpty()) Color.Black else colorTextButtom,
                         fontWeight = FontWeight.Bold
                     )
                 )

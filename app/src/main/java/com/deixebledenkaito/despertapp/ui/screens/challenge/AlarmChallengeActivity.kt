@@ -4,13 +4,10 @@ import android.annotation.SuppressLint
 import android.app.KeyguardManager
 
 import android.app.admin.DevicePolicyManager
-import android.content.Context
-
 import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
-
 import android.os.PowerManager
 import android.util.Log
 import android.view.View
@@ -24,10 +21,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-
 import androidx.lifecycle.lifecycleScope
 import com.deixebledenkaito.despertapp.data.AlarmDatabase
-
 import com.deixebledenkaito.despertapp.receiver.AlarmService
 import com.deixebledenkaito.despertapp.repositroy.AlarmRepository
 import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.angles.AnglesChallengeGenerator
@@ -47,8 +42,7 @@ class AlarmChallengeActivity : ComponentActivity() {
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var wakeLock: PowerManager.WakeLock
     private var fromLockScreen = false
-    private var volume = 8 // Volum per defecte
-    private lateinit var finalChallengeType: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,14 +70,17 @@ class AlarmChallengeActivity : ComponentActivity() {
             setShowWhenLocked(true)
             setTurnScreenOn(true)
 
-            val keyguardManager = getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-            keyguardManager.requestDismissKeyguard(this, null)
+            val keyguardManager = getSystemService(KEYGUARD_SERVICE) as KeyguardManager
+            if (keyguardManager.isKeyguardLocked) {
+                keyguardManager.requestDismissKeyguard(this, null)
+            }
         } else {
             window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
             window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
         }
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
 
         //        AQUI AGAFEM EL TIPUS DE MODEL QUE TE L'ALARMA'
         val testModel = intent.getStringExtra("TEST_MODEL") ?: "Bàsic"
@@ -174,7 +171,8 @@ private fun handleSnooze() {
             Log.d("AlarmChallenge", "Alarma posposada a: $snoozedTime")
             val updatedAlarm = alarm.copy(
                 hour = snoozedTime.get(Calendar.HOUR_OF_DAY),
-                minute = snoozedTime.get(Calendar.MINUTE)
+                minute = snoozedTime.get(Calendar.MINUTE),
+                isActive = true
             )
 
             repo.update(updatedAlarm) // Això desencadena el Flow per refrescar la UI

@@ -2,25 +2,20 @@ package com.deixebledenkaito.despertapp.utils
 
 import android.annotation.SuppressLint
 import android.content.Context
-
 import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaPlayer
-
 import android.os.Build
 import android.os.PowerManager
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
 import com.deixebledenkaito.despertapp.R
-
 import com.deixebledenkaito.despertapp.preferences.AlarmPreferencesManager
-
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-
 import androidx.core.net.toUri
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.selectsounds.CustomSoundManager
 
