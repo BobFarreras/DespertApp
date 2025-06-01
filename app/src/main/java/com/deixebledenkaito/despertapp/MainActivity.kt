@@ -1,4 +1,6 @@
 package com.deixebledenkaito.despertapp
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.deixebledenkaito.despertapp.navigation.NavGraph
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
@@ -25,6 +29,21 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            // Sol·licita permís per notificacions si cal
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        android.Manifest.permission.POST_NOTIFICATIONS
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                        1001
+                    )
+                }
+            }
+
             DespertAppTheme {
 
                 Box(
@@ -46,4 +65,5 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 }

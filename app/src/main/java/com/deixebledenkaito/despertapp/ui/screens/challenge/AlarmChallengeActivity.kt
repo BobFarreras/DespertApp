@@ -21,7 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.lifecycle.lifecycleScope
+
 import com.deixebledenkaito.despertapp.data.AlarmDatabase
 import com.deixebledenkaito.despertapp.receiver.AlarmService
 import com.deixebledenkaito.despertapp.repositroy.AlarmRepository
@@ -44,43 +44,28 @@ class AlarmChallengeActivity : ComponentActivity() {
     private var fromLockScreen = false
 
 
+    @SuppressLint("ImplicitSamInstance")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("AlarmChallenge", "Iniciant activitat de repte d'alarma")
 
+        // Marca la notificació com a clicada
+        AlarmService.wasNotificationTapped = true
+
+        // Iniciar generadors
         CulturaChallengeGenerator.init(applicationContext)
         AnimeChallengeGenerator.init(applicationContext)
         AnglesChallengeGenerator.init(applicationContext)
 
-        // 1. Configurar so i wake lock
-        val alarmSound = intent.getStringExtra("ALARM_SOUND") ?: "default"
+        // Parar servei perquè activitat control·li el so
+        stopService(Intent(this, AlarmService::class.java))
 
-        // Configurar el mediaPlayer amb el so correcte
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                mediaPlayer = AlarmUtils.playAlarmSound(this@AlarmChallengeActivity, soundId = alarmSound)
-            } catch (e: Exception) {
-                Log.e("AlarmChallenge", "Error en reproduir el so de l'alarma", e)
-            }
-        }
+        // Assegurar pantalla activa
         wakeLock = AlarmUtils.acquireWakeLock(this)
 
         // Configuració per mostrar sobre el bloqueig
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-            setShowWhenLocked(true)
-            setTurnScreenOn(true)
-
-            val keyguardManager = getSystemService(KEYGUARD_SERVICE) as KeyguardManager
-            if (keyguardManager.isKeyguardLocked) {
-                keyguardManager.requestDismissKeyguard(this, null)
-            }
-        } else {
-            window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
-            window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
-        }
-
+        configurarPantallaBloqueig()
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-
 
         //        AQUI AGAFEM EL TIPUS DE MODEL QUE TE L'ALARMA'
         val testModel = intent.getStringExtra("TEST_MODEL") ?: "Bàsic"
@@ -122,6 +107,15 @@ class AlarmChallengeActivity : ComponentActivity() {
             }
         }
     }
+    private fun configurarPantallaBloqueig() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+        } else {
+            window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
+            window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
+        }
+    }
 //    FUNCIO QUE COMPROVA LA LOGICA DE SI L'USUARI A ASERTAT!'
     private fun handleCorrectAnswer() {
 
@@ -144,48 +138,51 @@ class AlarmChallengeActivity : ComponentActivity() {
         finish()
 
     }
-//    FUNCIO QUE POSPOSA L'ALARMA 10 MIN'
-private fun handleSnooze() {
-    mediaPlayer.stop()
-    mediaPlayer.release()
-    if (wakeLock.isHeld) wakeLock.release()
 
-    val alarmId = intent.getIntExtra("ALARM_ID", -1)
-    if (alarmId == -1) {
-        Toast.makeText(this, "Error: ID d'alarma no vàlid", Toast.LENGTH_SHORT).show()
-        finish()
-        return
-    }
+    //    FUNCIO QUE POSPOSA L'ALARMA 10 MIN'
+    private fun handleSnooze() {
 
-    // Recuperar i modificar l'alarma a la base de dades
-    CoroutineScope(Dispatchers.IO).launch {
-        val dao = AlarmDatabase.getDatabase(this@AlarmChallengeActivity).alarmDao()
-        val repo = AlarmRepository(dao)
-        val alarm = repo.getAlarmById(alarmId)
-        Log.d("AlarmChallenge", "Alarma recuperada: $alarm")
-        if (alarm != null) {
-            val snoozedTime = Calendar.getInstance().apply {
-                timeInMillis = System.currentTimeMillis()
-                add(Calendar.MINUTE, 10)
+        if (wakeLock.isHeld) wakeLock.release()
+        mediaPlayer.stop()
+        mediaPlayer.release()
+
+
+        val alarmId = intent.getIntExtra("ALARM_ID", -1)
+        if (alarmId == -1) {
+            Toast.makeText(this, "Error: ID d'alarma no vàlid", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
+
+        // Recuperar i modificar l'alarma a la base de dades
+        CoroutineScope(Dispatchers.IO).launch {
+            val dao = AlarmDatabase.getDatabase(this@AlarmChallengeActivity).alarmDao()
+            val repo = AlarmRepository(dao)
+            val alarm = repo.getAlarmById(alarmId)
+            Log.d("AlarmChallenge", "Alarma recuperada: $alarm")
+            if (alarm != null) {
+                val snoozedTime = Calendar.getInstance().apply {
+                    timeInMillis = System.currentTimeMillis()
+                    add(Calendar.MINUTE, 1)
+                }
+                Log.d("AlarmChallenge", "Alarma posposada a: $snoozedTime")
+                val updatedAlarm = alarm.copy(
+                    hour = snoozedTime.get(Calendar.HOUR_OF_DAY),
+                    minute = snoozedTime.get(Calendar.MINUTE),
+                    isActive = true
+                )
+
+                repo.update(updatedAlarm) // Això desencadena el Flow per refrescar la UI
+
+                AlarmScheduler(this@AlarmChallengeActivity).schedule(updatedAlarm)
             }
-            Log.d("AlarmChallenge", "Alarma posposada a: $snoozedTime")
-            val updatedAlarm = alarm.copy(
-                hour = snoozedTime.get(Calendar.HOUR_OF_DAY),
-                minute = snoozedTime.get(Calendar.MINUTE),
-                isActive = true
-            )
+        }
 
-            repo.update(updatedAlarm) // Això desencadena el Flow per refrescar la UI
-
-            AlarmScheduler(this@AlarmChallengeActivity).schedule(updatedAlarm)
+        runOnUiThread {
+            Toast.makeText(this, "Alarma posposada per 10 minuts", Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
-
-    runOnUiThread {
-        Toast.makeText(this, "Alarma posposada per 10 minuts", Toast.LENGTH_SHORT).show()
-        finish()
-    }
-}
 
     //AMAGAR LA BOTTOM BAR DEL MOBIL
     @Suppress("DEPRECATION")
@@ -228,8 +225,14 @@ private fun handleSnooze() {
 
     @SuppressLint("Wakelock", "ImplicitSamInstance")
     override fun onDestroy() {
-        mediaPlayer.release()
-        if (wakeLock.isHeld) wakeLock.release() // ✅ Comprovació aquí també
+        if (this::mediaPlayer.isInitialized) {
+            mediaPlayer.release()
+        }
+
+        if (wakeLock.isHeld) {
+            wakeLock.release()
+        }
+
         stopService(Intent(this, AlarmService::class.java))
         super.onDestroy()
     }

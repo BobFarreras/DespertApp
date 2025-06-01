@@ -18,7 +18,15 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
+//⏰ Alarma programada → BroadcastReceiver (AlarmReceiver) rep l'intent →
+//📅 Comprova si toca avui →
+//▶️ Inicia servei AlarmService (amb notificació i so) →
+//🎯 Mostra repte a l’usuari →
+//🔁 Si recurrent → Reprograma
+//🛑 Si única → Desactiva
 // AlarmReceiver.kt
+//Hereta de BroadcastReceiver, que permet rebre esdeveniments del sistema o personalitzats, com una alarma programada amb AlarmManager.
+//La funció clau és onReceive(), que és cridada automàticament quan el receptor detecta un intent.
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
@@ -28,7 +36,8 @@ class AlarmReceiver : BroadcastReceiver() {
         val alarmSound = intent.getStringExtra("ALARM_SOUND") ?: "default"
         val challengeType = intent.getStringExtra("CHALLENGE_TYPE") ?: "Matemàtiques"
 
-
+//        Es crea un CoroutineScope per fer treball en segon pla, amb Dispatchers.IO (ideal per accés a base de dades).
+//        SupervisorJob() permet gestionar errors sense cancel·lar tota la jerarquia.
         CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
             try {
                 val repo = AlarmRepository(AlarmDatabase.getDatabase(context).alarmDao())
@@ -52,7 +61,11 @@ class AlarmReceiver : BroadcastReceiver() {
                     // 3. Iniciar el servei
                     val serviceIntent = Intent(context, AlarmService::class.java).apply {
                         putExtra("ALARM_ID", alarmId)
+                        putExtra("ALARM_SOUND", alarmSound)
+                        putExtra("TEST_MODEL", testModel)
+                        putExtra("CHALLENGE_TYPE", challengeType)
                     }
+
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         context.startForegroundService(serviceIntent)
                     } else {
@@ -60,17 +73,17 @@ class AlarmReceiver : BroadcastReceiver() {
                     }
 
                     // 4. Obrir la pantalla del repte
-                    val challengeIntent =
-                        Intent(context, AlarmChallengeActivity::class.java).apply {
-                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-                                    Intent.FLAG_ACTIVITY_CLEAR_TASK or
-                                    Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-                            putExtra("ALARM_ID", alarmId)
-                            putExtra("ALARM_SOUND", alarmSound)
-                            putExtra("TEST_MODEL", testModel)
-                            putExtra("CHALLENGE_TYPE", challengeType)
-                        }
-                    context.startActivity(challengeIntent)
+//                    val challengeIntent =
+//                        Intent(context, AlarmChallengeActivity::class.java).apply {
+//                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+//                                    Intent.FLAG_ACTIVITY_CLEAR_TASK or
+//                                    Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
+//                            putExtra("ALARM_ID", alarmId)
+//                            putExtra("ALARM_SOUND", alarmSound)
+//                            putExtra("TEST_MODEL", testModel)
+//                            putExtra("CHALLENGE_TYPE", challengeType)
+//                        }
+//                    context.startActivity(challengeIntent)
 
                     // 5. Reprogramar o desactivar segons tipus
                     if (it.isRecurring) {

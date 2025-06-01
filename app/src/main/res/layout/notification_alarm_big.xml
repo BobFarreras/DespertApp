@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/notification_alarm_big.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFFDE7"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/notification_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="⏰ ALARMA"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#C62828" />
+
+    <TextView
+        android:id="@+id/notification_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Desperta i fes el repte ara!"
+        android:textSize="18sp"
+        android:textColor="#424242"
+        android:paddingTop="8dp" />
+
+    <ImageView
+        android:id="@+id/notification_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/icon_aleatori" />
+</LinearLayout>

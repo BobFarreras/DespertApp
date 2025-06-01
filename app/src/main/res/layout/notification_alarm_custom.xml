@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/notification_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <!-- Espaiador que es pot alternar per simular vibració -->
+    <TextView
+        android:id="@+id/vibration_spacer"
+        android:layout_width="4dp"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/notification_emoji"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="⏰"
+        android:textSize="24sp"
+        android:layout_gravity="center"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"/>
+
+    <TextView
+        android:id="@+id/notification_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ESPAVILA!"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#D32F2F"
+        android:gravity="center"
+        android:paddingEnd="10dp"/>
+
+    <TextView
+        android:id="@+id/notification_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Toca per desactivar!"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:gravity="start"
+        android:singleLine="true"
+        android:ellipsize="none"
+        android:paddingTop="8dp"
+        />
+
+</LinearLayout>
