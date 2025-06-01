@@ -8,6 +8,6 @@ import android.util.Log
 class AlarmTappedReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent?) {
         Log.d("AlarmService", "Notificació clicada")
-        AlarmService.wasNotificationTapped = true
+
     }
 }

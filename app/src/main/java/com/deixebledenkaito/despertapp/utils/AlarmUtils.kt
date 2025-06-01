@@ -97,9 +97,10 @@ object AlarmUtils {
         }
 
         // Vibració
+        Log.d("AlarmUtils", "Vibrate: ${prefs.vibrationEnabled}")
         if (prefs.vibrationEnabled) {
             val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 vibrator.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE))
             } else {
                 vibrator.vibrate(1000)

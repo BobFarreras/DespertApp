@@ -57,8 +57,6 @@ class AlarmChallengeActivity : ComponentActivity() {
         AnimeChallengeGenerator.init(applicationContext)
         AnglesChallengeGenerator.init(applicationContext)
 
-        // Parar servei perquè activitat control·li el so
-        stopService(Intent(this, AlarmService::class.java))
 
         // Assegurar pantalla activa
         wakeLock = AlarmUtils.acquireWakeLock(this)
@@ -117,35 +115,33 @@ class AlarmChallengeActivity : ComponentActivity() {
         }
     }
 //    FUNCIO QUE COMPROVA LA LOGICA DE SI L'USUARI A ASERTAT!'
+
     private fun handleCorrectAnswer() {
+    // Aturem el servei que reprodueix l'alarma
+    stopService(Intent(this, AlarmService::class.java))
 
-        // Aturar recursos
-        mediaPlayer.stop()
-        mediaPlayer.release()
-        if (wakeLock.isHeld) wakeLock.release() // ✅ Comprovació abans de fer release()
-
-
-
-        // Si venim de pantalla bloquejada, tornar al bloqueig
-        // Tornar a bloqueig si cal
-        if (fromLockScreen) {
-            val devicePolicyManager = getSystemService(DEVICE_POLICY_SERVICE) as DevicePolicyManager
-            devicePolicyManager.lockNow()
-        }
-
-
-
-        finish()
-
+        // Alliberem el wake lock
+    if (wakeLock.isHeld) {
+        wakeLock.release()
     }
 
+    // Bloquem la pantalla si venim de lockscreen
+    if (fromLockScreen) {
+        val devicePolicyManager = getSystemService(DEVICE_POLICY_SERVICE) as DevicePolicyManager
+        devicePolicyManager.lockNow()
+    }
+
+    // Tanquem l’activitat
+    finish()
+}
+
     //    FUNCIO QUE POSPOSA L'ALARMA 10 MIN'
+    @SuppressLint("ImplicitSamInstance")
     private fun handleSnooze() {
 
-        if (wakeLock.isHeld) wakeLock.release()
-        mediaPlayer.stop()
-        mediaPlayer.release()
-
+        // Aturar recursos
+        // Parar servei perquè activitat control·li el so
+        stopService(Intent(this, AlarmService::class.java))
 
         val alarmId = intent.getIntExtra("ALARM_ID", -1)
         if (alarmId == -1) {
@@ -163,7 +159,7 @@ class AlarmChallengeActivity : ComponentActivity() {
             if (alarm != null) {
                 val snoozedTime = Calendar.getInstance().apply {
                     timeInMillis = System.currentTimeMillis()
-                    add(Calendar.MINUTE, 1)
+                    add(Calendar.MINUTE, 10) // temps posposar alarma
                 }
                 Log.d("AlarmChallenge", "Alarma posposada a: $snoozedTime")
                 val updatedAlarm = alarm.copy(

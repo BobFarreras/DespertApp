@@ -32,6 +32,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import androidx.core.graphics.toColorInt
+import com.deixebledenkaito.despertapp.preferences.AlarmPreferencesManager
 
 //Aquesta classe hereta de Service, una classe base en Android per a serveis que poden funcionar en segon pla, encara que
 //l'usuari no estigui interactuant directament amb l'app.
@@ -56,7 +57,7 @@ class AlarmService : Service() {
             stopSelf()
         }
     }
-    private lateinit var vibrator: Vibrator
+
 //    Aquesta funció es crida quan un altre component vol connectar-se al servei mitjançant "binding".
 //    Torna null perquè aquest servei no es vincula amb cap component extern, sinó que s'executa de manera autònoma (amb startService() o startForegroundService()).
 
@@ -86,11 +87,15 @@ class AlarmService : Service() {
 
         Log.d("AlarmService", "Reproduint so amb URI: $soundUriString")
         startAlarmSound(soundUriString)
-        startVibration()
+
+
 
         // Iniciar temporitzador de timeout (15s)
         handler.postDelayed(timeoutRunnable, 15_000)
 
+        serviceScope.launch {
+            startVibration() // <-- Afegir aquesta línia
+        }
         // Aquí pots iniciar el so de l’alarma o altra lògica
         return START_STICKY
     }
@@ -116,26 +121,41 @@ class AlarmService : Service() {
             }
         }
     }
-    private fun startVibration() {
-        vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        val pattern = longArrayOf(0, 1000, 1000) // esperar 0ms, vibrar 1s, pausar 1s
-        vibrator.vibrate(VibrationEffect.createWaveform(pattern, 0)) // 0 = repetir cíclicament
-    }
+
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.d("AlarmService", "onDestroy called")
         serviceScope.cancel()
         handler.removeCallbacks(timeoutRunnable)
-
+        stopAlarmSound() // <- aquí aturem el so realment!
+        stopVibration() // <-- Afegir aquesta línia
     }
+    suspend fun startVibration() {
+        val prefs = AlarmPreferencesManager.loadPreferences(this)
+        if (prefs.vibrationEnabled) {
+            val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            val pattern = longArrayOf(0, 1000, 1000) // Espera 0ms, vibra 1000ms, pausa 1000ms
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val effect = VibrationEffect.createWaveform(pattern, 0) // 0 = no repeteix
+                vibrator.vibrate(effect)
+            } else {
+                vibrator.vibrate(pattern, -1) // -1 = no repeteix
+            }
+        }
+    }
+    private fun stopVibration() {
+        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        vibrator.cancel()
+    }
     private fun stopAlarmSound() {
         mediaPlayer?.let {
             if (it.isPlaying) it.stop()
             it.release()
             mediaPlayer = null
         }
-        vibrator.cancel()
+
     }
     private fun cancelAlarmNotification() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

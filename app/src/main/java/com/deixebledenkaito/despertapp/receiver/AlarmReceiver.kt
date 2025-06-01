@@ -46,7 +46,7 @@ class AlarmReceiver : BroadcastReceiver() {
                 // 2. Validar si avui toca
                 alarm?.let {
                     val currentDayOfWeek =
-                        LocalDate.now().dayOfWeek.value % 7 // Dilluns = 1, ..., Diumenge = 0
+                        LocalDate.now().dayOfWeek.value
 
                     if (it.isRecurring && it.daysOfWeek.isNotEmpty()) {
                         if (currentDayOfWeek !in it.daysOfWeek) {
@@ -111,7 +111,7 @@ private fun calculateNextTriggerTime(alarm: AlarmEntity): LocalTime {
     return if (alarm.isRecurring && alarm.daysOfWeek.isNotEmpty()) {
         // Per alarmes setmanals, calculem el proper dia
         val now = LocalDateTime.now()
-        val currentDayOfWeek = now.dayOfWeek.value % 7 // Convertim a 1-7 (Dilluns-Diumenge)
+        val currentDayOfWeek = now.dayOfWeek.value // Convertim a 1-7 (Dilluns-Diumenge)
         Log.e("CalcularAlarmReceiver", "now: $now, currentDayOfWeek: $currentDayOfWeek")
 
         val nextDay = alarm.daysOfWeek

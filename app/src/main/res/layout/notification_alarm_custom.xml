@@ -5,15 +5,8 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:padding="2dp">
 
-    <!-- Espaiador que es pot alternar per simular vibració -->
-    <TextView
-        android:id="@+id/vibration_spacer"
-        android:layout_width="4dp"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        android:text="" />
 
     <TextView
         android:id="@+id/notification_emoji"
@@ -21,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="⏰"
         android:textSize="24sp"
-        android:layout_gravity="center"
+        android:layout_gravity="start"
         android:layout_marginStart="6dp"
         android:layout_marginEnd="6dp"/>
 
@@ -30,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ESPAVILA!"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         android:textColor="#D32F2F"
         android:gravity="center"
