@@ -91,8 +91,8 @@ dependencies {
     implementation (libs.firebase.auth.ktx)
     implementation (platform(libs.firebase.bom))
     implementation (libs.firebase.firestore.ktx)  // Firestore
-    implementation ("com.google.firebase:firebase-crashlytics:19.4.3")
-    implementation ("com.google.firebase:firebase-analytics:22.4.0") // opcional però recomanat
+    implementation (libs.firebase.crashlytics)
+    implementation (libs.firebase.analytics) // opcional però recomanat
 
     // Hilt (DI)
     implementation (libs.hilt.android)
@@ -100,43 +100,44 @@ dependencies {
     implementation (libs.androidx.hilt.navigation.compose)
 
     // Per a selecció d'imatges  COIL
-    implementation ("io.coil-kt:coil-compose:2.4.0")
+    implementation (libs.coil.compose)
 
     //MATERIAL 3 ICONS
-    implementation("androidx.compose.material3:material3:1.2.1")
+    implementation(libs.material3)
     implementation (libs.androidx.material.icons.core)
     implementation (libs.androidx.material.icons.extended)
 
 //ANIMATION
-    implementation("androidx.compose.animation:animation:1.8.1")
+    implementation(libs.androidx.animation)
 
     // Room
-    implementation ("androidx.room:room-runtime:2.6.1")
-    kapt ("androidx.room:room-compiler:2.6.1")
-    implementation ("androidx.room:room-ktx:2.6.1")
+    implementation (libs.androidx.room.runtime)
+
+    kapt (libs.androidx.room.compiler)
+    implementation (libs.androidx.room.ktx)
 
 // Lifecycle & ViewModel
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation (libs.androidx.lifecycle.runtime.ktx.v270)
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
 
     // Logging
-    implementation ("androidx.compose.runtime:runtime-livedata:1.6.5")
+    implementation (libs.androidx.runtime.livedata)
 
     // Coroutines
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+    implementation (libs.kotlinx.coroutines.core)
+    implementation (libs.kotlinx.coroutines.android)
 
-    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
+    implementation (libs.accompanist.systemuicontroller)
 
     //Poder lleguir JSON
-    implementation ("com.google.code.gson:gson:2.10.1")
+    implementation (libs.gson)
 
     // Afegir a les dependencies de l'app
-    implementation ("androidx.work:work-runtime-ktx:2.7.1")
+    implementation (libs.androidx.work.runtime.ktx)
 
     // DataStore Preferences
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation(libs.androidx.datastore.preferences)
 
 //EXPOTAR AUDIOS
-    implementation("androidx.media3:media3-exoplayer:1.7.1")
+    implementation(libs.androidx.media3.exoplayer)
 }
