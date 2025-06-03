@@ -137,7 +137,7 @@ fun SelectSoundScreen(
                                 }
 
                                 mediaPlayer?.apply {
-                                    setAudioStreamType(AudioManager.STREAM_ALARM)
+                                    setAudioStreamType(AudioManager.STREAM_MUSIC)
                                     prepare()
                                     seekTo(sound.startTimeMs?.toInt() ?: 0)
                                     isLooping = true

@@ -31,8 +31,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import androidx.core.graphics.toColorInt
+
 import com.deixebledenkaito.despertapp.preferences.AlarmPreferencesManager
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 //Aquesta classe hereta de Service, una classe base en Android per a serveis que poden funcionar en segon pla, encara que
 //l'usuari no estigui interactuant directament amb l'app.
@@ -91,7 +92,7 @@ class AlarmService : Service() {
 
 
         // Iniciar temporitzador de timeout (15s)
-        handler.postDelayed(timeoutRunnable, 15_000)
+        handler.postDelayed(timeoutRunnable, 30_000)
 
         serviceScope.launch {
             startVibration() // <-- Afegir aquesta línia
@@ -114,6 +115,7 @@ class AlarmService : Service() {
                 mediaPlayer?.start()
             } catch (e: Exception) {
                 Log.e("AlarmService", "Error reproduint el so", e)
+                FirebaseCrashlytics.getInstance().recordException(e)
                 // fallback
                 mediaPlayer = MediaPlayer.create(this@AlarmService, R.raw.alarm)
                 mediaPlayer?.isLooping = true
@@ -134,6 +136,7 @@ class AlarmService : Service() {
     suspend fun startVibration() {
         val prefs = AlarmPreferencesManager.loadPreferences(this)
         if (prefs.vibrationEnabled) {
+            @Suppress("DEPRECATION")
             val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             val pattern = longArrayOf(0, 1000, 1000) // Espera 0ms, vibra 1000ms, pausa 1000ms
 

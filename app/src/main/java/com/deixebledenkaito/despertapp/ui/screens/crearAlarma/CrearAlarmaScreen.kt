@@ -95,7 +95,7 @@ fun CrearAlarmaScreen(
     }
     var showChallengeSelector by remember { mutableStateOf(false) }
 
-    var repeatType by remember { mutableStateOf(initialAlarm?.repeticioDays ?: "Una vegada") }
+    var repeatType by remember { mutableStateOf(initialAlarm?.repeticioDays ?: "Personalitzat") }
     val repeatOptions = listOf("Personalitzat", "Una vegada", "Diàriament", "Dl a Dv")
 
     val days = listOf("Dl", "Dt", "Dc", "Dj", "Dv", "Ds", "Dg")
@@ -236,6 +236,7 @@ fun CrearAlarmaScreen(
 
             // Afegim el nou selector de repetició
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+
                 Text(
                     text = "Repetició",
                     style = fontSizeTitols

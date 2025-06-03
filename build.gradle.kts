@@ -6,4 +6,6 @@ plugins {
 
     alias(libs.plugins.googleServices)
     alias(libs.plugins.androidHilt) apply false
+    id("com.google.firebase.crashlytics") version "3.0.3" apply false
+
 }

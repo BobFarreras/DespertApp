@@ -35,7 +35,7 @@ fun SegmentedControl(
     Box(
         modifier = modifier
             .background(Color.White.copy(alpha = 0.1f), RoundedCornerShape(12.dp))
-            .padding(4.dp)
+
     ) {
         // Indicador de selecció
         Box(
@@ -56,13 +56,17 @@ fun SegmentedControl(
                 Text(
                     text = item,
                     style = MaterialTheme.typography.titleMedium.copy(
-                        color = if (item == selectedItem) Color.White else colorTextModels
+                        color = if (item == selectedItem) Color.White else colorTextModels,
+
                     ),
                     modifier = Modifier
                         .weight(1f)
                         .clickable { onItemSelect(item) }
-                        .padding(vertical = 10.dp)
+                        .padding(vertical = 8.dp)
                         .wrapContentWidth()
+                        .background(color = if (item == selectedItem) Color.White.copy(alpha = 0.08f) else Color.Transparent, RoundedCornerShape(12.dp))
+                        .padding(horizontal = 18.dp)
+
                 )
             }
         }

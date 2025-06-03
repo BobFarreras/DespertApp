@@ -3,6 +3,7 @@ package com.deixebledenkaito.despertapp.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Build
@@ -37,9 +38,24 @@ object AlarmUtils {
             audioManager.setStreamVolume(AudioManager.STREAM_ALARM, volumeLevel, 0)
         }
 
-        val mediaPlayer = MediaPlayer()
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM)
-        mediaPlayer.isLooping = true
+        val mediaPlayer = MediaPlayer().apply {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                // Método moderno (API 21+)
+                setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_ALARM)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build()
+                )
+            } else {
+                // Método antiguo (solo para compatibilidad)
+                @Suppress("DEPRECATION")
+                setAudioStreamType(AudioManager.STREAM_ALARM)
+            }
+            isLooping = true
+        }
+
+
 
         try {
             if (soundId.startsWith("content://")) {
@@ -95,15 +111,18 @@ object AlarmUtils {
                 }
             }
         }
+        val pattern = longArrayOf(0, 1000, 500) // Patró millorat: 0ms espera, 1s vibració, 0.5s pausa
 
         // Vibració
         Log.d("AlarmUtils", "Vibrate: ${prefs.vibrationEnabled}")
         if (prefs.vibrationEnabled) {
+            val effect = VibrationEffect.createWaveform(pattern, 0)
+
             val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 vibrator.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE))
             } else {
-                vibrator.vibrate(1000)
+                vibrator.vibrate(effect)
             }
         }
 

@@ -6,6 +6,8 @@ plugins {
     kotlin("kapt")
     alias(libs.plugins.androidHilt)
     alias(libs.plugins.googleServices)
+    id("com.google.firebase.crashlytics")
+
 }
 
 android {
@@ -17,7 +19,7 @@ android {
         minSdk = 26
         targetSdk = 35
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -89,7 +91,8 @@ dependencies {
     implementation (libs.firebase.auth.ktx)
     implementation (platform(libs.firebase.bom))
     implementation (libs.firebase.firestore.ktx)  // Firestore
-
+    implementation ("com.google.firebase:firebase-crashlytics:19.4.3")
+    implementation ("com.google.firebase:firebase-analytics:22.4.0") // opcional però recomanat
 
     // Hilt (DI)
     implementation (libs.hilt.android)

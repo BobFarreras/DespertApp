@@ -5,15 +5,18 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import android.widget.Toast
 import com.deixebledenkaito.despertapp.data.AlarmDatabase
 import com.deixebledenkaito.despertapp.data.AlarmEntity
 import com.deixebledenkaito.despertapp.repositroy.AlarmRepository
-import com.deixebledenkaito.despertapp.ui.screens.challenge.AlarmChallengeActivity
+
 import com.deixebledenkaito.despertapp.viewmodel.AlarmScheduler
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -72,19 +75,6 @@ class AlarmReceiver : BroadcastReceiver() {
                         context.startService(serviceIntent)
                     }
 
-                    // 4. Obrir la pantalla del repte
-//                    val challengeIntent =
-//                        Intent(context, AlarmChallengeActivity::class.java).apply {
-//                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-//                                    Intent.FLAG_ACTIVITY_CLEAR_TASK or
-//                                    Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS
-//                            putExtra("ALARM_ID", alarmId)
-//                            putExtra("ALARM_SOUND", alarmSound)
-//                            putExtra("TEST_MODEL", testModel)
-//                            putExtra("CHALLENGE_TYPE", challengeType)
-//                        }
-//                    context.startActivity(challengeIntent)
-
                     // 5. Reprogramar o desactivar segons tipus
                     if (it.isRecurring) {
                         val nextTriggerTime = calculateNextTriggerTime(it)
@@ -101,12 +91,23 @@ class AlarmReceiver : BroadcastReceiver() {
                 }
             } catch (e: Exception) {
                 Log.e("AlarmReceiver", "Error en gestionar l'alarma", e)
+                FirebaseCrashlytics.getInstance().recordException(e) // <-- Aquesta línia
+
+                // Notifica l'error
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Error en l'alarma", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
 }
 
-
+/**
+ * Calcula el proper temps d'activació per a una alarma recurrent.
+ * @param alarm L'entitat de l'alarma amb la configuració de repetició
+ * @return LocalTime amb l'hora calculada per a la propera activació
+ * @throws IllegalArgumentException si l'alarma no té dies configurats però és recurrent
+ */
 private fun calculateNextTriggerTime(alarm: AlarmEntity): LocalTime {
     return if (alarm.isRecurring && alarm.daysOfWeek.isNotEmpty()) {
         // Per alarmes setmanals, calculem el proper dia

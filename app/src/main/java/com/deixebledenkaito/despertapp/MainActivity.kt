@@ -20,6 +20,7 @@ import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 import com.deixebledenkaito.despertapp.ui.screens.components.SystemBarsColorSync
 import com.deixebledenkaito.despertapp.ui.theme.DespertAppTheme
 import com.deixebledenkaito.despertapp.viewmodel.AlarmViewModel
+import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,6 +28,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
         enableEdgeToEdge()
         setContent {
             // Sol·licita permís per notificacions si cal

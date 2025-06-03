@@ -1,7 +1,7 @@
 package com.deixebledenkaito.despertapp.ui.screens.challenge
 
 import android.annotation.SuppressLint
-import android.app.KeyguardManager
+
 
 import android.app.admin.DevicePolicyManager
 import android.content.Intent
@@ -32,6 +32,7 @@ import com.deixebledenkaito.despertapp.ui.theme.DespertAppTheme
 import com.deixebledenkaito.despertapp.utils.AlarmUtils
 import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.matematiques.MathChallengeGenerator
 import com.deixebledenkaito.despertapp.viewmodel.AlarmScheduler
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -105,35 +106,47 @@ class AlarmChallengeActivity : ComponentActivity() {
             }
         }
     }
+
     private fun configurarPantallaBloqueig() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
             setTurnScreenOn(true)
         } else {
-            window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
-            window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
+            @Suppress("DEPRECATION")
+            window.addFlags(
+                WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or
+                        WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+            )
         }
     }
 //    FUNCIO QUE COMPROVA LA LOGICA DE SI L'USUARI A ASERTAT!'
 
+    @SuppressLint("ImplicitSamInstance")
     private fun handleCorrectAnswer() {
-    // Aturem el servei que reprodueix l'alarma
-    stopService(Intent(this, AlarmService::class.java))
+        try {
+            // Aturem el servei que reprodueix l'alarma
+            stopService(Intent(this, AlarmService::class.java))
+            // Alliberem el wake lock
+            if (wakeLock.isHeld) {
+                wakeLock.release()
+            }
 
-        // Alliberem el wake lock
-    if (wakeLock.isHeld) {
-        wakeLock.release()
+
+            // Bloquem la pantalla si venim de lockscreen
+            if (fromLockScreen) {
+                val devicePolicyManager =
+                    getSystemService(DEVICE_POLICY_SERVICE) as DevicePolicyManager
+                devicePolicyManager.lockNow()
+            }
+            FirebaseCrashlytics.getInstance().log("Crash de prova")
+            FirebaseCrashlytics.getInstance().recordException(RuntimeException("Crash de prova"))
+        } catch (e: Exception) {
+            Log.e("AlarmChallenge", "Error al gestionar resposta correcta", e)
+        }finally {
+            finish()
+        }
     }
-
-    // Bloquem la pantalla si venim de lockscreen
-    if (fromLockScreen) {
-        val devicePolicyManager = getSystemService(DEVICE_POLICY_SERVICE) as DevicePolicyManager
-        devicePolicyManager.lockNow()
-    }
-
-    // Tanquem l’activitat
-    finish()
-}
 
     //    FUNCIO QUE POSPOSA L'ALARMA 10 MIN'
     @SuppressLint("ImplicitSamInstance")
