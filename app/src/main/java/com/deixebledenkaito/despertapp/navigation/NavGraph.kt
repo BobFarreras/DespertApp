@@ -99,14 +99,10 @@ fun NavGraph(
                 )
             }
             composable(Screen.LanguageSettings.route) {
-                LanguageSettingsScreen(
-                    onBack = { navController.popBackStack() }
-                )
+                LanguageSettingsScreen()
             }
             composable(Screen.AlarmSettings.route) {
-                AlarmSettingsScreen(
-                    onBack = { navController.popBackStack() }
-                )
+                AlarmSettingsScreen()
             }
             composable(
                 route = Screen.EditAlarm.route,

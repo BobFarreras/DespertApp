@@ -1,8 +1,6 @@
 package com.deixebledenkaito.despertapp.ui.screens.challenge
 
 import android.annotation.SuppressLint
-
-
 import android.app.admin.DevicePolicyManager
 import android.content.Intent
 import android.media.MediaPlayer
@@ -21,7 +19,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-
 import com.deixebledenkaito.despertapp.data.AlarmDatabase
 import com.deixebledenkaito.despertapp.receiver.AlarmService
 import com.deixebledenkaito.despertapp.repositroy.AlarmRepository

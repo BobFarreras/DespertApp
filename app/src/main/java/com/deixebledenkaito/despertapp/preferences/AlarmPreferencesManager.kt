@@ -27,8 +27,8 @@ object AlarmPreferencesManager {
         val prefs = context.dataStore.data.first()
         return AlarmPreferences(
             volume = prefs[VOLUME] ?: 80,
-            vibrationEnabled = prefs[VIBRATION] ?: true,
-            increasingVolume = prefs[INCREASING_VOLUME] ?: false
+            vibrationEnabled = prefs[VIBRATION] != false,
+            increasingVolume = prefs[INCREASING_VOLUME] == true
         )
     }
 }

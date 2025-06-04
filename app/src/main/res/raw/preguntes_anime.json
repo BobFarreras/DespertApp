@@ -26,11 +26,6 @@
       "correctAnswer": "Del futur"
     },
     {
-      "question": "Quin és el protagonista de 'Dragon Ball'?",
-      "options": ["Goku", "Vegeta", "Piccolo", "Gohan"],
-      "correctAnswer": "Goku"
-    },
-    {
       "question": "Quin és l'objectiu principal dels pirates en 'One Piece'?",
       "options": ["Trobar el One Piece", "Ser els més forts", "Conquerir el món", "Vendre fruita del diable"],
       "correctAnswer": "Trobar el One Piece"
@@ -101,6 +96,66 @@
       "question": "Quin personatge de 'Attack on Titan' pot transformar-se en Titan Femella?",
       "options": ["Mikasa Ackerman", "Annie Leonhart", "Historia Reiss", "Sasha Braus"],
       "correctAnswer": "Annie Leonhart"
+    },
+    {
+      "question": "Quina és la fruta del diable de Luffy?",
+      "options": ["Gomu Gomu no Mi", "Mera Mera no Mi", "Hito Hito no Mi", "Ope Ope no Mi"],
+      "correctAnswer": "Gomu Gomu no Mi"
+    },
+    {
+      "question": "Quin és el nom del fill de Goku?",
+      "options": ["Gohan", "Goten", "Trunks", "Vegeta"],
+      "correctAnswer": "Gohan"
+    },
+    {
+      "question": "Quin és el nom de l’espasa d’Inuyasha?",
+      "options": ["Tessaiga", "Tenseiga", "Sou'unga", "Kikujumonji"],
+      "correctAnswer": "Tessaiga"
+    },
+    {
+      "question": "Quin és el nom del gat robot a ‘Doraemon’?",
+      "options": ["Nobita", "Doraemon", "Suneo", "Gian"],
+      "correctAnswer": "Doraemon"
+    },
+    {
+      "question": "Quin equip vol derrotar Ash Ketchum a ‘Pokémon’?",
+      "options": ["Team Aqua", "Team Rocket", "Team Galactic", "Team Skull"],
+      "correctAnswer": "Team Rocket"
+    },
+    {
+      "question": "Quin és el poder especial de Sailor Moon?",
+      "options": ["Transformar-se en guerrera", "Controlar el foc", "Llegir ments", "Teleportar-se"],
+      "correctAnswer": "Transformar-se en guerrera"
+    },
+    {
+      "question": "Quin és el nom del detectiu rival de Conan?",
+      "options": ["Heiji Hattori", "Kaito Kid", "Saguru Hakuba", "Toichi Kuroba"],
+      "correctAnswer": "Heiji Hattori"
+    },
+    {
+      "question": "Quin és el nom del pare de Goku?",
+      "options": ["Bardock", "Vegeta", "Raditz", "King Vegeta"],
+      "correctAnswer": "Bardock"
+    },
+    {
+      "question": "Quin és el nom del company de viatge d’Inuyasha?",
+      "options": ["Kagome", "Miroku", "Sango", "Shippo"],
+      "correctAnswer": "Kagome"
+    },
+    {
+      "question": "Quin és el nom del ninja principal a ‘Naruto’?",
+      "options": ["Naruto Uzumaki", "Sasuke Uchiha", "Kakashi Hatake", "Sakura Haruno"],
+      "correctAnswer": "Naruto Uzumaki"
+    },
+    {
+      "question": "Quin és el nom del ginyu force soldier més fort?",
+      "options": ["Ginyu", "Jeice", "Burter", "Recoome"],
+      "correctAnswer": "Ginyu"
+    },
+    {
+      "question": "Quin és el nom de l’enemic principal de ‘Death Note’?",
+      "options": ["L", "Near", "Mello", "Ryuk"],
+      "correctAnswer": "L"
     }
   ],
   "expert": [

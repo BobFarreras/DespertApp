@@ -1,4 +1,5 @@
 package com.deixebledenkaito.despertapp
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -16,6 +17,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.deixebledenkaito.despertapp.navigation.NavGraph
+import com.deixebledenkaito.despertapp.receiver.AlarmService
+import com.deixebledenkaito.despertapp.ui.screens.challenge.AlarmChallengeActivity
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 import com.deixebledenkaito.despertapp.ui.screens.components.SystemBarsColorSync
 import com.deixebledenkaito.despertapp.ui.theme.DespertAppTheme
@@ -30,6 +33,21 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
         enableEdgeToEdge()
+
+        if (AlarmService.isAlarmRinging && !AlarmService.wasNotificationTapped) {
+            val intent = Intent(this, AlarmChallengeActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                // Repassa si vols passar aquests extres segons les dades de l'alarma
+                putExtra("ALARM_ID", AlarmService.alarmId)
+                putExtra("TEST_MODEL", AlarmService.testModel)
+                putExtra("CHALLENGE_TYPE", AlarmService.challengeType)
+                putExtra("ALARM_SOUND", AlarmService.alarmSound)
+                putExtra("ALARM_SOUND_URI", AlarmService.alarmSoundUri)
+            }
+            startActivity(intent)
+            finish()
+            return
+        }
         setContent {
             // Sol·licita permís per notificacions si cal
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

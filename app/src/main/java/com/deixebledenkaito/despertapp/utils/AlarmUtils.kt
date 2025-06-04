@@ -22,12 +22,14 @@ import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.selectsounds.Custo
 
 object AlarmUtils {
 
+    private const val TAG = "AlarmUtils"
     private const val WAKE_TAG = "DespertApp::AlarmWakeLock"
 
     /**
      * Reprodueix l'àudio de l'alarma al màxim volum.
      * Retorna el MediaPlayer actiu.
      */
+    @SuppressLint("ObsoleteSdkInt")
     suspend fun playAlarmSound(context: Context, soundId: String = "default"): MediaPlayer {
         val prefs = AlarmPreferencesManager.loadPreferences(context)
         val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -40,7 +42,7 @@ object AlarmUtils {
 
         val mediaPlayer = MediaPlayer().apply {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                // Método moderno (API 21+)
+                // Método modern (API 21+)
                 setAudioAttributes(
                     AudioAttributes.Builder()
                         .setUsage(AudioAttributes.USAGE_ALARM)
@@ -48,7 +50,7 @@ object AlarmUtils {
                         .build()
                 )
             } else {
-                // Método antiguo (solo para compatibilidad)
+                // Método antic (solo para compatibilidad)
                 @Suppress("DEPRECATION")
                 setAudioStreamType(AudioManager.STREAM_ALARM)
             }
@@ -59,7 +61,7 @@ object AlarmUtils {
 
         try {
             if (soundId.startsWith("content://")) {
-                Log.d("AlarmUtils", "🔊 És un so personalitzat amb URI: $soundId")
+                Log.d(TAG, "🔊 És un so personalitzat amb URI: $soundId")
 
                 val uri = soundId.toUri()
                 context.contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -68,17 +70,17 @@ object AlarmUtils {
 
                 // 🔍 Comprovem el startTime guardat
                 val customSounds = CustomSoundManager.getCustomSounds(context)
-                Log.d("AlarmUtils", "🔎 Trobats ${customSounds.size} sons personalitzats")
+                Log.d(TAG, "🔎 Trobats ${customSounds.size} sons personalitzats")
 
                 val matched = customSounds.find { it.uriString == soundId }
                 val startTimeMs = matched?.startTimeMs ?: 0L
-                Log.d("AlarmUtils", "🎯 StartTime per a aquest so: $startTimeMs ms")
+                Log.d(TAG, "🎯 StartTime per a aquest so: $startTimeMs ms")
 
                 mediaPlayer.seekTo(startTimeMs.toInt()) // Exigeix Int
                 mediaPlayer.start()
 
             } else {
-                Log.d("AlarmUtils", "🔊 És un so integrat (resource): $soundId")
+                Log.d(TAG, "🔊 És un so integrat (resource): $soundId")
 
                 val soundResource = when (soundId) {
                     "Piano" -> R.raw.piano
@@ -99,12 +101,12 @@ object AlarmUtils {
                 mediaPlayer.start()
             }
         } catch (e: Exception) {
-            Log.e("AlarmUtils", "❌ Error reproduint el so", e)
+            Log.e(TAG, "❌ Error reproduint el so", e)
         }
 
         // Augment progressiu del volum
         if (prefs.increasingVolume) {
-            CoroutineScope(Dispatchers.IO).launch {
+            CoroutineScope(Dispatchers.Default).launch {
                 for (i in 1..volumeLevel) {
                     delay(500)
                     audioManager.setStreamVolume(AudioManager.STREAM_ALARM, i, 0)
@@ -114,16 +116,23 @@ object AlarmUtils {
         val pattern = longArrayOf(0, 1000, 500) // Patró millorat: 0ms espera, 1s vibració, 0.5s pausa
 
         // Vibració
-        Log.d("AlarmUtils", "Vibrate: ${prefs.vibrationEnabled}")
+        Log.d(TAG, "Vibrate: ${prefs.vibrationEnabled}")
         if (prefs.vibrationEnabled) {
-            val effect = VibrationEffect.createWaveform(pattern, 0)
-
-            val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                vibrator.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE))
+            val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                context.getSystemService(Vibrator::class.java)
             } else {
-                vibrator.vibrate(effect)
+                @Suppress("DEPRECATION")
+                context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator?
             }
+
+            vibrator?.let {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    it.vibrate(VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE))
+                } else {
+                    val effect = VibrationEffect.createWaveform(pattern, 0)
+                    it.vibrate(effect)
+                }
+            } ?: Log.w(TAG, "No s'ha pogut obtenir Vibrator per a vibrar")
         }
 
         return mediaPlayer

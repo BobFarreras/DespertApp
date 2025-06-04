@@ -1,6 +1,201 @@
 {
   "basic": [
     {
+      "question": "Quin és l’animal típic del tió de Nadal?",
+      "options": ["Tronc", "Rena", "Gall", "Porquet"],
+      "correctAnswer": "Tronc"
+    },
+    {
+      "question": "Amb quin nom es coneix el Carnaval a Vilanova i la Geltrú?",
+      "options": ["Les Comparses", "La Festa Major", "La Patum", "Els Gegants"],
+      "correctAnswer": "Les Comparses"
+    },
+    {
+      "question": "Quin dolç es menja per Setmana Santa a Catalunya?",
+      "options": ["Mona de Pasqua", "Torró", "Panellets", "Neules"],
+      "correctAnswer": "Mona de Pasqua"
+    },
+    {
+      "question": "Quin riu passa per Girona?",
+      "options": ["Onyar", "Llobregat", "Ebre", "Segre"],
+      "correctAnswer": "Onyar"
+    },
+    {
+      "question": "Com es diu l'arbre que decorem per Nadal?",
+      "options": ["Arbre de Nadal", "Pi festiu", "Avet", "Ginebró"],
+      "correctAnswer": "Arbre de Nadal"
+    },
+    {
+      "question": "Quina fruita és típica de la Castanyada?",
+      "options": ["Castanya", "Taronja", "Poma", "Raïm"],
+      "correctAnswer": "Castanya"
+    },
+    {
+      "question": "Com es diu la festa on es tiren petards al juny?",
+      "options": ["Sant Joan", "Sant Pere", "La Diada", "Carnaval"],
+      "correctAnswer": "Sant Joan"
+    },
+    {
+      "question": "On es fa la Patum?",
+      "options": ["Berga", "Vic", "Girona", "Reus"],
+      "correctAnswer": "Berga"
+    },
+    {
+      "question": "Com es diu la senyera amb l'estel?",
+      "options": ["Estelada", "Tricolor", "Bandera roja", "Escut català"],
+      "correctAnswer": "Estelada"
+    },
+    {
+      "question": "Quin esport és popular a Catalunya?",
+      "options": ["Futbol", "Bàsquet", "Ciclisme", "Tots tres"],
+      "correctAnswer": "Tots tres"
+    },
+    {
+      "question": "Quina estructura natural té forma de serra?",
+      "options": ["Montserrat", "Puigmal", "Pedraforca", "Canigó"],
+      "correctAnswer": "Montserrat"
+    },
+    {
+      "question": "Quina festa celebra el foc i la purificació?",
+      "options": ["Sant Joan", "Reis", "Tots Sants", "Nadal"],
+      "correctAnswer": "Sant Joan"
+    },
+    {
+      "question": "Com es diu el personatge que es posa a la taula de Nadal?",
+      "options": ["Tió", "Ninot", "Gall dindi", "Estel"],
+      "correctAnswer": "Tió"
+    },
+    {
+      "question": "Quin edifici modernista és al centre de Barcelona?",
+      "options": ["La Pedrera", "Torre Glòries", "Camp Nou", "Catedral"],
+      "correctAnswer": "La Pedrera"
+    },
+    {
+      "question": "Com es diuen les torres humanes?",
+      "options": ["Castells", "Pals", "Columnes", "Pilars"],
+      "correctAnswer": "Castells"
+    },
+    {
+      "question": "Quina menja és típica amb calçots?",
+      "options": ["Salsa romesco", "Allioli", "Salsa de tomàquet", "Salsa brava"],
+      "correctAnswer": "Salsa romesco"
+    },
+    {
+      "question": "Com es diu la dansa que acompanya els gegants?",
+      "options": ["Ball de gegants", "Sardana", "Ball pla", "Contrapàs"],
+      "correctAnswer": "Ball de gegants"
+    },
+    {
+      "question": "Quin famós parc és obra de Gaudí?",
+      "options": ["Parc Güell", "Parc de la Ciutadella", "Parc Central", "Jardí Botànic"],
+      "correctAnswer": "Parc Güell"
+    },
+    {
+      "question": "Quina figura popular es menja el Diumenge de Rams?",
+      "options": ["Palmó", "Mona", "Rosquilla", "Torró"],
+      "correctAnswer": "Palmó"
+    },
+    {
+      "question": "Què es fa per Sant Jordi?",
+      "options": ["Es regalen llibres i roses", "Es balla", "Es menja coca", "Es fan castells"],
+      "correctAnswer": "Es regalen llibres i roses"
+    },
+    {
+      "question": "Com es diu l'ocell protagonista de moltes llegendes catalanes?",
+      "options": ["Àliga", "Falcó", "Mussol", "Cadernera"],
+      "correctAnswer": "Àliga"
+    },
+    {
+      "question": "Quin dia es celebren els Reis Mags?",
+      "options": ["6 de gener", "24 de desembre", "1 de gener", "5 de gener"],
+      "correctAnswer": "6 de gener"
+    },
+    {
+      "question": "Com es diu el parc natural on hi ha Aigüestortes?",
+      "options": ["Aigüestortes i Estany de Sant Maurici", "Cadí-Moixeró", "Montserrat", "Montseny"],
+      "correctAnswer": "Aigüestortes i Estany de Sant Maurici"
+    },
+    {
+      "question": "Quin color no forma part de la senyera?",
+      "options": ["Verd", "Vermell", "Groc", "Cap"],
+      "correctAnswer": "Verd"
+    },
+    {
+      "question": "Com es diu la festa de la primavera a molts pobles?",
+      "options": ["Festa Major", "Festa de Primavera", "Festa de la Flor", "Festa del Maig"],
+      "correctAnswer": "Festa Major"
+    },
+    {
+      "question": "Quina ciutat acull el Festival Temporada Alta?",
+      "options": ["Girona", "Barcelona", "Tarragona", "Reus"],
+      "correctAnswer": "Girona"
+    },
+    {
+      "question": "Quin és l'aeroport principal de Catalunya?",
+      "options": ["El Prat", "Reus", "Girona", "Sabadell"],
+      "correctAnswer": "El Prat"
+    },
+    {
+      "question": "Quin és el nom tradicional del porc a les matances?",
+      "options": ["Porquet", "Porc senglar", "Garrí", "Tocino"],
+      "correctAnswer": "Garrí"
+    },
+    {
+      "question": "Com es diu el famós camp de futbol del Barça?",
+      "options": ["Camp Nou", "Estadi Olímpic", "Sant Jordi", "Palau Blaugrana"],
+      "correctAnswer": "Camp Nou"
+    },
+    {
+      "question": "Com es diu la festa del foc a Andorra i els Pirineus?",
+      "options": ["Falles", "Flames", "Cremada", "Nit de foc"],
+      "correctAnswer": "Falles"
+    },
+    {
+      "question": "Quina flor representa la Castanyada?",
+      "options": ["Crisantem", "Rosa", "Liri", "Margarida"],
+      "correctAnswer": "Crisantem"
+    },
+    {
+      "question": "Com es diu l'element principal dels pessebres?",
+      "options": ["Naixement", "Caganer", "Estrella", "Pastors"],
+      "correctAnswer": "Naixement"
+    },
+    {
+      "question": "Quin element de menjar acompanya el raïm per Cap d’Any?",
+      "options": ["Cava", "Torrons", "Neules", "Galetes"],
+      "correctAnswer": "Cava"
+    },
+    {
+      "question": "Quina és la ciutat més poblada de Catalunya?",
+      "options": ["Barcelona", "Tarragona", "Girona", "Lleida"],
+      "correctAnswer": "Barcelona"
+    },
+    {
+      "question": "Com es diu la figura nadalenca que caga regals?",
+      "options": ["Tió", "Gegant", "Caganer", "Pastor"],
+      "correctAnswer": "Tió"
+    },
+    {
+      "question": "On es celebra el festival de teatre clàssic de Tarragona?",
+      "options": ["Tarraco Viva", "Tarragona Antiga", "Forum Roma", "Circ Romà"],
+      "correctAnswer": "Tarraco Viva"
+    },
+    {
+      "question": "Quina beguda es pren a la Festa Major?",
+      "options": ["Vermut", "Aigua", "Vi negre", "Cervesa"],
+      "correctAnswer": "Vermut"
+    },
+    {
+      "question": "Quin instrument acompanya les gralles?",
+      "options": ["Tabal", "Guitarra", "Flauta", "Piano"],
+      "correctAnswer": "Tabal"
+    },
+    {
+      "question": "Quina ciutat és coneguda pels diables i correfocs?",
+      "options": ["Sitges", "Badalona", "Reus", "Manresa"],
+      "correctAnswer": "Reus"
+    },
+    {
       "question": "Quina és la capital de Catalunya?",
       "options": ["Barcelona", "Girona", "Tarragona", "Lleida"],
       "correctAnswer": "Barcelona"
