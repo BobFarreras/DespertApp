@@ -2,7 +2,9 @@ package com.deixebledenkaito.despertapp.ui.screens.challenge
 
 import android.annotation.SuppressLint
 import android.app.admin.DevicePolicyManager
+import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
@@ -132,20 +134,20 @@ class AlarmChallengeActivity : ComponentActivity() {
     @SuppressLint("ImplicitSamInstance")
     private fun handleCorrectAnswer() {
         try {
-            // Aturem el servei que reprodueix l'alarma
+            // Aturem el servei que reprodueix l'alarma i cancel·lem notificacions
             stopService(Intent(this, AlarmService::class.java))
+            restaurarIconaNormal()
             // Alliberem el wake lock
             if (wakeLock.isHeld) {
                 wakeLock.release()
             }
-
-
             // Bloquem la pantalla si venim de lockscreen
             if (fromLockScreen) {
                 val devicePolicyManager =
                     getSystemService(DEVICE_POLICY_SERVICE) as DevicePolicyManager
                 devicePolicyManager.lockNow()
             }
+
             FirebaseCrashlytics.getInstance().log("Crash de prova")
             FirebaseCrashlytics.getInstance().recordException(RuntimeException("Crash de prova"))
         } catch (e: Exception) {
@@ -162,7 +164,7 @@ class AlarmChallengeActivity : ComponentActivity() {
         // Aturar recursos
         // Parar servei perquè activitat control·li el so
         stopService(Intent(this, AlarmService::class.java))
-
+        restaurarIconaNormal()
         val alarmId = intent.getIntExtra("ALARM_ID", -1)
         if (alarmId == -1) {
             Toast.makeText(this, "Error: ID d'alarma no vàlid", Toast.LENGTH_SHORT).show()
@@ -251,6 +253,20 @@ class AlarmChallengeActivity : ComponentActivity() {
 
         stopService(Intent(this, AlarmService::class.java))
         super.onDestroy()
+    }
+    private fun restaurarIconaNormal() {
+        val pm = applicationContext.packageManager
+        pm.setComponentEnabledSetting(
+            ComponentName(applicationContext, "com.deixebledenkaito.despertapp.MainActivity"),
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+            PackageManager.DONT_KILL_APP
+        )
+
+        pm.setComponentEnabledSetting(
+            ComponentName(applicationContext, "com.deixebledenkaito.despertapp.AlarmIconActivity"),
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+            PackageManager.DONT_KILL_APP
+        )
     }
 
 }

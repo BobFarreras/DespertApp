@@ -7,8 +7,10 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
+import android.content.ComponentName
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.IBinder
@@ -96,6 +98,7 @@ class AlarmService : Service() {
         startForeground(NOTIFICATION_ID, notification)
 
         isAlarmRinging = true
+        activarIconaAlarma()
 
         // 1. Configurar so i wake lock
         alarmId = intent?.getIntExtra("ALARM_ID", -1) ?: -1
@@ -113,8 +116,10 @@ class AlarmService : Service() {
 
         serviceScope.launch {
             delay(30_000)
+
             if (!wasNotificationTapped) {
                 Log.d(TAG, "⏰ Timeout activat. S'atura l'alarma.")
+                activarIconaDormint()
                 stopAlarmSound()
                 cancelAlarmNotification()
                 showTimeoutNotification()
@@ -122,6 +127,7 @@ class AlarmService : Service() {
             }
         }
         serviceScope.launch {startVibration() }
+
         // Aquí pots iniciar el so de l’alarma o altra lògica
         return START_STICKY
     }
@@ -254,6 +260,7 @@ class AlarmService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         val customLayout = RemoteViews(packageName, R.layout.notification_alarm_custom)
+
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
@@ -264,5 +271,38 @@ class AlarmService : Service() {
             .setContentIntent(pendingIntent)
             .build()
     }
+    private fun activarIconaAlarma() {
+        val pm = applicationContext.packageManager
+        pm.setComponentEnabledSetting(
+            ComponentName(applicationContext, "com.deixebledenkaito.despertapp.AlarmIconActivity"),
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+            PackageManager.DONT_KILL_APP
+
+        )
+
+        pm.setComponentEnabledSetting(
+            ComponentName(applicationContext, "com.deixebledenkaito.despertapp.MainActivity"),
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+            PackageManager.DONT_KILL_APP
+        )
+
+
+    }
+
+    private fun activarIconaDormint(){
+        val pm = applicationContext.packageManager
+        pm.setComponentEnabledSetting(
+            ComponentName(applicationContext, "com.deixebledenkaito.despertapp.AlarmIconActivityDormida"),
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+            PackageManager.DONT_KILL_APP
+
+        )
+        pm.setComponentEnabledSetting(
+            ComponentName(applicationContext, "com.deixebledenkaito.despertapp.AlarmIconActivity"),
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+            PackageManager.DONT_KILL_APP
+        )
+    }
+
 
 }

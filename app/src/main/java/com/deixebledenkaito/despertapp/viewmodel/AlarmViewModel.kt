@@ -56,6 +56,8 @@ class AlarmViewModel @Inject constructor(
 
 
 
+
+
     // Funció unificada per afegir/actualitzar alarmes
     private suspend fun upsertAlarm(alarm: AlarmEntity) {
         repository.insert(alarm)

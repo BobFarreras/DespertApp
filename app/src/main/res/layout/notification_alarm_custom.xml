@@ -11,19 +11,9 @@
         android:id="@+id/notification_emoji"
         android:layout_width="42dp"
         android:layout_height="40dp"
-        android:src="@drawable/icondepertapp"
+        android:src="@mipmap/ic_launcher_alarmactgve"
 
         />
-<!--    <TextView-->
-<!--        android:id="@+id/notification_emoji"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="@string/ico_despertador"-->
-<!--        android:textSize="24sp"-->
-<!--        android:layout_gravity="start"-->
-<!--        android:layout_marginStart="6dp"-->
-<!--        android:layout_marginEnd="6dp"/>-->
-
     <TextView
         android:id="@+id/notification_title"
         android:layout_width="wrap_content"

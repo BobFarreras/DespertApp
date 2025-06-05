@@ -1,9 +1,11 @@
 package com.deixebledenkaito.despertapp
+import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -96,10 +98,33 @@ class MainActivity : ComponentActivity() {
                         SystemBarsColorSync(darkTheme = ThemeManager.currentThemeIsDark)
                         val viewModel: AlarmViewModel = hiltViewModel()
                         NavGraph(viewModel = viewModel)
+
                     }
                 }
             }
         }
+
+    }
+    override fun onStop() {
+        super.onStop()
+        // Quan l'app es tanqui, restaurem la icona "normal"
+        restaurarIconaNormal()
+    }
+    private fun restaurarIconaNormal() {
+        val pm = applicationContext.packageManager
+        pm.setComponentEnabledSetting(
+            ComponentName(applicationContext, "com.deixebledenkaito.despertapp.MainActivity"),
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+            PackageManager.DONT_KILL_APP
+        )
+
+        pm.setComponentEnabledSetting(
+            ComponentName(applicationContext, "com.deixebledenkaito.despertapp.AlarmIconActivityDormida"),
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+            PackageManager.DONT_KILL_APP
+        )
+
+
     }
 
 }
