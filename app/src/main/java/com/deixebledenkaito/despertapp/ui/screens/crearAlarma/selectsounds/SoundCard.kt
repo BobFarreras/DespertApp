@@ -38,7 +38,7 @@ fun SoundCard(
     isAddSound: Boolean = false,
     onLongClick: (() -> Unit)? = null
 ) {
-    var textButtom: String = "Seleccionar"
+    var textButtom = "Seleccionar"
     val textColor = if (currentThemeIsDark) Color.White else Color.Black.copy(alpha = 0.9f)
     val textColorContrari = if (!currentThemeIsDark) Color.White else Color.Black.copy(alpha = 0.9f)
     Card(

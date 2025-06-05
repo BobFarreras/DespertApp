@@ -39,7 +39,7 @@ fun AddCustomSoundDialog(
     var durationMs by remember { mutableLongStateOf(0L) }
     var sliderPosition by remember { mutableFloatStateOf(0f) }
     var isPlaying by remember { mutableStateOf(false) }
-    val textColor = if (currentThemeIsDark) Color.White else Color.Black
+
 
     val player = remember {
         ExoPlayer.Builder(context).build().apply {

@@ -1,7 +1,7 @@
 package com.deixebledenkaito.despertapp.ui.screens.crearAlarma.selectsounds
 
 import android.content.Intent
-import android.media.AudioManager
+import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -37,9 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-
 import androidx.compose.ui.platform.LocalContext
-
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.core.net.toUri
@@ -64,7 +62,7 @@ fun SelectSoundScreen(
     var selectedUri by remember { mutableStateOf<Uri?>(null) }
     var soundToDelete by remember { mutableStateOf<AlarmSound?>(null) }
     val textColor = if (currentThemeIsDark) Color.White else Color.Black
-    val textColorContrari = if (!currentThemeIsDark) Color.White else Color.Black
+
 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         uri?.let {
@@ -150,9 +148,14 @@ fun SelectSoundScreen(
                                 }
 
                                 mediaPlayer?.apply {
-                                    setAudioStreamType(AudioManager.STREAM_MUSIC)
+                                    setAudioAttributes(
+                                        AudioAttributes.Builder()
+                                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                                            .setUsage(AudioAttributes.USAGE_MEDIA)
+                                            .build()
+                                    )
                                     prepare()
-                                    seekTo(sound.startTimeMs?.toInt() ?: 0)
+                                    seekTo(sound.startTimeMs.toInt())
                                     isLooping = true
                                     start()
                                 }
