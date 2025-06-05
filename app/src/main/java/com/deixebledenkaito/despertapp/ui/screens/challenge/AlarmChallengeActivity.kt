@@ -19,7 +19,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.lifecycle.lifecycleScope
 import com.deixebledenkaito.despertapp.data.AlarmDatabase
+import com.deixebledenkaito.despertapp.preferences.TemesPreferencesManager
+import com.deixebledenkaito.despertapp.preferences.ThemeManager
 import com.deixebledenkaito.despertapp.receiver.AlarmService
 import com.deixebledenkaito.despertapp.repositroy.AlarmRepository
 import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.angles.AnglesChallengeGenerator
@@ -41,7 +44,6 @@ class AlarmChallengeActivity : ComponentActivity() {
     private lateinit var wakeLock: PowerManager.WakeLock
     private var fromLockScreen = false
 
-
     @SuppressLint("ImplicitSamInstance")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +57,14 @@ class AlarmChallengeActivity : ComponentActivity() {
         AnimeChallengeGenerator.init(applicationContext)
         AnglesChallengeGenerator.init(applicationContext)
 
+        lifecycleScope.launch {
+            val prefs = TemesPreferencesManager.loadPreferences(this@AlarmChallengeActivity)
+            ThemeManager.currentThemeIsDark = prefs.darkEnabled
+            Log.d(
+                "ThemeDebug",
+                "Tema carregat: dark=${prefs.darkEnabled}, light=${prefs.lightEnabled}"
+            )
+        }
 
         // Assegurar pantalla activa
         wakeLock = AlarmUtils.acquireWakeLock(this)

@@ -14,6 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.deixebledenkaito.despertapp.preferences.ThemeManager.currentThemeIsDark
+
 
 
 @Composable
@@ -24,6 +26,7 @@ fun ButtonsBottomBar(
     selectedButtom: String,
 ) {
 
+    val textColor = if (currentThemeIsDark) Color.White else Color.Black
 
     Box(modifier = modifier){
         Row(
@@ -35,7 +38,7 @@ fun ButtonsBottomBar(
                     imageVector = Icons.Default.Alarm,
                     contentDescription = "Alarm",
                     modifier = Modifier.size(48.dp).padding(6.dp), // Mida lleugerament reduïda
-                    tint = if(selectedButtom == "Alarmes") Color.White else Color.White.copy(alpha = 0.4f)
+                    tint = if(selectedButtom == "Alarmes") textColor else textColor.copy(alpha = 0.4f)
 
                 )
             }
@@ -45,7 +48,7 @@ fun ButtonsBottomBar(
                     imageVector = Icons.Default.Settings,
                     contentDescription = "Settings",
                     modifier = Modifier.size(48.dp).padding(6.dp), // Mida lleugerament reduïda
-                    tint = if(selectedButtom == "Settings") Color.White else Color.White.copy(alpha = 0.4f)
+                    tint = if(selectedButtom == "Settings") textColor else textColor.copy(alpha = 0.4f)
                 )
             }
         }

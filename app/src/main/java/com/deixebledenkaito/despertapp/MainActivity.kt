@@ -3,6 +3,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -16,7 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.lifecycleScope
 import com.deixebledenkaito.despertapp.navigation.NavGraph
+import com.deixebledenkaito.despertapp.preferences.TemesPreferencesManager
+import com.deixebledenkaito.despertapp.preferences.ThemeManager
 import com.deixebledenkaito.despertapp.receiver.AlarmService
 import com.deixebledenkaito.despertapp.ui.screens.challenge.AlarmChallengeActivity
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
@@ -25,6 +29,7 @@ import com.deixebledenkaito.despertapp.ui.theme.DespertAppTheme
 import com.deixebledenkaito.despertapp.viewmodel.AlarmViewModel
 import com.google.firebase.FirebaseApp
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -48,39 +53,50 @@ class MainActivity : ComponentActivity() {
             finish()
             return
         }
-        setContent {
-            // Sol·licita permís per notificacions si cal
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                if (ContextCompat.checkSelfPermission(
-                        this,
-                        android.Manifest.permission.POST_NOTIFICATIONS
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    ActivityCompat.requestPermissions(
-                        this,
-                        arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
-                        1001
-                    )
-                }
-            }
+        // 👉 Carreguem tema des de prefs abans de renderitzar
+        lifecycleScope.launch {
+            val prefs = TemesPreferencesManager.loadPreferences(this@MainActivity)
+            ThemeManager.currentThemeIsDark = prefs.darkEnabled
+            Log.d(
+                "ThemeDebug",
+                "Tema carregat: dark=${prefs.darkEnabled}, light=${prefs.lightEnabled}"
+            )
 
-            DespertAppTheme {
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            brush = Brush.verticalGradient(
-                                colors = BackgroundApp(),
-                                startY = 0f,
-                                endY = Float.POSITIVE_INFINITY
-                            )
+            setContent {
+                // Permisos per notificacions si cal
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if (ContextCompat.checkSelfPermission(
+                            this@MainActivity,
+                            android.Manifest.permission.POST_NOTIFICATIONS
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        ActivityCompat.requestPermissions(
+                            this@MainActivity,
+                            arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                            1001
                         )
-                        .padding(top = 6.dp)
-                ) {
-                    SystemBarsColorSync()
-                    val viewModel: AlarmViewModel = hiltViewModel()
-                    NavGraph(viewModel = viewModel)
+                    }
+                }
+
+
+                DespertAppTheme {
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors =  BackgroundApp(ThemeManager.currentThemeIsDark ),
+                                    startY = 0f,
+                                    endY = Float.POSITIVE_INFINITY
+                                )
+                            )
+                            .padding(top = 6.dp)
+                    ) {
+                        SystemBarsColorSync(darkTheme = ThemeManager.currentThemeIsDark)
+                        val viewModel: AlarmViewModel = hiltViewModel()
+                        NavGraph(viewModel = viewModel)
+                    }
                 }
             }
         }

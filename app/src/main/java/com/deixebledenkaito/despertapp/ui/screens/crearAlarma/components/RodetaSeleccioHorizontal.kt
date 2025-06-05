@@ -28,6 +28,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.deixebledenkaito.despertapp.preferences.ThemeManager.currentThemeIsDark
+
 import kotlinx.coroutines.flow.distinctUntilChanged
 
 @Composable
@@ -45,7 +47,7 @@ fun RodetaSeleccioHorizontal(
     val state = rememberLazyListState()
     val density = LocalDensity.current
 
-
+    val textColor = if (currentThemeIsDark) Color.White else Color.Black
     val initialScrollDone = remember { mutableStateOf(false) }
 
     // Scroll inicial per posar el valor seleccionat al mig
@@ -64,7 +66,7 @@ fun RodetaSeleccioHorizontal(
         modifier = modifier
             .width(itemWidth * visibleItems)
             .fillMaxHeight()
-            .background(Color.White.copy(alpha = 0.08f), RoundedCornerShape(12.dp)),
+            .background(textColor.copy(alpha = 0.08f), RoundedCornerShape(12.dp)),
         contentAlignment = Alignment.Center
     ) {
         LazyRow(
@@ -90,7 +92,7 @@ fun RodetaSeleccioHorizontal(
                         .fillMaxHeight(),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleMedium.copy(
-                        color =  if (item == value) Color.White else Color.White.copy(alpha = 0.5f) ,
+                        color =  if (item == value) textColor else textColor.copy(alpha = 0.5f) ,
                         fontWeight = if (item == value) FontWeight.Bold else FontWeight.Normal,
                         fontSize = if (item == value) 19.sp else 16.sp,
                     )

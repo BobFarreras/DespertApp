@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.deixebledenkaito.despertapp.preferences.ThemeManager.currentThemeIsDark
+
 
 @Composable
 fun AnimacioDiaChip(
@@ -26,12 +28,16 @@ fun AnimacioDiaChip(
     onClick: () -> Unit,
     enabled: Boolean = true
 ) {
+
+    val textColor = if (currentThemeIsDark) Color.White else Color.Black
+    val textColorContrri = if (!currentThemeIsDark) Color.White else Color.Black
+
     val backgroundColor by animateColorAsState(
-        if (selected) Color.White else Color.Transparent,
+        if (selected) textColor else Color.Transparent,
         animationSpec = tween(durationMillis = 200)
     )
     val contentColor by animateColorAsState(
-        if (selected) Color.Black else Color.White,
+        if (selected)  textColorContrri else textColor,
         animationSpec = tween(durationMillis = 200)
     )
 
@@ -40,7 +46,7 @@ fun AnimacioDiaChip(
             .clip(RoundedCornerShape(16.dp))
             .border(
                 width = 1.dp,
-                color = if (enabled) Color.White else Color.White.copy(alpha = 0.3f),
+                color = if (enabled) textColor else textColor.copy(alpha = 0.3f),
                 shape = RoundedCornerShape(16.dp)
             )
             .clickable(
@@ -58,7 +64,7 @@ fun AnimacioDiaChip(
         ) {
             Text(
                 text = day,
-                color = if (enabled) contentColor else contentColor.copy(alpha = 0.3f),
+                color = if (enabled) contentColor else contentColor,
                 style = MaterialTheme.typography.bodyMedium
             )
         }

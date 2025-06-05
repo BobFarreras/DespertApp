@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.deixebledenkaito.despertapp.preferences.ThemeManager.currentThemeIsDark
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -46,6 +47,7 @@ fun DespertAppTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
+
 
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {

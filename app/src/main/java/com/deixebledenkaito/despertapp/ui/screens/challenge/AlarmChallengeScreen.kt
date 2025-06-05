@@ -43,6 +43,7 @@ import androidx.wear.compose.material.ExperimentalWearMaterialApi
 import androidx.wear.compose.material.FractionalThreshold
 import androidx.wear.compose.material.rememberSwipeableState
 import androidx.wear.compose.material.swipeable
+import com.deixebledenkaito.despertapp.preferences.ThemeManager.currentThemeIsDark
 import com.deixebledenkaito.despertapp.ui.screens.challenge.tipusChallenge.ChallengeQuestion
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 import kotlinx.coroutines.delay
@@ -65,7 +66,8 @@ fun AlarmChallengeScreen(
         question.options.shuffled()
     }
     Log.d("AlarmChallengeScreen", "Shuffled options shuffled: $shuffledOptions")
-
+    val textColor = if (currentThemeIsDark) Color.White else Color.Black
+    val textColorContrari = if (!currentThemeIsDark) Color.White else Color.Black
 
     // Inicialitza estats
     shuffledOptions.forEach{ option ->
@@ -88,7 +90,7 @@ fun AlarmChallengeScreen(
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = BackgroundApp(),
+                    colors = BackgroundApp(currentThemeIsDark),
                     startY = 0f,
                     endY = Float.POSITIVE_INFINITY
                 )
@@ -101,6 +103,7 @@ fun AlarmChallengeScreen(
         Box(
             modifier = Modifier
                 .padding(16.dp)
+                .padding(top = 36.dp)
                 .fillMaxWidth()
                 .height(48.dp),
             contentAlignment = Alignment.CenterStart
@@ -111,7 +114,7 @@ fun AlarmChallengeScreen(
                     .fillMaxWidth()
                     .height(48.dp)
                     .background(
-                        color = Color.White.copy(alpha = 0.1f),
+                        color = textColor.copy(alpha = 0.1f),
                         shape = RoundedCornerShape(24.dp)
                     )
                     .padding(horizontal = 16.dp),
@@ -119,7 +122,7 @@ fun AlarmChallengeScreen(
             ) {
                 Text(
                     text = "Posposar 10 minuts",
-                    color = Color.White,
+                    color = textColor,
                     fontSize = 16.sp,
                     modifier = Modifier.padding(start = 96.dp)
                 )
@@ -131,7 +134,7 @@ fun AlarmChallengeScreen(
                     .offset(x = swipeableState.offset.value.dp)
                     .size(width, 48.dp)
                     .background(
-                        color = Color.White.copy(alpha = 0.5f),
+                        color = textColor.copy(alpha = 0.5f),
                         shape = RoundedCornerShape(24.dp)
                     )
                     .swipeable(
@@ -147,7 +150,7 @@ fun AlarmChallengeScreen(
                 Icon(
                     imageVector = Icons.Default.KeyboardDoubleArrowRight,
                     contentDescription = "Posposar",
-                    tint = Color.Black
+                    tint = textColorContrari
                 )
             }
         }
@@ -155,7 +158,7 @@ fun AlarmChallengeScreen(
         Text(
             text = question.question,
             style = TextStyle(fontSize = 32.sp, fontWeight = FontWeight.Bold),
-            color = Color.White,
+            color = textColor,
             modifier = Modifier
                 .padding(bottom = 36.dp , start = 10.dp , end = 10.dp)
                 .align(Alignment.CenterHorizontally),
@@ -169,7 +172,7 @@ fun AlarmChallengeScreen(
                 targetValue = when {
                     state.isCorrect -> Color(0xFF4CAF50)
                     state.isWrong -> Color.Red
-                    else -> Color.White.copy(alpha = 0.1f)
+                    else -> textColor.copy(alpha = 0.1f)
                 },
                 animationSpec = tween(durationMillis = 300),
                 label = "buttonColor"
@@ -199,14 +202,13 @@ fun AlarmChallengeScreen(
                 colors = ButtonDefaults.buttonColors(backgroundColor)
             ) {
                 val buttonText = if (state.isCorrect) "Correcte!" else option
-                Text(buttonText, fontSize = 24.sp, color = Color.White)
+                Text(buttonText, fontSize = 24.sp, color = textColor)
             }
         }
         Spacer(modifier = Modifier.weight(0.3f))
 
     }
 }
-
 
 class AnswerState {
     var isCorrect by mutableStateOf(false)

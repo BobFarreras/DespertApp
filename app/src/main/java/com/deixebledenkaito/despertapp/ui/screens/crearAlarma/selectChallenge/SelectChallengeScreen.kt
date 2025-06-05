@@ -16,7 +16,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardDoubleArrowRight
 import androidx.compose.material3.Card
@@ -34,6 +33,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.deixebledenkaito.despertapp.R
+import com.deixebledenkaito.despertapp.preferences.ThemeManager.currentThemeIsDark
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 
 
@@ -44,6 +44,7 @@ fun SelectChallengeScreen(
     onCancel: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val textColor = if (currentThemeIsDark) Color.White else Color.Black
     // Llista de reptes disponibles
     val challenges = listOf(
         Challenge("Matemàtiques", "Matemàtiques", R.drawable.matematiques),
@@ -58,12 +59,12 @@ fun SelectChallengeScreen(
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = BackgroundApp(),
+                    colors = BackgroundApp(currentThemeIsDark),
                     startY = 0f,
                     endY = Float.POSITIVE_INFINITY
                 )
             )
-            .padding(top = 16.dp)
+            .padding(top = 26.dp)
             .padding(16.dp)
 
     ) {
@@ -76,7 +77,7 @@ fun SelectChallengeScreen(
             Text(
                 text = "Selecciona un repte",
                 style = MaterialTheme.typography.headlineMedium.copy(
-                    color = Color.White,
+                    color = textColor,
                     fontWeight = FontWeight.Bold
                 )
             )
@@ -85,7 +86,7 @@ fun SelectChallengeScreen(
                 Icon(
                     imageVector = Icons.Default.Close,
                     contentDescription = "Tancar",
-                    tint = Color.White
+                    tint = textColor
                 )
             }
         }
@@ -124,10 +125,12 @@ fun ChallengeCard(
     onSelect: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val textColor = if (currentThemeIsDark) Color.White else Color.Black
+
     Card(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White.copy(alpha = 0.1f)
+            containerColor = textColor.copy(alpha = 0.1f)
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -149,14 +152,14 @@ fun ChallengeCard(
                 Spacer(modifier = Modifier.width(16.dp))
                 Text(
                     text = challenge.name,
-                    style = MaterialTheme.typography.titleMedium.copy(color = Color.White)
+                    style = MaterialTheme.typography.titleMedium.copy(color = textColor)
                 )
             }
 
             Icon(
                 imageVector = Icons.Default.KeyboardDoubleArrowRight,
                 contentDescription = "Seleccionar",
-                tint = Color.White.copy(alpha = 0.7f),
+                tint = textColor.copy(alpha = 0.7f),
                 modifier = Modifier.size(20.dp)
             )
         }

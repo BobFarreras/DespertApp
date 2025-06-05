@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
-import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,16 +18,19 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.deixebledenkaito.despertapp.preferences.ThemeManager
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
+
 import com.deixebledenkaito.despertapp.ui.screens.settings.components.SettingsCard
 
 @Composable
 fun SettingsScreen(
-    onNavigateToLanguageSettings: () -> Unit,
     onNavigateToAlarmSettings: () -> Unit,
+    onNavigateToTemes: () -> Unit
+    ) {
 
+    val textColor = if (ThemeManager.currentThemeIsDark) Color.White else Color.Black
 
-) {
     Box(modifier = Modifier.fillMaxSize()) {
         // Fons de pantalla (gradient) - igual que a HomeScreen
         Box(
@@ -35,7 +38,7 @@ fun SettingsScreen(
                 .fillMaxSize()
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = BackgroundApp(),
+                        colors = BackgroundApp(ThemeManager.currentThemeIsDark),
                         startY = 0f,
                         endY = Float.POSITIVE_INFINITY
                     )
@@ -45,13 +48,13 @@ fun SettingsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 24.dp)
+                .padding(horizontal = 16.dp, vertical = 44.dp)
         ) {
             // Títol
             Text(
                 text = "Configuració",
                 style = MaterialTheme.typography.headlineMedium.copy(
-                    color = Color.White,
+                    color = textColor,
                     fontWeight = FontWeight.Bold
                 ),
                 modifier = Modifier.padding(bottom = 24.dp)
@@ -62,13 +65,7 @@ fun SettingsScreen(
                 modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-//                item {
-//                    SettingsCard(
-//                        title = "Configuració general",
-//                        icon = Icons.Default.Settings,
-//                        onClick = { /* Navigate to general settings */ }
-//                    )
-//                }
+
                 item {
                     SettingsCard(
                         title = "Configuració d'alarmes",
@@ -78,27 +75,12 @@ fun SettingsScreen(
                 }
                 item {
                     SettingsCard(
-                        title = "Idioma",
-                        icon = Icons.Default.Language,
-                        onClick = onNavigateToLanguageSettings
+                        title = "Temes",
+                        icon = Icons.Default.Palette,
+                        onClick = onNavigateToTemes
                     )
                 }
 
-//                item {
-//                    SettingsCard(
-//                        title = "Tema",
-//                        icon = Icons.Default.ColorLens,
-//                        onClick = { /* Navigate to theme settings */ }
-//                    )
-//                }
-//                item {
-//                    SettingsCard(
-//                        title = "Tancar sessió",
-//                        icon = Icons.Default.ExitToApp,
-//                        onClick = onLogout,
-//                        isDestructive = true
-//                    )
-//                }
             }
 
         }

@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.deixebledenkaito.despertapp.preferences.ThemeManager.currentThemeIsDark
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 
 
@@ -28,7 +29,7 @@ fun EmptyAlarmsState(onNavigateToAlarmForm: () -> Unit) {
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = BackgroundApp(),
+                    colors = BackgroundApp(currentThemeIsDark),
                     startY = 0f,
                     endY = Float.POSITIVE_INFINITY
                 )

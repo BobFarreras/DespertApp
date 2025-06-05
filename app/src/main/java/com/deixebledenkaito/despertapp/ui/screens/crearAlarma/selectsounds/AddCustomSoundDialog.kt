@@ -19,11 +19,13 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
+import com.deixebledenkaito.despertapp.preferences.ThemeManager.currentThemeIsDark
 
 
 @Composable
@@ -37,6 +39,7 @@ fun AddCustomSoundDialog(
     var durationMs by remember { mutableLongStateOf(0L) }
     var sliderPosition by remember { mutableFloatStateOf(0f) }
     var isPlaying by remember { mutableStateOf(false) }
+    val textColor = if (currentThemeIsDark) Color.White else Color.Black
 
     val player = remember {
         ExoPlayer.Builder(context).build().apply {

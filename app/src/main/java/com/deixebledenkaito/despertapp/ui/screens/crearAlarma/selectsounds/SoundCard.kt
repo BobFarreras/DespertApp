@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.deixebledenkaito.despertapp.preferences.ThemeManager.currentThemeIsDark
 
 /**
 * Targeta UI reutilitzable per mostrar i interactuar amb sons
@@ -38,12 +39,14 @@ fun SoundCard(
     onLongClick: (() -> Unit)? = null
 ) {
     var textButtom: String = "Seleccionar"
+    val textColor = if (currentThemeIsDark) Color.White else Color.Black.copy(alpha = 0.9f)
+    val textColorContrari = if (!currentThemeIsDark) Color.White else Color.Black.copy(alpha = 0.9f)
     Card(
         modifier = modifier.fillMaxWidth().combinedClickable(
             onClick = onSelect,
             onLongClick = { onLongClick?.invoke() }
         ),
-        colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.1f)),
+        colors = CardDefaults.cardColors(containerColor = textColor.copy(alpha = 0.1f)),
         shape = RoundedCornerShape(12.dp)
     ) {
         Row(
@@ -52,8 +55,8 @@ fun SoundCard(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = sound.name, color = Color.White)
-                if(!isAddSound) Text(text = if (isPlaying) "Reproduint..." else "Prem per escoltar", color = Color.LightGray)
+                Text(text = sound.name, color = textColor, fontWeight = androidx.compose.ui.text.font.FontWeight.Bold)
+                if(!isAddSound) Text(text = if (isPlaying) "Reproduint..." else "Prem per escoltar", color = if(currentThemeIsDark) {Color.LightGray} else {Color.DarkGray})
 
             }
 
@@ -66,15 +69,15 @@ fun SoundCard(
                         Icon(
                             imageVector = (if (isPlaying) Icons.Default.Stop else Icons.Default.PlayArrow),
                             contentDescription = null,
-                            tint = Color.White
+                            tint = textColor
                         )
                     }
                 }
 
 
-                Button(onClick = onSelect, colors = ButtonDefaults.buttonColors(containerColor = Color.White)) {
-                    Text(textButtom, color = Color.Black)
-                    if(isAddSound) Icon(imageVector = Icons.Default.Search, contentDescription = null, tint = Color.Black, modifier = Modifier.padding(start = 6.dp))
+                Button(onClick = onSelect, colors = ButtonDefaults.buttonColors(containerColor = textColor)) {
+                    Text(textButtom, color = textColorContrari)
+                    if(isAddSound) Icon(imageVector = Icons.Default.Search, contentDescription = null, tint = textColorContrari, modifier = Modifier.padding(start = 6.dp))
 
                 }
             }
