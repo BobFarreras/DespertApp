@@ -52,7 +52,7 @@ import java.util.Calendar
 @Composable
 fun CrearAlarmaScreen(
     onSave: (AlarmEntity) -> Unit,
-    modifier: Modifier = Modifier,
+
     initialAlarm: AlarmEntity? = null,
 ) {
     val calendar = remember { Calendar.getInstance() }
@@ -150,21 +150,23 @@ fun CrearAlarmaScreen(
         )
         return
     }
-
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = BackgroundApp(currentThemeIsDark),
+                    startY = 0f,
+                    endY = Float.POSITIVE_INFINITY
+                )
+            )
+    ) {
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
                 .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = BackgroundApp(currentThemeIsDark),
-                        startY = 0f,
-                        endY = Float.POSITIVE_INFINITY
-                    )
-                )
                 .padding(horizontal = 24.dp, vertical = 26.dp)
-                .padding(bottom = 80.dp), // Espai per al botó fix
+                .padding(bottom = 80.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             // Nom de l'alarma (opcional)
