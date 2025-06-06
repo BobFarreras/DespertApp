@@ -86,12 +86,10 @@ object AlarmUtils {
                     "Piano" -> R.raw.piano
                     "bolaDeDrac" -> R.raw.boladedrac
                     "insultsCatala" -> R.raw.insults
-                    "SoldatAlarma" -> R.raw.soldatalarma
                     "Vegeta" -> R.raw.vegeta
-                    "LinkinPark" -> R.raw.linkpark
-                    "ImagineDragons" -> R.raw.imagindragons
                     "RumbaMediterrani" -> R.raw.rumbamediterrani
                     "PianoDos" -> R.raw.pianodos
+                    "PimPomParty" -> R.raw.pimpom
                     else -> R.raw.alarm
                 }
 

@@ -29,12 +29,10 @@ class SelectSoundViewModel @Inject constructor(
             AlarmSound("Piano", "Piano 1", R.raw.piano),
             AlarmSound("bolaDeDrac", "Bola de Drac", R.raw.boladedrac),
             AlarmSound("insultsCatala", "'Pol Gise' Insults Catalans", R.raw.insults),
-            AlarmSound("SoldatAlarma", "Motivacio Soldat", R.raw.soldatalarma),
             AlarmSound("Vegeta", "Vegeta", R.raw.vegeta),
-            AlarmSound("LinkinPark", "Linkin Park", R.raw.linkpark),
-            AlarmSound("ImagineDragons", "Imagine Dragons", R.raw.imagindragons),
             AlarmSound("RumbaMediterrani", "Rumba vora el mar", R.raw.rumbamediterrani),
             AlarmSound("PianoDos", "Piano 2", R.raw.pianodos),
+            AlarmSound("PimPomParty", "Pim Pom Party", R.raw.pimpom)
         )
 
         val customSounds = CustomSoundManager.getCustomSounds(context)

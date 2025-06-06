@@ -1,6 +1,106 @@
 {
   "basic": [
     {
+      "question": "Com es diu el mestre de Goku?",
+      "options": ["Muten Roshi", "Kami-sama", "Kaio", "Beerus"],
+      "correctAnswer": "Muten Roshi"
+    },
+    {
+      "question": "Com es diu el gat màgic que acompanya Sakura a 'Sakura, la Caçadora de Cartes'?",
+      "options": ["Kero", "Tomo", "Yue", "Spinel"],
+      "correctAnswer": "Kero"
+    },
+    {
+      "question": "A 'Pokémon', quin és el primer Pokémon que rep Ash?",
+      "options": ["Pikachu", "Charmander", "Squirtle", "Bulbasaur"],
+      "correctAnswer": "Pikachu"
+    },
+    {
+      "question": "Quin aliment li encanta a Luffy de 'One Piece'?",
+      "options": ["Carn", "Peix", "Arròs", "Fideus"],
+      "correctAnswer": "Carn"
+    },
+    {
+      "question": "Com es diu la germana gran d'Elsa a 'Frozen' (anime al Japó)?",
+      "options": ["Anna", "Elsa", "Merida", "Rapunzel"],
+      "correctAnswer": "Anna"
+    },
+    {
+      "question": "Quin animal és Happy a 'Fairy Tail'?",
+      "options": ["Gat", "Gos", "Conill", "Drac"],
+      "correctAnswer": "Gat"
+    },
+    {
+      "question": "Quin és el nom del primer Pokémon llegendari que veu Ash?",
+      "options": ["Ho-Oh", "Lugia", "Mewtwo", "Articuno"],
+      "correctAnswer": "Ho-Oh"
+    },
+    {
+      "question": "Com es diu el pare de Shin Chan?",
+      "options": ["Hiroshi", "Shiro", "Kazama", "Toru"],
+      "correctAnswer": "Hiroshi"
+    },
+    {
+      "question": "Com es diu l'anime on un nen juga a una Beyblade?",
+      "options": ["Beyblade", "Bakugan", "Yu-Gi-Oh!", "Digimon"],
+      "correctAnswer": "Beyblade"
+    },
+    {
+      "question": "Qui és el millor amic de Goku a la infància?",
+      "options": ["Krilin", "Vegeta", "Yamcha", "Tien"],
+      "correctAnswer": "Krilin"
+    },
+    {
+      "question": "Com es diu el protagonista de 'Bleach'?",
+      "options": ["Ichigo Kurosaki", "Renji Abarai", "Uryu Ishida", "Byakuya Kuchiki"],
+      "correctAnswer": "Ichigo Kurosaki"
+    },
+    {
+      "question": "Quin és el somni de Naruto?",
+      "options": ["Ser Hokage", "Venjar-se", "Trobar el seu pare", "Controlar la fulla"],
+      "correctAnswer": "Ser Hokage"
+    },
+    {
+      "question": "Quin anime té monstres que viuen en boles?",
+      "options": ["Pokémon", "Digimon", "Bakugan", "Beyblade"],
+      "correctAnswer": "Pokémon"
+    },
+    {
+      "question": "Com es diu la forma transformada de Goku amb cabell ros?",
+      "options": ["Super Saiyan", "Ultra Instint", "Kaioken", "Fusion"],
+      "correctAnswer": "Super Saiyan"
+    },
+    {
+      "question": "Com es diu l'escola de 'My Hero Academia'?",
+      "options": ["UA", "SA", "HA", "BA"],
+      "correctAnswer": "UA"
+    },
+    {
+      "question": "Quina és la professió del pare de Shin Chan?",
+      "options": ["Treballador d'empresa", "Professor", "Policia", "Forner"],
+      "correctAnswer": "Treballador d'empresa"
+    },
+    {
+      "question": "A quin anime apareix un tità gegant que menja humans?",
+      "options": ["Attack on Titan", "Fullmetal Alchemist", "Naruto", "Bleach"],
+      "correctAnswer": "Attack on Titan"
+    },
+    {
+      "question": "Quin és el nom del rival de Vegeta?",
+      "options": ["Goku", "Piccolo", "Cell", "Trunks"],
+      "correctAnswer": "Goku"
+    },
+    {
+      "question": "Com es diu el poble on viu Naruto?",
+      "options": ["Konoha", "Suna", "Kiri", "Iwa"],
+      "correctAnswer": "Konoha"
+    },
+    {
+      "question": "Quin és el primer Digimon d'en Tai?",
+      "options": ["Agumon", "Gabumon", "Patamon", "Biyomon"],
+      "correctAnswer": "Agumon"
+    },
+    {
       "question": "Quin és el nom del protagonista de 'Bola de Drac'?",
       "options": ["Goku", "Vegeta", "Piccolo", "Krilin"],
       "correctAnswer": "Goku"
@@ -47,6 +147,76 @@
     }
   ],
   "advanced": [
+    {
+      "question": "Quin és el nom del germà de Tanjiro a 'Demon Slayer'?",
+      "options": ["Nezuko", "Kanao", "Genya", "No té germà"],
+      "correctAnswer": "No té germà"
+    },
+    {
+      "question": "Quin és el nom del capità del 13è esquadró a 'Bleach'?",
+      "options": ["Jūshirō Ukitake", "Byakuya Kuchiki", "Shunsui Kyōraku", "Kenpachi Zaraki"],
+      "correctAnswer": "Jūshirō Ukitake"
+    },
+    {
+      "question": "Quin és el nom del primer Pokémon que atrapa Ash?",
+      "options": ["Caterpie", "Pidgeotto", "Bulbasaur", "Charmander"],
+      "correctAnswer": "Caterpie"
+    },
+    {
+      "question": "Quin és el nom del pare de Gon a 'Hunter x Hunter'?",
+      "options": ["Ging Freecss", "Killua Zoldyck", "Leorio Paradinight", "Hisoka Morow"],
+      "correctAnswer": "Ging Freecss"
+    },
+    {
+      "question": "Quin és el nom del primer Hokage a 'Naruto'?",
+      "options": ["Hashirama Senju", "Tobirama Senju", "Hiruzen Sarutobi", "Minato Namikaze"],
+      "correctAnswer": "Hashirama Senju"
+    },
+    {
+      "question": "Quin és el nom del vaixell dels Pirates del Barret de Palla abans del Thousand Sunny?",
+      "options": ["Going Merry", "Red Force", "Oro Jackson", "Moby Dick"],
+      "correctAnswer": "Going Merry"
+    },
+    {
+      "question": "Quin és el nom del primer amor de Naruto?",
+      "options": ["Sakura Haruno", "Hinata Hyuga", "Ino Yamanaka", "Tenten"],
+      "correctAnswer": "Sakura Haruno"
+    },
+    {
+      "question": "Quin és el nom del primer enemic que derrota Saitama a 'One Punch Man'?",
+      "options": ["Vaccine Man", "Crablante", "Mosquito Girl", "Deep Sea King"],
+      "correctAnswer": "Crablante"
+    },
+    {
+      "question": "Quin és el nom del primer Shinigami que coneix Ichigo a 'Bleach'?",
+      "options": ["Rukia Kuchiki", "Renji Abarai", "Byakuya Kuchiki", "Urahara Kisuke"],
+      "correctAnswer": "Rukia Kuchiki"
+    },
+    {
+      "question": "Quin és el nom del primer rival de Goku a 'Dragon Ball'?",
+      "options": ["Yamcha", "Krillin", "Tien Shinhan", "Piccolo"],
+      "correctAnswer": "Yamcha"
+    },
+    {
+      "question": "Quin és el nom del primer Digimon que apareix a 'Digimon Adventure'?",
+      "options": ["Koromon", "Agumon", "Greymon", "Gabumon"],
+      "correctAnswer": "Koromon"
+    },
+    {
+      "question": "Quin és el nom del primer esperit que coneix Natsume a 'Natsume's Book of Friends'?",
+      "options": ["Madara", "Nyanko-sensei", "Reiko", "Hinoe"],
+      "correctAnswer": "Madara"
+    },
+    {
+      "question": "Quin és el nom del primer estudiant que coneix Koro-sensei a 'Assassination Classroom'?",
+      "options": ["Nagisa Shiota", "Karma Akabane", "Kaede Kayano", "Tadaomi Karasuma"],
+      "correctAnswer": "Nagisa Shiota"
+    },
+    {
+      "question": "Quin és el nom del primer membre de l'Akatsuki que apareix a 'Naruto'?",
+      "options": ["Itachi Uchiha", "Kisame Hoshigaki", "Deidara", "Sasori"],
+      "correctAnswer": "Itachi Uchiha"
+    },
     {
       "question": "Quants anys dura el torneig de les Arts Marcials a 'Bola de Drac'?",
       "options": ["3 anys", "5 anys", "No té interval fix", "1 any"],
@@ -258,6 +428,121 @@
       "question": "Quin és el nom complet de l'escola a 'Assassination Classroom'?",
       "options": ["Acadèmia Kunugigaoka", "Institut Nacional Kunugigaoka", "Escola Mitjana Kunugigaoka", "Centre Educatiu Kunugigaoka"],
       "correctAnswer": "Institut Nacional Kunugigaoka"
+    },
+    {
+      "question": "Quin és el veritable nom de L a 'Death Note'?",
+      "options": ["L Lawliet", "Light Yagami", "Hideki Ryuga", "Ryuzaki"],
+      "correctAnswer": "L Lawliet"
+    },
+    {
+      "question": "Quina és la tècnica ocular que permet veure el flux de chakra a 'Naruto'?",
+      "options": ["Byakugan", "Sharingan", "Rinnegan", "Tenseigan"],
+      "correctAnswer": "Byakugan"
+    },
+    {
+      "question": "Quin és el nom complet del primer homúncul creat a 'Fullmetal Alchemist: Brotherhood'?",
+      "options": ["Father", "The Dwarf in the Flask", "Van Hohenheim", "Pride"],
+      "correctAnswer": "The Dwarf in the Flask"
+    },
+    {
+      "question": "A 'Attack on Titan', quina és la identitat real del Titán Blindat?",
+      "options": ["Reiner Braun", "Bertolt Hoover", "Zeke Jaeger", "Porco Galliard"],
+      "correctAnswer": "Reiner Braun"
+    },
+    {
+      "question": "A 'Steins;Gate', quina és la veritable identitat de John Titor?",
+      "options": ["Suzuha Amane", "Okabe Rintarou", "Kurisu Makise", "Moeka Kiryu"],
+      "correctAnswer": "Suzuha Amane"
+    },
+    {
+      "question": "A 'Neon Genesis Evangelion', quin és el nom de la Unitat EVA pilotada per Shinji?",
+      "options": ["Unitat 01", "Unitat 00", "Unitat 02", "Mark.06"],
+      "correctAnswer": "Unitat 01"
+    },
+    {
+      "question": "Quin és el veritable pla de Lelouch a 'Code Geass' amb el Zero Requiem?",
+      "options": [
+        "Unificar el món mitjançant l'odi cap a ell",
+        "Destruir l'Imperi Britànic",
+        "Dominar el món amb Geass",
+        "Eliminar tots els usuaris de Geass"
+      ],
+      "correctAnswer": "Unificar el món mitjançant l'odi cap a ell"
+    },
+    {
+      "question": "A 'Monster', quin és el veritable nom del doctor conegut com Tenma?",
+      "options": ["Kenzo Tenma", "Johan Liebert", "Heinrich Lunge", "Richard Braun"],
+      "correctAnswer": "Kenzo Tenma"
+    },
+    {
+      "question": "A 'Hunter x Hunter', quina és la condició que posa Kurapika al seu poder de cadenes?",
+      "options": [
+        "Només pot ser utilitzat contra membres del Gen'ei Ryodan",
+        "Només el pot usar de nit",
+        "Només quan la seva vida està en perill",
+        "Només pot usar-lo una vegada al mes"
+      ],
+      "correctAnswer": "Només pot ser utilitzat contra membres del Gen'ei Ryodan"
+    },
+    {
+      "question": "A 'JoJo’s Bizarre Adventure: Golden Wind', quin és el nom de l'Stand evolucionat de Giorno?",
+      "options": ["Gold Experience Requiem", "King Crimson", "Sticky Fingers", "Silver Chariot Requiem"],
+      "correctAnswer": "Gold Experience Requiem"
+    },
+    {
+      "question": "A 'Made in Abyss', quin és el nom de l'organització que regula les expedicions?",
+      "options": ["La Ciutat d'Orth", "La Base de les Campanes", "La Sèrie Blanca", "La Fundació del Sota-Abisme"],
+      "correctAnswer": "La Ciutat d'Orth"
+    },
+    {
+      "question": "A 'Vinland Saga', quin és el nom del pare de Thorfinn?",
+      "options": ["Thors", "Askeladd", "Canute", "Leif Erikson"],
+      "correctAnswer": "Thors"
+    },
+    {
+      "question": "A 'Paranoia Agent', quin és el sobrenom de l'atacant amb patins?",
+      "options": ["Shonen Bat", "Roller Ghost", "Bat Boy", "Lil' Slugger"],
+      "correctAnswer": "Lil' Slugger"
+    },
+    {
+      "question": "A 'The Promised Neverland', quin és el número d'identificació de Norman?",
+      "options": ["22194", "81194", "63194", "16194"],
+      "correctAnswer": "22194"
+    },
+    {
+      "question": "A 'Mob Psycho 100', quin percentatge de poder ha d'assolir Mob per perdre el control?",
+      "options": ["100%", "110%", "99%", "200%"],
+      "correctAnswer": "100%"
+    },
+    {
+      "question": "A 'Erased (Boku Dake ga Inai Machi)', com s’anomena el fenomen que permet al protagonista tornar enrere en el temps?",
+      "options": ["Revival", "Reset", "Loopback", "Flashback"],
+      "correctAnswer": "Revival"
+    },
+    {
+      "question": "A 'Clannad: After Story', quin és el nom de la filla de Tomoya i Nagisa?",
+      "options": ["Ushio", "Kyou", "Tomoyo", "Fuko"],
+      "correctAnswer": "Ushio"
+    },
+    {
+      "question": "Quin és el veritable propòsit del 'Tournament of Power' a 'Dragon Ball Super'?",
+      "options": [
+        "Eliminar els universos febles",
+        "Escollir un nou Déu de la Destrucció",
+        "Entrenar als déus",
+        "Trobar l'humà més fort"
+      ],
+      "correctAnswer": "Eliminar els universos febles"
+    },
+    {
+      "question": "A 'Serial Experiments Lain', com s’anomena la xarxa que connecta tot el món?",
+      "options": ["The Wired", "The Net", "The Web", "Wired World"],
+      "correctAnswer": "The Wired"
+    },
+    {
+      "question": "A 'Gintama', com s’anomena l'espasa de fusta que fa servir Gintoki?",
+      "options": ["Lake Toya", "Zantetsuken", "Bokuto", "Kusanagi"],
+      "correctAnswer": "Lake Toya"
     }
   ]
 }
