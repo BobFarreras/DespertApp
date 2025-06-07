@@ -1,6 +1,106 @@
 {
   "basic": [
     {
+      "question": "Which animal barks?",
+      "options": ["Dog", "Cat", "Bird", "Fish"],
+      "correctAnswer": "Dog"
+    },
+    {
+      "question": "What color are bananas?",
+      "options": ["Yellow", "Blue", "Red", "Green"],
+      "correctAnswer": "Yellow"
+    },
+    {
+      "question": "What’s the opposite of 'up'?",
+      "options": ["Down", "Left", "High", "Top"],
+      "correctAnswer": "Down"
+    },
+    {
+      "question": "What do you drink in the morning?",
+      "options": ["Coffee", "Soup", "Juice", "Water"],
+      "correctAnswer": "Coffee"
+    },
+    {
+      "question": "Which is a body part?",
+      "options": ["Hand", "Chair", "Phone", "Shoe"],
+      "correctAnswer": "Hand"
+    },
+    {
+      "question": "What’s the opposite of 'cold'?",
+      "options": ["Hot", "Cool", "Wet", "Dry"],
+      "correctAnswer": "Hot"
+    },
+    {
+      "question": "Which one can you wear?",
+      "options": ["Hat", "Book", "Car", "Pen"],
+      "correctAnswer": "Hat"
+    },
+    {
+      "question": "What color is the sky on a clear day?",
+      "options": ["Blue", "Black", "Green", "White"],
+      "correctAnswer": "Blue"
+    },
+    {
+      "question": "Which is a drink?",
+      "options": ["Juice", "Rice", "Cake", "Chicken"],
+      "correctAnswer": "Juice"
+    },
+    {
+      "question": "What do you use to write?",
+      "options": ["Pen", "Knife", "Spoon", "Ruler"],
+      "correctAnswer": "Pen"
+    },
+    {
+      "question": "Which is a pet?",
+      "options": ["Cat", "Lion", "Cow", "Sheep"],
+      "correctAnswer": "Cat"
+    },
+    {
+      "question": "What do you do with your eyes?",
+      "options": ["See", "Hear", "Smell", "Touch"],
+      "correctAnswer": "See"
+    },
+    {
+      "question": "What’s the opposite of 'short'?",
+      "options": ["Tall", "Thin", "Fast", "Round"],
+      "correctAnswer": "Tall"
+    },
+    {
+      "question": "Which one is a transportation?",
+      "options": ["Bus", "Bag", "Book", "Bowl"],
+      "correctAnswer": "Bus"
+    },
+    {
+      "question": "Which day comes after Friday?",
+      "options": ["Saturday", "Thursday", "Sunday", "Monday"],
+      "correctAnswer": "Saturday"
+    },
+    {
+      "question": "What do you wear on your feet?",
+      "options": ["Shoes", "Gloves", "Hats", "Scarves"],
+      "correctAnswer": "Shoes"
+    },
+    {
+      "question": "Which is a room in a house?",
+      "options": ["Kitchen", "Park", "Store", "Street"],
+      "correctAnswer": "Kitchen"
+    },
+    {
+      "question": "Which animal says 'meow'?",
+      "options": ["Cat", "Dog", "Cow", "Horse"],
+      "correctAnswer": "Cat"
+    },
+    {
+      "question": "What do you use to eat soup?",
+      "options": ["Spoon", "Fork", "Knife", "Plate"],
+      "correctAnswer": "Spoon"
+    },
+    {
+      "question": "Which is a piece of furniture?",
+      "options": ["Table", "Window", "Wall", "Ceiling"],
+      "correctAnswer": "Table"
+    },
+    {
       "question": "What’s the opposite of 'happy'?",
       "options": ["Sad", "Angry", "Tall", "Fast"],
       "correctAnswer": "Sad"
@@ -201,9 +301,59 @@
       "question": "Which phrasal verb means 'to investigate'?",
       "options": ["Look into", "Put up", "Take off", "Go away"],
       "correctAnswer": "Look into"
+    },
+    {
+      "question": "Which word is a synonym of 'quickly'?",
+      "options": ["Rapidly", "Slowly", "Barely", "Calmly"],
+      "correctAnswer": "Rapidly"
+    },
+    {
+      "question": "What does the word 'benevolent' mean?",
+      "options": ["Kind", "Angry", "Lazy", "Loud"],
+      "correctAnswer": "Kind"
+    },
+    {
+      "question": "Choose the correct passive form: 'They built the house in 1950.'",
+      "options": ["The house was built in 1950.", "The house built in 1950.", "The house is built in 1950.", "The house was being built in 1950."],
+      "correctAnswer": "The house was built in 1950."
+    },
+    {
+      "question": "What is the plural of 'crisis'?",
+      "options": ["Crises", "Crisis", "Crisises", "Crisis'"],
+      "correctAnswer": "Crises"
+    },
+    {
+      "question": "Which sentence uses the subjunctive mood correctly?",
+      "options": ["I wish he were here.", "I wish he was here.", "I hope he be here.", "I want he is here."],
+      "correctAnswer": "I wish he were here."
     }
   ],
   "expert": [
+    {
+      "question": "Which of the following sentences contains an example of a dangling modifier?",
+      "options": ["Running to the store, the rain started.", "She ran to the store in the rain.", "While she ran, it rained.", "The rain was heavy as she ran."],
+      "correctAnswer": "Running to the store, the rain started."
+    },
+    {
+      "question": "In linguistics, what is 'code-switching'?",
+      "options": ["Alternating between languages or dialects in conversation", "Programming using two languages", "Changing your opinion", "Adopting a new accent"],
+      "correctAnswer": "Alternating between languages or dialects in conversation"
+    },
+    {
+      "question": "What is the function of a subordinating conjunction?",
+      "options": ["To connect a dependent clause to an independent clause", "To link two nouns", "To replace a noun", "To emphasize a subject"],
+      "correctAnswer": "To connect a dependent clause to an independent clause"
+    },
+    {
+      "question": "Which of the following demonstrates anaphora?",
+      "options": ["Every day, every night, in every way, I am getting better.", "She saw the cat and the cat saw her.", "The sun shines and the birds sing.", "He ran and he ran fast."],
+      "correctAnswer": "Every day, every night, in every way, I am getting better."
+    },
+    {
+      "question": "What does 'polysemy' refer to?",
+      "options": ["A word having multiple meanings", "A word that sounds like another", "A word with opposite meanings", "A word with only one meaning"],
+      "correctAnswer": "A word having multiple meanings"
+    },
     {
       "question": "What’s the meaning of 'defenestration'?",
       "options": ["Throwing someone out a window", "Building a window", "Cleaning glass", "Breaking a door"],

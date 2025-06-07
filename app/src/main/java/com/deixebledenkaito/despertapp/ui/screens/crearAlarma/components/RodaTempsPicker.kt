@@ -25,6 +25,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.deixebledenkaito.despertapp.preferences.ThemeManager.currentThemeIsDark
+
 
 @Composable
 fun RodaTempsPicker(
@@ -38,7 +40,7 @@ fun RodaTempsPicker(
     val middleItemIndex = visibleItems / 2
     val itemCount = range.count()
 
-
+    val textColor = if (currentThemeIsDark) Color.White else Color.Black
     val state = rememberLazyListState()
 
     // Scroll inicial quan es mostra el component
@@ -56,7 +58,7 @@ fun RodaTempsPicker(
     Box(
         modifier = modifier
             .height(itemHeight * visibleItems)
-            .background(Color.White.copy(alpha = 0.08f), RoundedCornerShape(8.dp)),
+            .background(textColor.copy(alpha = 0.08f), RoundedCornerShape(8.dp)),
         contentAlignment = Alignment.Center
     ) {
         LazyColumn(
@@ -85,11 +87,11 @@ fun RodaTempsPicker(
                     style = if (isSelected) {
                         MaterialTheme.typography.displaySmall.copy(
                             fontWeight = FontWeight.Bold,
-                            color = Color.White
+                            color = textColor
                         )
                     } else {
                         MaterialTheme.typography.titleLarge.copy(
-                            color = Color.White.copy(alpha = 0.6f)
+                            color = textColor.copy(alpha = 0.6f)
                         )
                     }
                 )
@@ -108,8 +110,8 @@ fun RodaTempsPicker(
                 .background(
                     brush = Brush.verticalGradient(
                         0f to Color.Transparent,
-                        0.5f to Color.White.copy(alpha = 0.05f),
-                        0.7f to Color.White.copy(alpha = 0.1f),
+                        0.5f to textColor.copy(alpha = 0.05f),
+                        0.7f to textColor.copy(alpha = 0.1f),
                         1f to Color.Transparent
                     )
                 )

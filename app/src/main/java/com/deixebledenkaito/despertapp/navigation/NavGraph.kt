@@ -23,13 +23,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.deixebledenkaito.despertapp.preferences.ThemeManager.currentThemeIsDark
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.CrearAlarmaScreen
 import com.deixebledenkaito.despertapp.ui.screens.HomeScreen
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 import com.deixebledenkaito.despertapp.ui.screens.components.ButtonsBottomBar
 import com.deixebledenkaito.despertapp.ui.screens.settings.SettingsScreen
 import com.deixebledenkaito.despertapp.ui.screens.settings.components.AlarmSettingsScreen
-import com.deixebledenkaito.despertapp.ui.screens.settings.components.LanguageSettingsScreen
+import com.deixebledenkaito.despertapp.ui.screens.settings.components.SettingsTemes
 import com.deixebledenkaito.despertapp.viewmodel.AlarmViewModel
 
 
@@ -39,7 +40,7 @@ sealed class Screen(val route: String) {
     object AlarmList : Screen("alarm_list")
     object AlarmForm : Screen("alarm_form")
     object Settings : Screen("settings")
-    object LanguageSettings : Screen("language")
+    object Temes : Screen("temes")
     object AlarmSettings : Screen("alarm_settings")
     object EditAlarm : Screen("edit_alarm/{alarmId}") {
         fun createRoute(alarmId: Int) = "edit_alarm/$alarmId"
@@ -60,7 +61,7 @@ fun NavGraph(
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = BackgroundApp(),
+                    colors = BackgroundApp(currentThemeIsDark),
                     startY = 0f,
                     endY = Float.POSITIVE_INFINITY
                 )
@@ -93,20 +94,18 @@ fun NavGraph(
             }
             composable(Screen.Settings.route) {
                 SettingsScreen(
-                    onNavigateToLanguageSettings = { navController.navigate(Screen.LanguageSettings.route) },
                     onNavigateToAlarmSettings = { navController.navigate(Screen.AlarmSettings.route) },
+                    onNavigateToTemes = { navController.navigate(Screen.Temes.route) }
+                )
 
-                )
+
             }
-            composable(Screen.LanguageSettings.route) {
-                LanguageSettingsScreen(
-                    onBack = { navController.popBackStack() }
-                )
-            }
+
             composable(Screen.AlarmSettings.route) {
-                AlarmSettingsScreen(
-                    onBack = { navController.popBackStack() }
-                )
+                AlarmSettingsScreen()
+            }
+            composable(Screen.Temes.route) {
+                SettingsTemes()
             }
             composable(
                 route = Screen.EditAlarm.route,
@@ -145,7 +144,6 @@ fun NavGraph(
                 selectedButtom = when (currentRoute) {
                     Screen.AlarmList.route -> "Alarmes"
                     Screen.Settings.route,
-                    Screen.LanguageSettings.route,
                     Screen.AlarmSettings.route -> "Settings"
                     else -> ""
                 },
@@ -164,7 +162,6 @@ fun shouldShowBottomBar(route: String?): Boolean {
     return route in listOf(
         Screen.AlarmList.route,
         Screen.Settings.route,
-        Screen.LanguageSettings.route,
         Screen.AlarmSettings.route
     )
 }

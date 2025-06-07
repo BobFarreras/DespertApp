@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" tools:ignore="ProtectedPermissions"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
 
     <application
@@ -25,6 +24,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DespertApp"
         tools:targetApi="31">
+
+        <!-- Pantalla del repte -->
         <activity
             android:name=".ui.screens.challenge.AlarmChallengeActivity"
             android:showWhenLocked="true"
@@ -38,6 +39,7 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+        <!-- Launcher per defecte -->
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize"
@@ -49,6 +51,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Launcher alternativa amb icona "alarm ringing" -->
+        <activity-alias
+            android:name=".AlarmIconActivity"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_alarmactgve"
+            android:roundIcon="@mipmap/ic_launcher_alarmactgve_round"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <!-- Launcher alternativa de qua s'ha passat el teps per para lalarma" -->
+        <activity-alias
+            android:name=".AlarmIconActivityDormida"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_alarmadormida"
+            android:roundIcon="@mipmap/ic_launcher_alarmadormida_round"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+        <!-- Receivers -->
         <receiver
             android:name=".receiver.AlarmReceiver"
             android:enabled="true"

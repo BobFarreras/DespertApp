@@ -9,15 +9,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -36,21 +30,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.deixebledenkaito.despertapp.preferences.AlarmPreferences
 import com.deixebledenkaito.despertapp.preferences.AlarmPreferencesManager
+import com.deixebledenkaito.despertapp.preferences.ThemeManager.currentThemeIsDark
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 @Composable
-fun AlarmSettingsScreen(
-    onBack: () -> Unit,
-
-) {
+fun AlarmSettingsScreen() {
     val context = LocalContext.current
     var volume by remember { mutableFloatStateOf(80f) }
     var vibrationEnabled by remember { mutableStateOf(true) }
     var increasingVolume by remember { mutableStateOf(false) }
+    val textColor = if (currentThemeIsDark) Color.White else Color.Black
 
     // Carrega preferències quan s'obre la pantalla
     LaunchedEffect(true) {
@@ -78,7 +71,7 @@ fun AlarmSettingsScreen(
                 .fillMaxSize()
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = BackgroundApp(),
+                        colors = BackgroundApp(currentThemeIsDark),
                         startY = 0f,
                         endY = Float.POSITIVE_INFINITY
                     )
@@ -94,7 +87,7 @@ fun AlarmSettingsScreen(
             Text(
                 text = "Configuració d'Alarmes",
                 style = MaterialTheme.typography.headlineMedium.copy(
-                    color = Color.White,
+                    color = textColor,
                     fontWeight = FontWeight.Bold
                 ),
                 modifier = Modifier.padding(bottom = 24.dp)
@@ -105,8 +98,8 @@ fun AlarmSettingsScreen(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(12.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = Color.White.copy(alpha = 0.1f),
-                    contentColor = Color.White
+                    containerColor = textColor.copy(alpha = 0.1f),
+                    contentColor = textColor
                 )
             ) {
                 Column(
@@ -125,8 +118,8 @@ fun AlarmSettingsScreen(
                         )
                         Text(
                             text = "${volume.toInt()}%",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.White.copy(alpha = 0.7f)
+                            style = MaterialTheme.typography.bodyLarge, fontSize = 20.sp,
+                            color = textColor.copy(alpha = 0.7f)
                         )
                     }
                     Slider(
@@ -135,9 +128,9 @@ fun AlarmSettingsScreen(
                         valueRange = 0f..100f,
                         modifier = Modifier.fillMaxWidth(),
                         colors = SliderDefaults.colors(
-                            thumbColor = MaterialTheme.colorScheme.primary,
-                            activeTrackColor = MaterialTheme.colorScheme.primary,
-                            inactiveTrackColor = Color.White.copy(alpha = 0.3f)
+                            thumbColor = textColor,
+                            activeTrackColor = textColor.copy(alpha = 0.8f),
+                            inactiveTrackColor = textColor.copy(alpha = 0.2f)
                         )
                     )
 
@@ -155,10 +148,10 @@ fun AlarmSettingsScreen(
                             checked = vibrationEnabled,
                             onCheckedChange = { vibrationEnabled = it },
                             colors = SwitchDefaults.colors(
-                                checkedThumbColor = Color.White,
-                                checkedTrackColor = MaterialTheme.colorScheme.primary,
-                                uncheckedThumbColor = Color.White.copy(alpha = 0.4f),
-                                uncheckedTrackColor = Color.White.copy(alpha = 0.1f)
+                                checkedThumbColor = textColor,
+                                checkedTrackColor = textColor.copy(alpha = 0.3f),
+                                uncheckedThumbColor = textColor.copy(alpha = 0.4f),
+                                uncheckedTrackColor = textColor.copy(alpha = 0.1f)
                             )
                         )
                     }
@@ -177,10 +170,10 @@ fun AlarmSettingsScreen(
                             checked = increasingVolume,
                             onCheckedChange = { increasingVolume = it },
                             colors = SwitchDefaults.colors(
-                                checkedThumbColor = Color.White,
-                                checkedTrackColor = MaterialTheme.colorScheme.primary,
-                                uncheckedThumbColor = Color.White.copy(alpha = 0.4f),
-                                uncheckedTrackColor = Color.White.copy(alpha = 0.1f)
+                                checkedThumbColor = textColor,
+                                checkedTrackColor = textColor.copy(alpha = 0.3f),
+                                uncheckedThumbColor = textColor.copy(alpha = 0.4f),
+                                uncheckedTrackColor = textColor.copy(alpha = 0.1f)
                             )
                         )
                     }

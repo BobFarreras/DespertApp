@@ -3,13 +3,11 @@ package com.deixebledenkaito.despertapp.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import com.deixebledenkaito.despertapp.data.AlarmDatabase
 import com.deixebledenkaito.despertapp.data.AlarmEntity
 import com.deixebledenkaito.despertapp.repositroy.AlarmRepository
-
 import com.deixebledenkaito.despertapp.viewmodel.AlarmScheduler
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import kotlinx.coroutines.CoroutineScope
@@ -69,11 +67,7 @@ class AlarmReceiver : BroadcastReceiver() {
                         putExtra("CHALLENGE_TYPE", challengeType)
                     }
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        context.startForegroundService(serviceIntent)
-                    } else {
-                        context.startService(serviceIntent)
-                    }
+                    context.startForegroundService(serviceIntent)
 
                     // 5. Reprogramar o desactivar segons tipus
                     if (it.isRecurring) {

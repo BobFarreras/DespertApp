@@ -1,13 +1,14 @@
 package com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components
 
-import android.util.Log
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
@@ -28,10 +29,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.deixebledenkaito.despertapp.preferences.ThemeManager.currentThemeIsDark
 
 import kotlinx.coroutines.flow.distinctUntilChanged
 
-
+@SuppressLint("UnusedBoxWithConstraintsScope")
 @Composable
 fun RodetaSeleccioHorizontal(
     items: List<String>,
@@ -39,36 +41,34 @@ fun RodetaSeleccioHorizontal(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val itemWidth = 120.dp
     val visibleItems = 3
     val middleItemIndex = visibleItems / 2
     val itemCount = items.size
 
     val state = rememberLazyListState()
     val density = LocalDensity.current
-
-
+    val textColor = if (currentThemeIsDark) Color.White else Color.Black
     val initialScrollDone = remember { mutableStateOf(false) }
 
-    // Scroll inicial per posar el valor seleccionat al mig
-    LaunchedEffect(value) {
-        val index = items.indexOf(value)
-        if (index != -1) {
-            state.scrollToItem(index)
-            initialScrollDone.value = true // Marquem quan el scroll ja està fet
-        }
-    }
-
-
-
-    // Dibuixa la interfície
-    Box(
+    BoxWithConstraints(
         modifier = modifier
-            .width(itemWidth * visibleItems)
+            .fillMaxWidth()
             .fillMaxHeight()
-            .background(Color.White.copy(alpha = 0.08f), RoundedCornerShape(12.dp)),
+            .background(textColor.copy(alpha = 0.08f), RoundedCornerShape(12.dp)),
         contentAlignment = Alignment.Center
     ) {
+        val totalWidth = with(LocalDensity.current) { constraints.maxWidth.toDp() }
+        val itemWidth = totalWidth / visibleItems
+
+        // Scroll inicial
+        LaunchedEffect(value) {
+            val index = items.indexOf(value)
+            if (index != -1) {
+                state.scrollToItem(index)
+                initialScrollDone.value = true
+            }
+        }
+
         LazyRow(
             state = state,
             modifier = Modifier
@@ -81,10 +81,9 @@ fun RodetaSeleccioHorizontal(
             items(middleItemIndex) {
                 Spacer(modifier = Modifier.width(itemWidth))
             }
-            // Ítems reals
+
             items(itemCount) { index ->
                 val item = items[index]
-
                 Text(
                     text = item,
                     modifier = Modifier
@@ -92,9 +91,9 @@ fun RodetaSeleccioHorizontal(
                         .fillMaxHeight(),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleMedium.copy(
-                        color =  if (item == value) Color.White else Color.White.copy(alpha = 0.5f) ,
+                        color = if (item == value) textColor else textColor.copy(alpha = 0.5f),
                         fontWeight = if (item == value) FontWeight.Bold else FontWeight.Normal,
-                        fontSize = if (item == value) 19.sp else 16.sp,
+                        fontSize = if (item == value) 18.sp else 15.sp,
                     )
                 )
             }
@@ -104,19 +103,15 @@ fun RodetaSeleccioHorizontal(
             }
         }
 
-        // Detecció de l’ítem centrat real
+        // Detecció de l’ítem centrat
         val lastNotifiedValue = remember { mutableStateOf<String?>(null) }
 
         LaunchedEffect(state) {
             snapshotFlow {
-                // Càlcul amb offset real en píxels
                 val offsetPx = state.firstVisibleItemScrollOffset
-                val itemWidthPx = with(density) { (itemWidth + 8.dp).toPx() } // 8.dp = spacing
-
+                val itemWidthPx = with(density) { (itemWidth + 8.dp).toPx() }
                 val indexOffset = ((offsetPx + itemWidthPx / 2) / itemWidthPx).toInt()
                 val centerIndex = state.firstVisibleItemIndex + indexOffset
-                Log.d("RodetaSeleccioHorizontal", "Center Index: $centerIndex")
-
                 centerIndex
             }.distinctUntilChanged().collect { centerIndex ->
                 if (centerIndex in items.indices) {
@@ -124,11 +119,9 @@ fun RodetaSeleccioHorizontal(
                     if (newValue != lastNotifiedValue.value) {
                         lastNotifiedValue.value = newValue
                         onValueChange(newValue)
-                        Log.d("RodetaSeleccioHorizontal", "Value changed to: $newValue")
                     }
                 }
             }
         }
     }
 }
-

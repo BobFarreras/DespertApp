@@ -20,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.deixebledenkaito.despertapp.preferences.ThemeManager.currentThemeIsDark
+
 
 @Composable
 fun SettingsCard(
@@ -29,13 +31,14 @@ fun SettingsCard(
     isDestructive: Boolean = false,
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
+    val textColor = if (currentThemeIsDark) Color.White else Color.Black
     Card(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.White.copy(alpha = 0.1f),
-            contentColor = Color.White
+            containerColor = textColor.copy(alpha = 0.1f),
+            contentColor = textColor
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
@@ -49,19 +52,19 @@ fun SettingsCard(
             Icon(
                 imageVector = icon,
                 contentDescription = null,
-                tint = if (isDestructive) MaterialTheme.colorScheme.error else Color.White.copy(alpha = 0.8f),
+                tint = if (isDestructive) MaterialTheme.colorScheme.error else textColor.copy(alpha = 0.8f),
                 modifier = Modifier.size(24.dp)
             )
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,
-                color = if (isDestructive) MaterialTheme.colorScheme.error else Color.White,
+                color = if (isDestructive) MaterialTheme.colorScheme.error else textColor,
                 modifier = Modifier.weight(1f)
             )
             Icon(
                 imageVector = Icons.Default.ChevronRight,
                 contentDescription = null,
-                tint = if (isDestructive) MaterialTheme.colorScheme.error else Color.White.copy(alpha = 0.6f),
+                tint = if (isDestructive) MaterialTheme.colorScheme.error else textColor.copy(alpha = 0.6f),
                 modifier = Modifier.size(20.dp)
             )
         }

@@ -38,6 +38,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.deixebledenkaito.despertapp.data.AlarmEntity
+import com.deixebledenkaito.despertapp.preferences.ThemeManager.currentThemeIsDark
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components.AnimacioDiaChip
 import com.deixebledenkaito.despertapp.ui.screens.crearAlarma.components.RodaTempsPicker
@@ -51,11 +52,13 @@ import java.util.Calendar
 @Composable
 fun CrearAlarmaScreen(
     onSave: (AlarmEntity) -> Unit,
-    modifier: Modifier = Modifier,
+
     initialAlarm: AlarmEntity? = null,
 ) {
     val calendar = remember { Calendar.getInstance() }
 
+    val textColor = if (currentThemeIsDark) Color.White else Color.Black
+    val textColorContrari = if (!currentThemeIsDark) Color.White else Color.Black
 
     var hour by remember {
         mutableIntStateOf(
@@ -147,21 +150,23 @@ fun CrearAlarmaScreen(
         )
         return
     }
-
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = BackgroundApp(currentThemeIsDark),
+                    startY = 0f,
+                    endY = Float.POSITIVE_INFINITY
+                )
+            )
+    ) {
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
                 .fillMaxSize()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = BackgroundApp(),
-                        startY = 0f,
-                        endY = Float.POSITIVE_INFINITY
-                    )
-                )
                 .padding(horizontal = 24.dp, vertical = 26.dp)
-                .padding(bottom = 80.dp), // Espai per al botó fix
+                .padding(bottom = 80.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             // Nom de l'alarma (opcional)
@@ -171,19 +176,19 @@ fun CrearAlarmaScreen(
                 label = {
                     Text(
                         "Nom de l'alarma (opcional)",
-                        color = Color.White.copy(alpha = 0.8f)
+                        color = textColor.copy(alpha = 0.8f)
                     )
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White,
-                    focusedLabelColor = Color.White.copy(alpha = 0.8f),
-                    unfocusedLabelColor = Color.White.copy(alpha = 0.6f),
-                    focusedIndicatorColor = Color.White,
-                    unfocusedIndicatorColor = Color.White.copy(alpha = 0.5f)
+                    focusedTextColor = textColor,
+                    unfocusedTextColor = textColor,
+                    focusedLabelColor = textColor.copy(alpha = 0.8f),
+                    unfocusedLabelColor = textColor.copy(alpha = 0.6f),
+                    focusedIndicatorColor = textColor,
+                    unfocusedIndicatorColor = textColor.copy(alpha = 0.5f)
                 ),
                 shape = RoundedCornerShape(12.dp),
                 singleLine = true
@@ -194,7 +199,7 @@ fun CrearAlarmaScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(180.dp)
-                    .background(Color.White.copy(alpha = 0.1f), RoundedCornerShape(16.dp))
+                    .background(textColor.copy(alpha = 0.1f), RoundedCornerShape(16.dp))
                     .padding(16.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -213,7 +218,7 @@ fun CrearAlarmaScreen(
 
                     Text(
                         text = ":",
-                        style = MaterialTheme.typography.displaySmall.copy(color = Color.White),
+                        style = MaterialTheme.typography.displaySmall.copy(color = textColor),
                         modifier = Modifier.padding(horizontal = 8.dp)
                     )
 
@@ -228,7 +233,7 @@ fun CrearAlarmaScreen(
                     // AM/PM (opcional per a format 12h)
                     Text(
                         text = if (hour < 12) "AM" else "PM",
-                        style = MaterialTheme.typography.titleLarge.copy(color = Color.White),
+                        style = MaterialTheme.typography.titleLarge.copy(color = textColor),
                         modifier = Modifier.padding(start = 16.dp)
                     )
                 }
@@ -239,7 +244,8 @@ fun CrearAlarmaScreen(
 
                 Text(
                     text = "Repetició",
-                    style = fontSizeTitols
+                    style = fontSizeTitols,
+                    color = textColor
                 )
 
                 RodetaSeleccioHorizontal(
@@ -253,7 +259,8 @@ fun CrearAlarmaScreen(
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(
                     text = "Selecciona un dia",
-                    style = fontSizeTitols
+                    style = fontSizeTitols,
+                    color = textColor
                 )
 
                 Row(
@@ -290,7 +297,8 @@ fun CrearAlarmaScreen(
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Text(
                     text = "Tipus de repte",
-                    style = fontSizeTitols
+                    style = fontSizeTitols,
+                    color = textColor
                 )
 
                 OutlinedButton(
@@ -298,25 +306,28 @@ fun CrearAlarmaScreen(
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.outlinedButtonColors(
                         containerColor = Color.Transparent,
-                        contentColor = Color.White
+                        contentColor = textColor
                     ),
-                    border = BorderStroke(1.dp, Color.White.copy(alpha = 0.5f)),
+                    border = BorderStroke(1.dp, textColor.copy(alpha = 0.5f)),
                     shape = RoundedCornerShape(12.dp)
                 ) {
-                    Row(
+                    Box(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = selectedChallengeName,
-                            style = MaterialTheme.typography.bodyMedium.copy(color = Color.White)
+                            style = MaterialTheme.typography.bodyLarge.copy(color = textColor, fontWeight = FontWeight.Bold),
+                            modifier = Modifier.align(Alignment.Center)
                         )
                         Icon(
                             imageVector = Icons.Default.ArrowBackIosNew,
                             contentDescription = "Seleccionar repte",
-                            tint = Color.White,
-                            modifier = Modifier.size(16.dp)
+                            tint = textColor,
+                            modifier = Modifier
+                                .align(Alignment.CenterEnd)
+
+                                .size(16.dp)
                         )
                     }
                 }
@@ -326,7 +337,8 @@ fun CrearAlarmaScreen(
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(
                     text = "Nivell",
-                    style = fontSizeTitols
+                    style = fontSizeTitols,
+                    color = textColor
                 )
 
                 SegmentedControl(
@@ -341,7 +353,8 @@ fun CrearAlarmaScreen(
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 Text(
                     text = "So de l'alarma",
-                    style = fontSizeTitols
+                    style = fontSizeTitols,
+                    color = textColor
                 )
 
                 OutlinedButton(
@@ -349,25 +362,30 @@ fun CrearAlarmaScreen(
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.outlinedButtonColors(
                         containerColor = Color.Transparent,
-                        contentColor = Color.White
+                        contentColor = textColor
                     ),
-                    border = BorderStroke(1.dp, Color.White.copy(alpha = 0.5f)),
+                    border = BorderStroke(1.dp, textColor.copy(alpha = 0.5f)),
                     shape = RoundedCornerShape(12.dp)
                 ) {
-                    Row(
+                    Box(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        contentAlignment = Alignment.Center
                     ) {
+                        // Text centrat
                         Text(
                             text = alarmSoundName,
-                            style = MaterialTheme.typography.bodyMedium.copy(color = Color.White)
+                            style = MaterialTheme.typography.bodyLarge.copy(color = textColor, fontWeight = FontWeight.Bold),
+                            modifier = Modifier.align(Alignment.Center)
+
                         )
                         Icon(
                             imageVector = Icons.Default.ArrowBackIosNew,
                             contentDescription = "Seleccionar so",
-                            tint = Color.White,
-                            modifier = Modifier.size(16.dp)
+                            tint = textColor,
+                            modifier = Modifier
+                                .align(Alignment.CenterEnd)
+
+                                .size(16.dp)
                         )
                     }
                 }
@@ -411,15 +429,15 @@ fun CrearAlarmaScreen(
 
                 enabled = selectedDays.isNotEmpty(),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.White,
-                    disabledContainerColor = Color(0xFF282727)  // Blanc amb ~10% alpha
+                    containerColor = textColor,
+                    disabledContainerColor = textColor.copy(alpha = 0.10f) // Blanc amb ~10% alpha Color(0xFF282727)
                 ),
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
                     text = "GUARDAR ALARMA",
                     style = MaterialTheme.typography.labelLarge.copy(
-                        color = if (selectedDays.isNotEmpty()) Color.Black else colorTextButtom,
+                        color = if (selectedDays.isNotEmpty()) textColorContrari else if(currentThemeIsDark) colorTextButtom else Color.Black,
                         fontWeight = FontWeight.Bold
                     )
                 )

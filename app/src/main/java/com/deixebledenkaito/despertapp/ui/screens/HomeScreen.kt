@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.deixebledenkaito.despertapp.preferences.ThemeManager.currentThemeIsDark
 import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 import com.deixebledenkaito.despertapp.ui.screens.components.AddAlarmFAB
 import com.deixebledenkaito.despertapp.ui.screens.components.AlarmListContent
@@ -30,7 +31,7 @@ fun HomeScreen(
 ) {
 
     val alarms by viewModel.alarms.collectAsState(initial = null)
-
+    val textColor = if (currentThemeIsDark) Color.White else Color.Black
 
     Log.d("HomeScreen", "Renderitzant pantalla principal")
     Box(modifier = Modifier.fillMaxSize()) {
@@ -40,7 +41,7 @@ fun HomeScreen(
                 .fillMaxSize()
                 .background(
                     brush = Brush.verticalGradient(
-                        colors = BackgroundApp(),
+                        colors = BackgroundApp(currentThemeIsDark),
                         startY = 0f,
                         endY = Float.POSITIVE_INFINITY
                     )
@@ -59,7 +60,7 @@ fun HomeScreen(
                 when{
                     alarms == null -> {
                         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                            CircularProgressIndicator(color = Color.White)
+                            CircularProgressIndicator(color = textColor)
                         }
                     }
                     alarms!!.isEmpty() -> {
@@ -90,4 +91,5 @@ fun HomeScreen(
             AddAlarmFAB(onClick = onNavigateToAlarmForm)
         }
     }
+
 }

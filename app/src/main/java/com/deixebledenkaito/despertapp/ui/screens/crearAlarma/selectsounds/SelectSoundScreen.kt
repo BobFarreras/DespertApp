@@ -1,7 +1,7 @@
 package com.deixebledenkaito.despertapp.ui.screens.crearAlarma.selectsounds
 
 import android.content.Intent
-import android.media.AudioManager
+import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -35,14 +35,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-
 import androidx.compose.ui.platform.LocalContext
-
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.core.net.toUri
 import com.deixebledenkaito.despertapp.R
+import com.deixebledenkaito.despertapp.preferences.ThemeManager.currentThemeIsDark
+import com.deixebledenkaito.despertapp.ui.screens.colors.BackgroundApp
 
 
 // SelectSoundScreen.kt
@@ -60,6 +61,8 @@ fun SelectSoundScreen(
     var showDialog by remember { mutableStateOf(false) }
     var selectedUri by remember { mutableStateOf<Uri?>(null) }
     var soundToDelete by remember { mutableStateOf<AlarmSound?>(null) }
+    val textColor = if (currentThemeIsDark) Color.White else Color.Black
+
 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         uri?.let {
@@ -76,17 +79,25 @@ fun SelectSoundScreen(
         }
     }
 
-    Column(modifier = Modifier.fillMaxSize().background(Color.Black).padding(16.dp)) {
+    Column(modifier =
+        Modifier.fillMaxSize()
+            .background(
+        brush = Brush.verticalGradient(
+            colors = BackgroundApp(currentThemeIsDark),
+            startY = 0f,
+            endY = Float.POSITIVE_INFINITY
+        )
+        ).padding(horizontal = 12.dp, vertical = 42.dp)) {
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-            Text("Selecciona un so", color = Color.White, style = MaterialTheme.typography.headlineMedium)
+            Text("Selecciona un so", color = textColor, style = MaterialTheme.typography.headlineMedium)
             IconButton(onClick = onCancel) {
-                Icon(Icons.Default.Close, contentDescription = null, tint = Color.White)
+                Icon(Icons.Default.Close, contentDescription = null, tint = textColor)
             }
         }
 
         Spacer(Modifier.height(16.dp))
 
-        LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp), modifier = Modifier.padding(bottom = 32.dp)) {
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(6.dp), modifier = Modifier.padding(bottom = 32.dp)) {
             item {
                 SoundCard(
                     sound = AlarmSound("add_custom", "Afegir so personalitzat", null),
@@ -120,12 +131,10 @@ fun SelectSoundScreen(
                                         "Piano" -> R.raw.piano
                                         "bolaDeDrac" -> R.raw.boladedrac
                                         "insultsCatala" -> R.raw.insults
-                                        "SoldatAlarma" -> R.raw.soldatalarma
                                         "Vegeta" -> R.raw.vegeta
-                                        "LinkinPark" -> R.raw.linkpark
-                                        "ImagineDragons" -> R.raw.imagindragons
                                         "RumbaMediterrani" -> R.raw.rumbamediterrani
                                         "PianoDos" -> R.raw.pianodos
+                                        "PimPomParty" -> R.raw.pimpom
                                         else -> null
                                     }
 
@@ -137,9 +146,14 @@ fun SelectSoundScreen(
                                 }
 
                                 mediaPlayer?.apply {
-                                    setAudioStreamType(AudioManager.STREAM_MUSIC)
+                                    setAudioAttributes(
+                                        AudioAttributes.Builder()
+                                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                                            .setUsage(AudioAttributes.USAGE_MEDIA)
+                                            .build()
+                                    )
                                     prepare()
-                                    seekTo(sound.startTimeMs?.toInt() ?: 0)
+                                    seekTo(sound.startTimeMs.toInt())
                                     isLooping = true
                                     start()
                                 }
