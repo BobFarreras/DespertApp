@@ -18,8 +18,8 @@ android {
         applicationId = "com.deixebledenkaito.despertapp"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 3
+        versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -36,7 +36,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -117,7 +117,7 @@ dependencies {
     implementation (libs.androidx.room.ktx)
 
 // Lifecycle & ViewModel
-    implementation (libs.androidx.lifecycle.runtime.ktx.v270)
+    implementation (libs.androidx.lifecycle.runtime.ktx)
     implementation (libs.androidx.lifecycle.viewmodel.ktx)
 
     // Logging

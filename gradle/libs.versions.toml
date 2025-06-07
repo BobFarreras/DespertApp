@@ -1,11 +1,11 @@
 [versions]
 accompanistSystemuicontroller = "0.34.0"
-agp = "8.8.0"
-animation = "1.8.1"
+agp = "8.8.2"
+animation = "1.8.2"
 coilCompose = "2.4.0"
-datastorePreferences = "1.0.0"
+datastorePreferences = "1.1.7"
 firebaseAnalytics = "22.4.0"
-firebaseCrashlytics = "19.4.3"
+firebaseCrashlytics = "19.4.4"
 gson = "2.10.1"
 kotlin = "2.0.0"
 coreKtx = "1.16.0"
@@ -13,41 +13,39 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 kotlinxCoroutinesAndroid = "1.8.1"
-kotlinxCoroutinesCore = "1.8.0"
-lifecycleRuntimeKtx = "2.9.0"
+kotlinxCoroutinesCore = "1.8.1"
+lifecycleRuntimeKtx = "2.9.1"
 activityCompose = "1.10.1"
-composeBom = "2024.04.01"
+composeBom = "2025.06.00"
 
 # VERSION HILT
 hilt = "2.48"
-hiltCompiler = "2.48"
+hiltCompiler = "2.52"
 hiltNavigationCompose = "1.2.0"
 
 #VERSION FIREBASE
-firebaseBom = "33.13.0"
-lifecycleRuntimeKtxVersion = "2.7.0"
+firebaseBom = "33.15.0"
 material3 = "1.3.2"
 media3Exoplayer = "1.7.1"
-roomRuntime = "2.6.1"
+roomRuntime = "2.7.1"
 runtimeLivedata = "1.8.2"
 services = "4.4.2"
-animationAndroid = "1.6.6"
+animationAndroid = "1.8.2"
 
 #VERSIONS MATERIAL
 materialVersion = "1.7.8"
-databindingAdapters = "8.10.0"
+databindingAdapters = "8.10.1"
 gamesActivity = "4.0.0"
 datastoreCoreAndroid = "1.1.7"
 composeMaterial = "1.4.1"
-workRuntimeKtx = "2.7.1"
+workRuntimeKtx = "2.10.1"
 
 [libraries]
 accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
 androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
-androidx-lifecycle-runtime-ktx-v270 = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
-androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3Exoplayer" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
@@ -101,5 +99,3 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 
 googleServices = {id = "com.google.gms.google-services", version.ref = "services"}
 androidHilt = {id = "com.google.dagger.hilt.android", version.ref = "hilt"}
-
-
