@@ -17,6 +17,7 @@ class AlarmRescheduleWorker(
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
+        Log.d("AlarmRescheduleWorker", "Executant worker després del boot")
         return try {
             val repo = AlarmRepository(AlarmDatabase.getDatabase(applicationContext).alarmDao())
             val alarms = repo.getActiveAlarms()

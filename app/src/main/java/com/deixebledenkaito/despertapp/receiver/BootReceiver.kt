@@ -14,7 +14,7 @@ class BootReceiver : BroadcastReceiver() {
             Log.d("BootReceiver", "Boot completat. Es reprogramaran les alarmes.")
             // Programar treball per a reprogramar totes les alarmes
             val workRequest = OneTimeWorkRequestBuilder<AlarmRescheduleWorker>()
-                .setInitialDelay(5, TimeUnit.MINUTES) // Esperar 5 minuts després del boot
+                .setInitialDelay(9, TimeUnit.MINUTES) // Esperar 9 minuts després del boot
                 .build()
 
             WorkManager.getInstance(context).enqueue(workRequest)
