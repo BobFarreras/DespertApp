@@ -15,7 +15,8 @@ object AnglesChallengeGenerator {
     }
 
     fun generate(model: String): AnglesQuestion {
-        val questions = when (model.lowercase()) {
+        // Aquesta línia assegura que el tipus sigui 100% concret
+        val questions: List<AnglesQuestion> = when (model.lowercase()) {
             "bàsic" -> loadedQuestions?.basic
             "avançat" -> loadedQuestions?.advanced
             "expert" -> loadedQuestions?.expert

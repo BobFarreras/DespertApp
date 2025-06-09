@@ -15,7 +15,8 @@ object CulturaChallengeGenerator {
     }
 
     fun generate(model: String): CulturaQuestion {
-        val questions = when (model.lowercase()) {
+        // Aquesta línia assegura que el tipus sigui 100% concret
+        val questions: List<CulturaQuestion> = when (model.lowercase()) {
             "bàsic" -> loadedQuestions?.basic
             "avançat" -> loadedQuestions?.advanced
             "expert" -> loadedQuestions?.expert

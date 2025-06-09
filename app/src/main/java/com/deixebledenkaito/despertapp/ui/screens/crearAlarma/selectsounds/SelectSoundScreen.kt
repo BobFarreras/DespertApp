@@ -4,6 +4,7 @@ import android.content.Intent
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -64,9 +65,26 @@ fun SelectSoundScreen(
     val textColor = if (currentThemeIsDark) Color.White else Color.Black
 
 
+    // Dins el launcher, afegeix grantUriPermission + takePersistableUriPermission
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         uri?.let {
-            context.contentResolver.takePersistableUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            try {
+                // Assigna explícitament permís de lectura
+                context.grantUriPermission(
+                    context.packageName, it,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+                )
+            } catch (se: SecurityException) {
+                Log.e("SelectSound", "grantUriPermission fallida", se)
+            }
+
+            try {
+                val takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                context.contentResolver.takePersistableUriPermission(it, takeFlags)
+            } catch (se: SecurityException) {
+                Log.e("SelectSound", "takePersistableUriPermission fallida", se)
+            }
+
             selectedUri = it
             showDialog = true
         }
@@ -167,7 +185,14 @@ fun SelectSoundScreen(
                     onSelect = { onSoundSelected(sound.id, sound.name) },
                     onLongClick = {
                         if (sound.id.startsWith("content://")) {
-                            soundToDelete = sound
+                            val uri = sound.id.toUri()
+                            try {
+                                context.contentResolver.openInputStream(uri)?.close()
+                            } catch (e: Exception) {
+                                Log.e("SelectSound", "No es pot obrir Uri: ${sound.id}", e)
+                                return@SoundCard  // Ignora aquest so
+                            }
+                            mediaPlayer?.setDataSource(context, uri)
                         }
                     }
                 )

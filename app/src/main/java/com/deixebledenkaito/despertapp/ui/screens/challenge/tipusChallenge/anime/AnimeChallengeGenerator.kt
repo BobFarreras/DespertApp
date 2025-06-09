@@ -14,7 +14,8 @@ object AnimeChallengeGenerator{
     }
 
     fun generate(model: String): AnimeQuestion {
-        val questions = when (model.lowercase()) {
+        // Aquesta línia assegura que el tipus sigui 100% concret
+        val questions: List<AnimeQuestion> = when (model.lowercase()) {
             "bàsic" -> loadedQuestions?.basic
             "avançat" -> loadedQuestions?.advanced
             "expert" -> loadedQuestions?.expert

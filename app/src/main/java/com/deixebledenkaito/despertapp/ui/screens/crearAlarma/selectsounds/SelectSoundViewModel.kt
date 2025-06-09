@@ -2,6 +2,7 @@ package com.deixebledenkaito.despertapp.ui.screens.crearAlarma.selectsounds
 
 import android.app.Application
 import android.net.Uri
+import androidx.core.net.toUri
 import androidx.lifecycle.AndroidViewModel
 import com.deixebledenkaito.despertapp.R
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +22,7 @@ class SelectSoundViewModel @Inject constructor(
 
     init {
         loadSounds()
+        cleanInvalidCustomSounds()
     }
 
     fun loadSounds() {
@@ -43,4 +45,20 @@ class SelectSoundViewModel @Inject constructor(
 
 
     fun refreshCustomSounds() = loadSounds() // per coherència
+
+    fun cleanInvalidCustomSounds() {
+        val customs = CustomSoundManager.getCustomSounds(getApplication())
+        val valid = customs.filter {
+            try {
+                context.contentResolver.openInputStream(it.uriString.toUri())?.close()
+                true
+            } catch (_: Exception) {
+                false
+            }
+        }
+        if (valid.size != customs.size) {
+            CustomSoundManager.updateCustomSounds(context, valid)
+            loadSounds()
+        }
+    }
 }
